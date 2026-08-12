@@ -1,0 +1,273 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PostCard from '../components/PostCard.astro';
+import CtaSection from '../components/CtaSection.astro';
+import Faq from '../components/Faq.astro';
+import { SITE, CONTACT } from '../consts';
+import { faqSchema } from '../lib/schema';
+
+const services = (await getCollection('service', ({ data }) => !data.draft)).sort(
+  (a, b) => a.data.order - b.data.order,
+);
+
+const columns = (await getCollection('column', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime())
+  .slice(0, 3);
+
+const cases = (await getCollection('case', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime())
+  .slice(0, 3);
+
+const homeFaq = [
+  {
+    q: '학교폭력 사건에 변호사가 꼭 필요한가요?',
+    a: '학교폭력대책심의위원회는 형사재판과 달리 서면과 진술 위주로 짧은 시간 안에 결론이 나고, 한 번 내려진 조치는 생활기록부에 기재되어 상급학교 진학까지 영향을 줍니다. 사안조사 단계에서 무엇을 어떻게 진술하느냐가 결과를 좌우하기 때문에, 통지서를 받은 시점에 상담을 받아보시는 것을 권합니다.',
+  },
+  {
+    q: '언제 상담받는 것이 가장 좋나요?',
+    a: '학교로부터 학교폭력 사안 접수 사실을 통보받은 직후가 가장 좋습니다. 이미 진술서를 제출했거나 심의위원회가 끝난 뒤라도 조치 통보를 받은 날부터 90일 이내라면 행정심판·행정소송으로 다툴 수 있으므로 늦었다고 판단하지 마시고 문의해 주세요.',
+  },
+  {
+    q: '심의위원회에 변호사가 함께 들어갈 수 있나요?',
+    a: '학생과 보호자는 심의위원회에 출석하여 의견을 진술할 수 있고, 대리인을 선임할 수 있습니다. 다만 위원회 운영 방식에 따라 진술 시간과 대리인 참여 범위가 달라질 수 있어, 사전에 서면 의견서를 충실히 준비하는 것이 중요합니다.',
+  },
+  {
+    q: '상담 비용은 어떻게 되나요?',
+    a: '초기 상담에서 사건의 쟁점과 예상 절차, 비용을 먼저 안내드립니다. 비용은 사건 유형(심의위원회 대응, 행정심판, 소송 등)과 진행 단계에 따라 달라지므로 상담 시 구체적으로 말씀드립니다.',
+  },
+];
+
+const heroPoints = [
+  { n: '01', t: '통지서를 받은 그날부터', d: '사안조사 진술, 확인서 작성, 증거 정리까지 첫 대응 방향을 잡아드립니다.' },
+  { n: '02', t: '심의위원회 서면·출석 대응', d: '의견서와 자료를 구조적으로 정리해 위원회가 사실관계를 오해하지 않도록 합니다.' },
+  { n: '03', t: '조치 처분 불복', d: '행정심판·행정소송, 집행정지 신청까지 생활기록부 기재를 다투는 절차를 진행합니다.' },
+];
+---
+
+<BaseLayout
+  title={`학교폭력 변호사 | ${SITE.name}`}
+  description={SITE.description}
+  bareTitle
+  jsonLd={[faqSchema(homeFaq)]}
+>
+  <section class="hero">
+    <div class="wrap hero__inner">
+      <div class="hero__text">
+        <span class="eyebrow">학교폭력 전담</span>
+        <h1>학폭위 통지서를 받으셨다면,<br />지금이 가장 중요한 시점입니다</h1>
+        <p>
+          학교폭력 사건은 신고 접수부터 심의위원회 결정까지 몇 주 만에 끝납니다. 그 사이에 작성한
+          진술서 한 장이 조치 수위를 바꾸고, 그 조치는 생활기록부에 남습니다. 학교폭력 사건만
+          집중적으로 다루는 변호사가 첫 대응부터 불복 절차까지 함께합니다.
+        </p>
+        <div class="hero__actions">
+          <a class="btn btn--primary" href={`tel:${CONTACT.phoneHref}`}>{CONTACT.phone} 전화상담</a>
+          <a class="btn btn--ghost" href="/contact/">온라인 상담신청</a>
+        </div>
+        <p class="hero__hours">상담시간 {CONTACT.hours} · 사건 상황에 따라 시간 외 상담도 가능합니다</p>
+      </div>
+
+      <ol class="hero__steps">
+        {
+          heroPoints.map((p) => (
+            <li>
+              <span class="hero__num">{p.n}</span>
+              <div>
+                <strong>{p.t}</strong>
+                <p>{p.d}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section__head">
+        <span class="eyebrow">업무분야</span>
+        <h2>사건의 단계와 지위에 따라 대응이 달라집니다</h2>
+        <p>지금 어느 단계에 계신지 선택하시면, 그 상황에서 필요한 절차와 준비 사항을 정리해 두었습니다.</p>
+      </div>
+      <div class="grid grid--3">
+        {
+          services.map((s) => (
+            <PostCard
+              href={`/service/${s.id}/`}
+              title={s.data.shortTitle}
+              description={s.data.summary}
+            />
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--soft">
+    <div class="wrap">
+      <div class="section__head">
+        <span class="eyebrow">절차 안내</span>
+        <h2>학교폭력 사건은 이렇게 진행됩니다</h2>
+        <p>
+          신고 접수부터 조치 결정, 그리고 불복까지. 전체 흐름을 먼저 이해하셔야 지금 무엇을 준비해야
+          하는지가 보입니다.
+        </p>
+      </div>
+      <a class="btn btn--primary" href="/school-violence/">학교폭력 절차 전체 보기</a>
+    </div>
+  </section>
+
+  {
+    cases.length > 0 && (
+      <section class="section">
+        <div class="wrap">
+          <div class="section__head">
+            <span class="eyebrow">해결사례</span>
+            <h2>실제로 어떻게 다투었는지 보여드립니다</h2>
+            <p>
+              의뢰인이 특정되지 않도록 사건 내용을 각색·일반화하여 정리했습니다. 결과는 구체적
+              사실관계에 따라 달라질 수 있습니다.
+            </p>
+          </div>
+          <div class="grid grid--3">
+            {cases.map((c) => (
+              <PostCard
+                href={`/case/${c.id}/`}
+                title={c.data.title}
+                description={c.data.description}
+                tag={c.data.category}
+                tagAccent
+                note={c.data.outcome}
+                date={c.data.publishDate}
+              />
+            ))}
+          </div>
+          <p class="more">
+            <a href="/case/">해결사례 전체 보기 →</a>
+          </p>
+        </div>
+      </section>
+    )
+  }
+
+  {
+    columns.length > 0 && (
+      <section class="section section--soft">
+        <div class="wrap">
+          <div class="section__head">
+            <span class="eyebrow">칼럼</span>
+            <h2>자주 받는 질문을 글로 정리했습니다</h2>
+          </div>
+          <div class="grid grid--3">
+            {columns.map((c) => (
+              <PostCard
+                href={`/column/${c.id}/`}
+                title={c.data.title}
+                description={c.data.description}
+                tag={c.data.category}
+                date={c.data.publishDate}
+              />
+            ))}
+          </div>
+          <p class="more">
+            <a href="/column/">칼럼 전체 보기 →</a>
+          </p>
+        </div>
+      </section>
+    )
+  }
+
+  <section class="section">
+    <div class="wrap" style="max-width: var(--maxw-prose); margin-inline: auto;">
+      <Faq items={homeFaq} />
+    </div>
+  </section>
+
+  <CtaSection />
+</BaseLayout>
+
+<style>
+  .hero {
+    background: linear-gradient(180deg, var(--navy-50), #fff);
+    border-bottom: 1px solid var(--line);
+    padding-block: clamp(2.5rem, 6vw, 4.5rem);
+  }
+  .hero__inner {
+    display: grid;
+    gap: 2.5rem;
+  }
+  @media (min-width: 960px) {
+    .hero__inner {
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 4rem;
+      align-items: center;
+    }
+  }
+  .hero h1 {
+    margin-bottom: 1rem;
+  }
+  .hero__text > p {
+    color: var(--ink-2);
+    font-size: 1.0625rem;
+    max-width: 34em;
+  }
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1.75rem;
+  }
+  .hero__hours {
+    font-size: 0.8125rem;
+    color: var(--ink-3);
+    margin-top: 1rem;
+  }
+
+  .hero__steps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+  }
+  .hero__steps li {
+    display: flex;
+    gap: 1rem;
+    padding: 1.25rem 1.5rem;
+  }
+  .hero__steps li + li {
+    border-top: 1px solid var(--line);
+  }
+  .hero__num {
+    font-weight: 800;
+    color: var(--accent);
+    font-size: 0.8125rem;
+    letter-spacing: 0.05em;
+    padding-top: 0.3em;
+    flex: none;
+  }
+  .hero__steps strong {
+    display: block;
+    color: var(--navy-900);
+    margin-bottom: 0.2rem;
+  }
+  .hero__steps p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--ink-2);
+    line-height: 1.6;
+  }
+
+  .more {
+    margin: 2rem 0 0;
+  }
+  .more a {
+    font-weight: 700;
+    text-decoration: none;
+  }
+</style>

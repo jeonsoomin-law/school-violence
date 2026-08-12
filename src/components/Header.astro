@@ -1,0 +1,187 @@
+---
+import { SITE, CONTACT, NAV } from '../consts';
+
+const path = Astro.url.pathname;
+const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWith(href));
+---
+
+<header class="hd">
+  <div class="wrap hd__inner">
+    <a class="hd__brand" href="/">
+      <span class="hd__mark" aria-hidden="true"></span>
+      <span class="hd__name">{SITE.name}</span>
+    </a>
+
+    <input type="checkbox" id="nav-toggle" class="visually-hidden hd__check" />
+    <label for="nav-toggle" class="hd__burger">
+      <span aria-hidden="true"></span>
+      <span class="visually-hidden">메뉴 열기</span>
+    </label>
+
+    <nav class="hd__nav" aria-label="주요 메뉴">
+      <ul>
+        {
+          NAV.map((item) => (
+            <li>
+              <a href={item.href} aria-current={isActive(item.href) ? 'page' : undefined}>
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <a class="hd__tel" href={`tel:${CONTACT.phoneHref}`}>{CONTACT.phone}</a>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .hd {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: saturate(180%) blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  .hd__inner {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    min-height: 64px;
+    flex-wrap: wrap;
+  }
+  .hd__brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-weight: 800;
+    font-size: 1.0625rem;
+    color: var(--navy-900);
+    text-decoration: none;
+    letter-spacing: -0.02em;
+    margin-right: auto;
+  }
+  .hd__mark {
+    width: 22px;
+    height: 22px;
+    border-radius: 5px;
+    background: linear-gradient(135deg, var(--navy-800), var(--navy-700));
+    position: relative;
+    flex: none;
+  }
+  .hd__mark::after {
+    content: '';
+    position: absolute;
+    inset: 6px 6px auto 6px;
+    height: 2px;
+    background: var(--accent);
+    box-shadow: 0 4px 0 var(--accent);
+  }
+
+  .hd__nav ul {
+    list-style: none;
+    display: flex;
+    gap: 1.4rem;
+    margin: 0;
+    padding: 0;
+  }
+  .hd__nav a {
+    text-decoration: none;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--ink-2);
+    white-space: nowrap;
+  }
+  .hd__nav a:hover,
+  .hd__nav a[aria-current='page'] {
+    color: var(--navy-800);
+  }
+  .hd__nav a[aria-current='page'] {
+    text-decoration: underline;
+    text-decoration-color: var(--accent);
+    text-decoration-thickness: 2px;
+  }
+  .hd__tel {
+    display: none;
+  }
+
+  /* 데스크톱 */
+  @media (min-width: 900px) {
+    .hd__nav {
+      display: flex;
+      align-items: center;
+      gap: 1.6rem;
+    }
+    .hd__burger {
+      display: none;
+    }
+    .hd__tel {
+      display: inline-block;
+      font-weight: 800;
+      color: var(--navy-800);
+      text-decoration: none;
+      font-size: 1rem;
+      padding-left: 1.2rem;
+      border-left: 1px solid var(--line);
+    }
+  }
+
+  /* 모바일 — CSS만으로 여닫는 메뉴 (JS 0KB) */
+  @media (max-width: 899px) {
+    .hd__burger {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      cursor: pointer;
+    }
+    .hd__burger span[aria-hidden] {
+      display: block;
+      width: 18px;
+      height: 2px;
+      background: var(--navy-800);
+      position: relative;
+    }
+    .hd__burger span[aria-hidden]::before,
+    .hd__burger span[aria-hidden]::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      width: 18px;
+      height: 2px;
+      background: var(--navy-800);
+    }
+    .hd__burger span[aria-hidden]::before {
+      top: -6px;
+    }
+    .hd__burger span[aria-hidden]::after {
+      top: 6px;
+    }
+
+    .hd__nav {
+      display: none;
+      width: 100%;
+      padding-bottom: 1rem;
+    }
+    .hd__check:checked ~ .hd__nav {
+      display: block;
+    }
+    .hd__nav ul {
+      flex-direction: column;
+      gap: 0;
+      border-top: 1px solid var(--line);
+    }
+    .hd__nav li + li {
+      border-top: 1px solid var(--line);
+    }
+    .hd__nav a {
+      display: block;
+      padding: 0.85rem 0.25rem;
+      font-size: 1rem;
+    }
+  }
+</style>

@@ -1,0 +1,13 @@
+---
+/**
+ * 구조화 데이터(JSON-LD) 출력용 얇은 래퍼.
+ * 검색엔진이 페이지의 성격을 기계적으로 이해하게 해주고,
+ * FAQ·빵부스러기 등은 검색결과에 리치 스니펫으로 표시될 수 있습니다.
+ */
+interface Props {
+  data: Record<string, unknown> | Record<string, unknown>[];
+}
+const { data } = Astro.props;
+---
+
+<script type="application/ld+json" is:inline set:html={JSON.stringify(data)} />

@@ -1,0 +1,94 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import PostCard from '../../components/PostCard.astro';
+import CtaSection from '../../components/CtaSection.astro';
+
+const columns = (await getCollection('column', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime(),
+);
+
+const categories = [...new Set(columns.map((c) => c.data.category))];
+const crumbs = [{ name: '칼럼', href: '/column/' }];
+---
+
+<BaseLayout
+  title="학교폭력 칼럼"
+  description="학폭위 절차, 진술서 작성, 생활기록부 기재, 조치 불복까지. 학교폭력 사건에서 실제로 자주 받는 질문을 변호사가 정리했습니다."
+  breadcrumbs={crumbs}
+>
+  <section class="section">
+    <div class="wrap">
+      <Breadcrumbs items={crumbs} />
+      <div class="section__head">
+        <span class="eyebrow">칼럼</span>
+        <h1>학교폭력 칼럼</h1>
+        <p>
+          상담에서 반복적으로 받는 질문을 글로 정리했습니다. 일반적인 법률정보이며, 개별 사안에 대한
+          자문은 상담을 통해 안내드립니다.
+        </p>
+      </div>
+
+      {
+        categories.length > 1 && (
+          <ul class="cats">
+            {categories.map((cat) => (
+              <li>
+                <a href={`#cat-${encodeURIComponent(cat)}`} class="tag">
+                  {cat}
+                </a>
+              </li>
+            ))}
+          </ul>
+        )
+      }
+
+      {
+        categories.map((cat) => (
+          <div class="catblock" id={`cat-${encodeURIComponent(cat)}`}>
+            <h2>{cat}</h2>
+            <div class="grid grid--3">
+              {columns
+                .filter((c) => c.data.category === cat)
+                .map((c) => (
+                  <PostCard
+                    href={`/column/${c.id}/`}
+                    title={c.data.title}
+                    description={c.data.description}
+                    date={c.data.publishDate}
+                  />
+                ))}
+            </div>
+          </div>
+        ))
+      }
+
+      {columns.length === 0 && <p>아직 등록된 칼럼이 없습니다.</p>}
+    </div>
+  </section>
+  <CtaSection />
+</BaseLayout>
+
+<style>
+  .cats {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 0;
+    margin: 0 0 2.5rem;
+  }
+  .cats a {
+    text-decoration: none;
+  }
+  .catblock + .catblock {
+    margin-top: 3.5rem;
+  }
+  .catblock h2 {
+    font-size: 1.2rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 2px solid var(--navy-100);
+    margin-bottom: 1.5rem;
+  }
+</style>

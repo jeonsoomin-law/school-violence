@@ -1,0 +1,76 @@
+---
+/**
+ * 자주 묻는 질문 아코디언.
+ * <details> 를 쓰므로 자바스크립트 없이 동작하고, 접힌 상태에서도
+ * 답변 텍스트가 HTML 에 그대로 들어 있어 크롤러가 전부 읽습니다.
+ */
+interface Props {
+  items: { q: string; a: string }[];
+  heading?: string;
+  headingLevel?: 2 | 3;
+}
+const { items, heading = '자주 묻는 질문', headingLevel = 2 } = Astro.props;
+const H = `h${headingLevel}` as 'h2' | 'h3';
+---
+
+{
+  items.length > 0 && (
+    <section class="faq" aria-label={heading}>
+      <H>{heading}</H>
+      <div class="faq__list">
+        {items.map((item) => (
+          <details class="faq__item">
+            <summary>{item.q}</summary>
+            <div class="faq__a">
+              <p>{item.a}</p>
+            </div>
+          </details>
+        ))}
+      </div>
+    </section>
+  )
+}
+
+<style>
+  .faq {
+    margin-top: 3rem;
+  }
+  .faq__list {
+    border-top: 1px solid var(--line);
+  }
+  .faq__item {
+    border-bottom: 1px solid var(--line);
+  }
+  .faq__item summary {
+    cursor: pointer;
+    padding: 1.05rem 2rem 1.05rem 0;
+    font-weight: 700;
+    color: var(--navy-900);
+    list-style: none;
+    position: relative;
+  }
+  .faq__item summary::-webkit-details-marker {
+    display: none;
+  }
+  .faq__item summary::after {
+    content: '+';
+    position: absolute;
+    right: 0.25rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.35rem;
+    font-weight: 400;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .faq__item[open] summary::after {
+    content: '–';
+  }
+  .faq__a {
+    padding: 0 0 1.25rem;
+    color: var(--ink-2);
+  }
+  .faq__a p {
+    margin: 0;
+  }
+</style>

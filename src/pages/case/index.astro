@@ -1,0 +1,69 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import PostCard from '../../components/PostCard.astro';
+import CtaSection from '../../components/CtaSection.astro';
+
+const cases = (await getCollection('case', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime(),
+);
+
+const crumbs = [{ name: '해결사례', href: '/case/' }];
+---
+
+<BaseLayout
+  title="학교폭력 해결사례"
+  description="학폭위 조치없음, 조치 취소 행정심판, 생활기록부 기재 방어 등 실제 수행한 학교폭력 사건의 쟁점과 대응 과정을 익명으로 정리했습니다."
+  breadcrumbs={crumbs}
+>
+  <section class="section">
+    <div class="wrap">
+      <Breadcrumbs items={crumbs} />
+      <div class="section__head">
+        <span class="eyebrow">해결사례</span>
+        <h1>학교폭력 해결사례</h1>
+        <p>
+          어떤 쟁점을 어떻게 다투었는지 과정 중심으로 정리했습니다. 의뢰인이 특정되지 않도록 학교·지역·시기
+          등 사건 정보는 각색하였습니다.
+        </p>
+      </div>
+
+      <p class="notice">
+        게시된 사례는 특정 사건의 결과를 보장하지 않습니다. 학교폭력 사건은 사실관계와 증거, 학교의
+        운영 방식에 따라 결론이 크게 달라집니다.
+      </p>
+
+      <div class="grid grid--2">
+        {
+          cases.map((c) => (
+            <PostCard
+              href={`/case/${c.id}/`}
+              title={c.data.title}
+              description={c.data.description}
+              tag={c.data.category}
+              tagAccent
+              note={c.data.outcome}
+              date={c.data.publishDate}
+            />
+          ))
+        }
+      </div>
+
+      {cases.length === 0 && <p>아직 등록된 사례가 없습니다.</p>}
+    </div>
+  </section>
+  <CtaSection />
+</BaseLayout>
+
+<style>
+  .notice {
+    background: var(--accent-soft);
+    border: 1px solid #ecdcbd;
+    border-radius: var(--radius);
+    padding: 0.9rem 1.1rem;
+    font-size: 0.875rem;
+    color: #6b4f1a;
+    margin-bottom: 2rem;
+  }
+</style>

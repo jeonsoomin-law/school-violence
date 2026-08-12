@@ -1,0 +1,58 @@
+---
+import type { Crumb } from '../lib/schema';
+
+interface Props {
+  items: Crumb[];
+}
+const { items } = Astro.props;
+const all: Crumb[] = [{ name: '홈', href: '/' }, ...items];
+---
+
+<nav class="bc" aria-label="현재 위치">
+  <ol>
+    {
+      all.map((c, i) => (
+        <li>
+          {i === all.length - 1 ? (
+            <span aria-current="page">{c.name}</span>
+          ) : (
+            <a href={c.href}>{c.name}</a>
+          )}
+        </li>
+      ))
+    }
+  </ol>
+</nav>
+
+<style>
+  .bc {
+    font-size: 0.8125rem;
+    color: var(--ink-3);
+    margin-bottom: 1.5rem;
+  }
+  .bc ol {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    padding: 0;
+    margin: 0;
+  }
+  .bc li + li::before {
+    content: '›';
+    margin-right: 0.4rem;
+    color: var(--line);
+  }
+  .bc a {
+    color: var(--ink-3);
+    text-decoration: none;
+  }
+  .bc a:hover {
+    color: var(--navy-700);
+    text-decoration: underline;
+  }
+  .bc span[aria-current] {
+    color: var(--ink-2);
+    font-weight: 600;
+  }
+</style>

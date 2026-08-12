@@ -1,0 +1,132 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import ConsultForm from '../components/ConsultForm.astro';
+import { CONTACT, ADDRESS } from '../consts';
+
+const crumbs = [{ name: '상담신청', href: '/contact/' }];
+
+const prepare = [
+  '학교로부터 받은 통지서 · 안내문 (사진으로 찍어두셔도 됩니다)',
+  '사건 발생 시점과 경위를 시간 순으로 정리한 메모',
+  '카카오톡 · SNS 대화 내용, 사진, 녹음 등 남아 있는 자료',
+  '이미 제출한 확인서 · 진술서가 있다면 그 내용',
+  '앞으로 잡혀 있는 일정 (사안조사, 심의위원회 등)',
+];
+---
+
+<BaseLayout
+  title="학교폭력 상담신청"
+  description={`학교폭력 사건 상담 신청. 전화 ${CONTACT.phone} 또는 온라인 신청서로 문의하시면 영업일 기준 1일 이내에 연락드립니다.`}
+  breadcrumbs={crumbs}
+>
+  <section class="section">
+    <div class="wrap">
+      <Breadcrumbs items={crumbs} />
+
+      <div class="ct">
+        <div class="ct__intro">
+          <span class="eyebrow">상담신청</span>
+          <h1>상담 신청</h1>
+          <p class="ct__lead">
+            지금 어떤 상황인지, 무엇이 가장 걱정되는지만 알려주셔도 됩니다. 사건을 맡기실지 여부와
+            관계없이 현재 단계에서 무엇을 준비해야 하는지부터 말씀드립니다.
+          </p>
+
+          <div class="ct__quick">
+            <a class="btn btn--primary" href={`tel:${CONTACT.phoneHref}`}>{CONTACT.phone}</a>
+            {
+              CONTACT.kakao && (
+                <a class="btn btn--kakao" href={CONTACT.kakao} target="_blank" rel="noopener">
+                  카카오톡 상담
+                </a>
+              )
+            }
+          </div>
+
+          <dl class="ct__info">
+            <dt>상담시간</dt>
+            <dd>{CONTACT.hours}</dd>
+            <dt>이메일</dt>
+            <dd><a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a></dd>
+            <dt>사무소</dt>
+            <dd>{ADDRESS.city} {ADDRESS.street}</dd>
+          </dl>
+
+          <h2>상담 전에 준비하시면 좋은 것</h2>
+          <ul class="ct__prep">
+            {prepare.map((p) => <li>{p}</li>)}
+          </ul>
+          <p class="ct__note">
+            준비가 안 되어 있어도 괜찮습니다. 자료가 없다는 이유로 상담을 미루는 사이에 진술 단계가
+            지나가는 경우가 더 많습니다.
+          </p>
+        </div>
+
+        <div class="ct__form">
+          <ConsultForm />
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .ct {
+    display: grid;
+    gap: 2.5rem;
+  }
+  @media (min-width: 960px) {
+    .ct {
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+    .ct__form {
+      position: sticky;
+      top: 5.5rem;
+    }
+  }
+  .ct__lead {
+    font-size: 1.0625rem;
+    color: var(--ink-2);
+  }
+  .ct__quick {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+  }
+  .ct__info {
+    display: grid;
+    grid-template-columns: 5.5em 1fr;
+    gap: 0.5rem 1rem;
+    padding: 1.2rem 1.4rem;
+    background: var(--bg-soft);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    font-size: 0.9375rem;
+    margin-bottom: 2.5rem;
+  }
+  .ct__info dt {
+    font-weight: 700;
+    color: var(--ink-3);
+  }
+  .ct__info dd {
+    margin: 0;
+  }
+  .ct h2 {
+    font-size: 1.1rem;
+  }
+  .ct__prep {
+    padding-left: 1.1em;
+    color: var(--ink-2);
+  }
+  .ct__prep li {
+    margin-bottom: 0.5em;
+  }
+  .ct__note {
+    font-size: 0.875rem;
+    color: var(--ink-3);
+  }
+</style>

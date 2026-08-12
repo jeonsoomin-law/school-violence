@@ -1,0 +1,183 @@
+---
+import { FORM, CONTACT, SITE } from '../consts';
+const configured = Boolean(FORM.endpoint && (FORM.accessKey || !FORM.endpoint.includes('web3forms')));
+---
+
+<div class="cf">
+  {
+    configured ? (
+      <form class="cf__form" action={FORM.endpoint} method="POST">
+        {FORM.accessKey && <input type="hidden" name="access_key" value={FORM.accessKey} />}
+        <input type="hidden" name="subject" value={`[${SITE.name}] 상담신청`} />
+        {/* 스팸봇 차단용 허니팟 — 사람 눈에는 안 보입니다 */}
+        <input type="checkbox" name="botcheck" class="visually-hidden" tabindex="-1" autocomplete="off" />
+
+        <div class="cf__row">
+          <label class="cf__field">
+            <span>성함 <em>*</em></span>
+            <input type="text" name="이름" required autocomplete="name" placeholder="홍길동" />
+          </label>
+          <label class="cf__field">
+            <span>연락처 <em>*</em></span>
+            <input type="tel" name="연락처" required autocomplete="tel" placeholder="010-0000-0000" />
+          </label>
+        </div>
+
+        <div class="cf__row">
+          <label class="cf__field">
+            <span>학생 신분</span>
+            <select name="구분">
+              <option>가해학생으로 지목됨</option>
+              <option>피해학생</option>
+              <option>양쪽 모두 신고됨(쌍방)</option>
+              <option>아직 판단이 어려움</option>
+            </select>
+          </label>
+          <label class="cf__field">
+            <span>현재 단계</span>
+            <select name="단계">
+              <option>학교 신고 접수 직후</option>
+              <option>사안조사·진술 단계</option>
+              <option>심의위원회 개최 예정</option>
+              <option>조치 처분을 받음(불복 검토)</option>
+              <option>수사·소년보호 절차 진행 중</option>
+            </select>
+          </label>
+        </div>
+
+        <label class="cf__field">
+          <span>상담 내용 <em>*</em></span>
+          <textarea
+            name="내용"
+            rows="6"
+            required
+            placeholder="언제, 어떤 일이 있었고 지금 어떤 상황인지 적어주세요. 학교로부터 받은 통지서가 있다면 그 내용도 함께 적어주시면 상담이 빨라집니다."
+          />
+        </label>
+
+        <label class="cf__check">
+          <input type="checkbox" name="개인정보동의" value="동의함" required />
+          <span>
+            상담 진행을 위한 개인정보(성함·연락처·상담내용) 수집·이용에 동의합니다. 수집된 정보는
+            상담 목적으로만 이용하며 상담 종료 후 지체 없이 파기합니다.
+            <a href="/privacy/">자세히 보기</a>
+          </span>
+        </label>
+
+        <button type="submit" class="btn btn--primary cf__submit">상담 신청하기</button>
+        <p class="cf__hint">
+          접수 후 영업일 기준 1일 이내에 연락드립니다. 급한 사안은 <a href={`tel:${CONTACT.phoneHref}`}>{CONTACT.phone}</a> 로 바로 전화 주세요.
+        </p>
+      </form>
+    ) : (
+      <div class="cf__fallback">
+        <p><strong>상담 폼이 아직 연결되지 않았습니다.</strong></p>
+        <p class="cf__hint">
+          <code>src/consts.ts</code> 의 <code>FORM.accessKey</code> 에 폼 서비스 키를 넣으면 이 자리에 신청 폼이 나타납니다.
+          그때까지는 전화·카카오톡 상담을 안내합니다.
+        </p>
+        <div class="cf__buttons">
+          <a class="btn btn--primary" href={`tel:${CONTACT.phoneHref}`}>{CONTACT.phone} 전화상담</a>
+          {CONTACT.kakao && (
+            <a class="btn btn--kakao" href={CONTACT.kakao} target="_blank" rel="noopener">
+              카카오톡 상담
+            </a>
+          )}
+        </div>
+      </div>
+    )
+  }
+</div>
+
+<style>
+  .cf {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    padding: clamp(1.25rem, 3vw, 2rem);
+    box-shadow: var(--shadow-sm);
+  }
+  .cf__row {
+    display: grid;
+    gap: 1rem;
+  }
+  @media (min-width: 640px) {
+    .cf__row {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  .cf__field {
+    display: block;
+    margin-bottom: 1rem;
+  }
+  .cf__field > span {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--ink-2);
+    margin-bottom: 0.4rem;
+  }
+  .cf__field em {
+    color: var(--danger);
+    font-style: normal;
+  }
+  .cf input[type='text'],
+  .cf input[type='tel'],
+  .cf select,
+  .cf textarea {
+    width: 100%;
+    font: inherit;
+    font-size: 1rem;
+    padding: 0.7rem 0.85rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: #fff;
+    color: var(--ink);
+  }
+  .cf textarea {
+    resize: vertical;
+    line-height: 1.7;
+  }
+  .cf input:focus,
+  .cf select:focus,
+  .cf textarea:focus {
+    border-color: var(--navy-700);
+  }
+  .cf__check {
+    display: flex;
+    gap: 0.6rem;
+    align-items: flex-start;
+    font-size: 0.8125rem;
+    color: var(--ink-2);
+    line-height: 1.6;
+    margin: 0.5rem 0 1.25rem;
+  }
+  .cf__check input {
+    margin-top: 0.25rem;
+    flex: none;
+    width: 1.05rem;
+    height: 1.05rem;
+    accent-color: var(--navy-800);
+  }
+  .cf__submit {
+    width: 100%;
+  }
+  .cf__hint {
+    font-size: 0.8125rem;
+    color: var(--ink-3);
+    margin: 0.9rem 0 0;
+    text-align: center;
+  }
+  .cf__fallback code {
+    background: var(--bg-soft);
+    padding: 0.1em 0.35em;
+    border-radius: 4px;
+    font-size: 0.9em;
+  }
+  .cf__buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1rem;
+  }
+</style>

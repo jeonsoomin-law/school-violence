@@ -1,0 +1,17 @@
+# 모든 검색엔진 허용
+User-agent: *
+Allow: /
+Disallow: /admin/
+
+# 네이버 크롤러 (Yeti) — 명시적으로 허용
+User-agent: Yeti
+Allow: /
+Disallow: /admin/
+
+# 다음 크롤러
+User-agent: Daum
+Allow: /
+Disallow: /admin/
+
+# TODO: 아래 도메인을 실제 도메인으로 바꾸세요
+Sitemap: https://example.com/sitemap-index.xml

@@ -1,0 +1,313 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import Faq from '../../components/Faq.astro';
+import CtaSection from '../../components/CtaSection.astro';
+import PostCard from '../../components/PostCard.astro';
+import { faqSchema } from '../../lib/schema';
+
+/**
+ * 필러(pillar) 페이지 — "학교폭력" 이라는 주제 전체를 한 페이지에 정리하고,
+ * 세부 주제는 칼럼·업무분야 페이지로 링크해 내보냅니다.
+ * 검색엔진에 "이 사이트의 학교폭력 주제 중심 문서" 로 인식되게 하는 것이 목적입니다.
+ */
+
+const crumbs = [{ name: '학교폭력 절차', href: '/school-violence/' }];
+
+const steps = [
+  {
+    n: '1단계',
+    t: '신고 접수 및 학교 통보',
+    d: '학교는 신고를 접수하면 지체 없이 가해자로 지목된 학생과 피해학생 양측 보호자에게 통보하고 사안조사를 시작합니다. 이때 학교전담경찰관(SPO)에게도 통보됩니다.',
+    note: '이 시점이 첫 갈림길입니다. 아직 아무 진술도 하지 않은 상태에서 상담을 받는 것이 가장 유리합니다.',
+  },
+  {
+    n: '2단계',
+    t: '사안조사 · 확인서 작성',
+    d: '담당 교사가 관련 학생과 목격 학생으로부터 확인서를 받고 증거를 수집합니다. 카카오톡 대화, SNS 기록, CCTV 등이 이 단계에서 정리됩니다.',
+    note: '학생이 위축된 상태에서 사실과 다르게 작성한 확인서는 이후 절차 내내 발목을 잡습니다.',
+  },
+  {
+    n: '3단계',
+    t: '학교장 자체해결 여부 판단',
+    d: '일정한 요건(경미한 피해, 재산상 피해 없음 또는 즉시 복구, 지속적이지 않음, 보복행위 아님)을 모두 충족하고 피해학생 측이 동의하면 심의위원회를 열지 않고 학교에서 종결할 수 있습니다.',
+    note: '자체해결로 마무리되면 조치 기록이 남지 않습니다. 요건 충족 여부를 다투는 것이 실익이 큰 국면입니다.',
+  },
+  {
+    n: '4단계',
+    t: '학교폭력대책심의위원회(학폭위) 개최',
+    d: '자체해결이 되지 않으면 교육지원청에 설치된 심의위원회가 열립니다. 학생과 보호자는 출석하여 의견을 진술할 수 있고, 대리인을 선임할 수 있습니다.',
+    note: '심의는 길지 않습니다. 짧은 시간 안에 전달할 내용을 서면 의견서로 미리 정리해 두어야 합니다.',
+  },
+  {
+    n: '5단계',
+    t: '조치 결정 및 통보',
+    d: '가해학생에 대해서는 1호 서면사과부터 9호 퇴학처분까지, 피해학생에 대해서는 심리상담·보호조치 등이 결정되어 서면으로 통보됩니다.',
+    note: '조치 호수에 따라 생활기록부 기재 여부와 삭제 시점이 달라집니다.',
+  },
+  {
+    n: '6단계',
+    t: '불복 — 행정심판 · 행정소송',
+    d: '조치에 불복하는 경우 행정심판 또는 행정소송을 제기할 수 있습니다. 처분이 있음을 안 날부터 90일, 처분이 있은 날부터 180일 이내에 청구해야 합니다.',
+    note: '본안 결론이 나기 전에 조치가 집행되는 것을 막으려면 집행정지 신청을 함께 검토해야 합니다.',
+  },
+];
+
+const measures = [
+  { no: '1호', name: '피해학생에 대한 서면사과' },
+  { no: '2호', name: '피해학생 및 신고·고발 학생에 대한 접촉, 협박 및 보복행위의 금지' },
+  { no: '3호', name: '학교에서의 봉사' },
+  { no: '4호', name: '사회봉사' },
+  { no: '5호', name: '학내외 전문가에 의한 특별 교육이수 또는 심리치료' },
+  { no: '6호', name: '출석정지' },
+  { no: '7호', name: '학급교체' },
+  { no: '8호', name: '전학' },
+  { no: '9호', name: '퇴학처분' },
+];
+
+const faq = [
+  {
+    q: '학교폭력 조치는 생활기록부에 얼마나 남나요?',
+    a: '조치 호수와 학교급에 따라 기재 여부와 삭제 시점이 다릅니다. 경미한 조치는 일정 요건을 갖추면 졸업과 동시에 삭제될 수 있지만, 중한 조치는 졸업 후 일정 기간 보존됩니다. 최근에는 대입 전형에 학교폭력 조치 사항이 반영되는 범위가 넓어졌으므로, 조치 호수를 낮추거나 다투는 실익이 과거보다 훨씬 큽니다. 구체적인 기재·삭제 기준은 사건 시점의 관련 규정에 따라 달라지므로 상담 시 확인이 필요합니다.',
+  },
+  {
+    q: '학교장 자체해결로 끝내면 아무 기록도 안 남나요?',
+    a: '학교장 자체해결로 종결되면 가해학생 조치가 내려지지 않으므로 생활기록부에 기재될 조치 자체가 존재하지 않습니다. 다만 자체해결은 법에서 정한 네 가지 요건을 모두 충족하고 피해학생과 보호자가 심의위원회 개최를 원하지 않는다는 의사를 서면으로 밝혀야 가능합니다.',
+  },
+  {
+    q: '심의위원회에 부모가 꼭 참석해야 하나요?',
+    a: '출석하여 의견을 진술할 기회가 보장되므로, 특별한 사정이 없다면 참석하시는 편이 좋습니다. 참석하지 않으면 서면만으로 판단이 이루어져 사정을 설명할 기회를 잃게 됩니다.',
+  },
+  {
+    q: '쌍방으로 신고된 경우에는 어떻게 되나요?',
+    a: '양측이 서로를 신고하면 각각 별도의 사안으로 조사와 심의가 이루어집니다. 이 경우 방어와 주장을 동시에 해야 하고, 한쪽에서 한 진술이 다른 쪽 사건에서 불리하게 쓰일 수 있어 전략을 함께 설계할 필요가 큽니다.',
+  },
+  {
+    q: '학교폭력으로 형사처벌도 받게 되나요?',
+    a: '학교폭력 절차와 형사·소년보호 절차는 별개로 진행됩니다. 폭행·상해·모욕·명예훼손·성폭력 등에 해당하면 수사가 개시될 수 있고, 만 10세 이상 14세 미만은 소년보호사건으로, 만 14세 이상은 형사사건으로 처리될 수 있습니다. 두 절차에서의 진술이 서로 영향을 주므로 함께 관리해야 합니다.',
+  },
+  {
+    q: '조치를 받은 지 시간이 좀 지났는데 아직 다툴 수 있나요?',
+    a: '행정심판·행정소송은 처분이 있음을 안 날부터 90일, 처분이 있은 날부터 180일 이내에 제기해야 합니다. 통보받은 날짜를 확인해 보시고, 기간이 얼마 남지 않았다면 바로 연락 주시는 것이 좋습니다.',
+  },
+];
+
+const columns = (await getCollection('column', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime())
+  .slice(0, 6);
+
+const services = (await getCollection('service', ({ data }) => !data.draft)).sort(
+  (a, b) => a.data.order - b.data.order,
+);
+---
+
+<BaseLayout
+  title="학교폭력 절차 총정리 — 신고부터 학폭위, 조치 불복까지"
+  description="학교폭력 신고 접수, 사안조사, 학교장 자체해결, 학폭위 심의, 1호~9호 조치, 생활기록부 기재, 행정심판·행정소송까지 전 과정을 변호사가 단계별로 정리했습니다."
+  breadcrumbs={crumbs}
+  jsonLd={[faqSchema(faq)]}
+>
+  <section class="section">
+    <div class="wrap">
+      <Breadcrumbs items={crumbs} />
+
+      <header class="pillar__head">
+        <span class="eyebrow">절차 안내</span>
+        <h1>학교폭력 절차 총정리</h1>
+        <p class="pillar__lead">
+          학교폭력 사건은 신고 접수부터 조치 결정까지 대체로 몇 주 안에 끝납니다. 절차가 어떻게
+          흘러가는지 모른 채 대응하면 되돌리기 어려운 지점을 그냥 지나치게 됩니다. 전체 흐름과 각
+          단계에서 실제로 무엇이 결정되는지를 정리했습니다.
+        </p>
+      </header>
+
+      <ol class="steps">
+        {
+          steps.map((s) => (
+            <li class="steps__item">
+              <div class="steps__label">{s.n}</div>
+              <div class="steps__body">
+                <h2>{s.t}</h2>
+                <p>{s.d}</p>
+                <p class="steps__note">{s.note}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="section section--soft">
+    <div class="wrap">
+      <div class="section__head">
+        <h2>가해학생에 대한 조치 1호 ~ 9호</h2>
+        <p>
+          호수가 높을수록 중한 조치이며, 생활기록부 기재 여부와 보존 기간도 달라집니다. 실무에서는
+          호수를 한 단계 낮추는 것만으로도 학생의 진로에 미치는 영향이 크게 달라집니다.
+        </p>
+      </div>
+      <div class="measures">
+        {
+          measures.map((m) => (
+            <div class="measures__row">
+              <span class="measures__no">{m.no}</span>
+              <span>{m.name}</span>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section__head">
+        <h2>상황별 대응</h2>
+        <p>현재 어느 위치에 계신지에 따라 준비해야 할 것이 다릅니다.</p>
+      </div>
+      <div class="grid grid--2">
+        {
+          services.map((s) => (
+            <PostCard href={`/service/${s.id}/`} title={s.data.title} description={s.data.summary} />
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--soft">
+    <div class="wrap" style="max-width: var(--maxw-prose); margin-inline: auto;">
+      <Faq items={faq} heading="학교폭력 절차 자주 묻는 질문" />
+    </div>
+  </section>
+
+  {
+    columns.length > 0 && (
+      <section class="section">
+        <div class="wrap">
+          <div class="section__head">
+            <h2>더 자세히 알아보기</h2>
+            <p>각 단계에서 실제로 부딪히는 문제를 개별 글로 정리했습니다.</p>
+          </div>
+          <div class="grid grid--3">
+            {columns.map((c) => (
+              <PostCard
+                href={`/column/${c.id}/`}
+                title={c.data.title}
+                description={c.data.description}
+                tag={c.data.category}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <CtaSection />
+</BaseLayout>
+
+<style>
+  .pillar__head {
+    max-width: var(--maxw-prose);
+    margin-bottom: 3rem;
+  }
+  .pillar__lead {
+    font-size: 1.0625rem;
+    color: var(--ink-2);
+    margin: 0;
+  }
+
+  .steps {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-width: 880px;
+  }
+  .steps__item {
+    display: grid;
+    gap: 0.75rem 1.5rem;
+    padding-bottom: 2.5rem;
+    position: relative;
+    padding-left: 1.75rem;
+  }
+  .steps__item::before {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 0.55em;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--accent);
+    z-index: 1;
+  }
+  .steps__item::after {
+    content: '';
+    position: absolute;
+    left: 9px;
+    top: 1.2em;
+    bottom: 0;
+    width: 1px;
+    background: var(--line);
+  }
+  .steps__item:last-child::after {
+    display: none;
+  }
+  @media (min-width: 720px) {
+    .steps__item {
+      grid-template-columns: 90px 1fr;
+      padding-left: 2rem;
+    }
+  }
+  .steps__label {
+    font-size: 0.8125rem;
+    font-weight: 800;
+    color: var(--accent);
+    letter-spacing: 0.03em;
+    padding-top: 0.35em;
+  }
+  .steps__body h2 {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+  }
+  .steps__body p {
+    color: var(--ink-2);
+    margin-bottom: 0.6rem;
+  }
+  .steps__note {
+    font-size: 0.9rem;
+    padding: 0.7rem 1rem;
+    background: var(--navy-50);
+    border-left: 3px solid var(--navy-700);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    color: var(--navy-800) !important;
+    margin-bottom: 0 !important;
+  }
+
+  .measures {
+    max-width: 760px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: #fff;
+  }
+  .measures__row {
+    display: flex;
+    gap: 1rem;
+    align-items: baseline;
+    padding: 0.85rem 1.2rem;
+    font-size: 0.95rem;
+  }
+  .measures__row + .measures__row {
+    border-top: 1px solid var(--line);
+  }
+  .measures__no {
+    flex: none;
+    width: 2.6em;
+    font-weight: 800;
+    color: var(--navy-700);
+  }
+</style>

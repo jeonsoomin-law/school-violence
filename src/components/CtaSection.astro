@@ -1,0 +1,62 @@
+---
+import { CONTACT } from '../consts';
+
+interface Props {
+  title?: string;
+  body?: string;
+}
+const {
+  title = '학교폭력 사건은 초기 대응이 결과를 좌우합니다',
+  body = '진술서 한 장, 문자 한 통이 심의위원회 판단을 바꿉니다. 상황을 정리해서 알려주시면 지금 무엇을 해야 하는지부터 말씀드립니다.',
+} = Astro.props;
+---
+
+<section class="cta">
+  <div class="wrap cta__inner">
+    <div>
+      <h2>{title}</h2>
+      <p>{body}</p>
+    </div>
+    <div class="cta__actions">
+      <a class="btn btn--primary" href={`tel:${CONTACT.phoneHref}`}>{CONTACT.phone}</a>
+      <a class="btn btn--ghost" href="/contact/">상담 신청서 작성</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta {
+    background: var(--navy-50);
+    border-block: 1px solid var(--navy-100);
+    padding-block: clamp(2.5rem, 5vw, 3.5rem);
+  }
+  .cta__inner {
+    display: grid;
+    gap: 1.75rem;
+    align-items: center;
+  }
+  @media (min-width: 860px) {
+    .cta__inner {
+      grid-template-columns: 1.4fr 1fr;
+      gap: 3rem;
+    }
+  }
+  .cta h2 {
+    font-size: clamp(1.25rem, 1.1rem + 0.8vw, 1.6rem);
+    margin-bottom: 0.5rem;
+  }
+  .cta p {
+    color: var(--ink-2);
+    margin: 0;
+  }
+  .cta__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+  @media (min-width: 860px) {
+    .cta__actions {
+      justify-content: flex-end;
+    }
+  }
+</style>

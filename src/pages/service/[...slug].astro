@@ -1,0 +1,141 @@
+---
+import { getCollection, render } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import Faq from '../../components/Faq.astro';
+import CtaSection from '../../components/CtaSection.astro';
+import PostCard from '../../components/PostCard.astro';
+import { faqSchema, serviceSchema } from '../../lib/schema';
+
+export const getStaticPaths = (async () => {
+  const services = await getCollection('service', ({ data }) => !data.draft);
+  return services.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}) satisfies GetStaticPaths;
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const d = entry.data;
+const url = `/service/${entry.id}/`;
+
+const crumbs = [
+  { name: '업무분야', href: '/service/' },
+  { name: d.shortTitle, href: url },
+];
+
+// 이 업무분야와 키워드가 겹치는 칼럼을 아래에 붙여 내부링크를 만듭니다.
+const related = (await getCollection('column', ({ data }) => !data.draft))
+  .map((c) => ({
+    entry: c,
+    score: c.data.keywords.filter((k) => d.keywords.includes(k)).length,
+  }))
+  .sort((a, b) => b.score - a.score || b.entry.data.publishDate.getTime() - a.entry.data.publishDate.getTime())
+  .slice(0, 3)
+  .map((r) => r.entry);
+---
+
+<BaseLayout
+  title={d.title}
+  description={d.description}
+  breadcrumbs={crumbs}
+  jsonLd={[
+    serviceSchema({ name: d.title, description: d.description, url }),
+    ...(d.faq.length ? [faqSchema(d.faq)] : []),
+  ]}
+>
+  <section class="section">
+    <div class="wrap">
+      <Breadcrumbs items={crumbs} />
+
+      <header class="svc__head">
+        <span class="eyebrow">업무분야</span>
+        <h1>{d.title}</h1>
+        <p class="svc__summary">{d.summary}</p>
+      </header>
+
+      {
+        d.points.length > 0 && (
+          <ul class="svc__points">
+            {d.points.map((p) => (
+              <li>
+                <strong>{p.title}</strong>
+                <p>{p.body}</p>
+              </li>
+            ))}
+          </ul>
+        )
+      }
+
+      <div class="prose svc__body">
+        <Content />
+        <Faq items={d.faq} />
+      </div>
+
+      {
+        related.length > 0 && (
+          <aside class="svc__related">
+            <h2>관련 칼럼</h2>
+            <div class="grid grid--3">
+              {related.map((c) => (
+                <PostCard
+                  href={`/column/${c.id}/`}
+                  title={c.data.title}
+                  description={c.data.description}
+                  tag={c.data.category}
+                />
+              ))}
+            </div>
+          </aside>
+        )
+      }
+    </div>
+  </section>
+
+  <CtaSection />
+</BaseLayout>
+
+<style>
+  .svc__head {
+    max-width: var(--maxw-prose);
+    margin-bottom: 2.5rem;
+  }
+  .svc__summary {
+    font-size: 1.125rem;
+    color: var(--ink-2);
+    margin: 0;
+  }
+  .svc__points {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 3rem;
+    display: grid;
+    gap: 1rem;
+  }
+  @media (min-width: 780px) {
+    .svc__points {
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    }
+  }
+  .svc__points li {
+    background: var(--bg-soft);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 1.25rem;
+  }
+  .svc__points strong {
+    display: block;
+    color: var(--navy-900);
+    margin-bottom: 0.35rem;
+  }
+  .svc__points p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--ink-2);
+    line-height: 1.65;
+  }
+  .svc__related {
+    margin-top: 4rem;
+    padding-top: 2.5rem;
+    border-top: 1px solid var(--line);
+  }
+</style>

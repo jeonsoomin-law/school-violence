@@ -1,0 +1,62 @@
+---
+interface Props {
+  href: string;
+  title: string;
+  description: string;
+  tag?: string;
+  tagAccent?: boolean;
+  date?: Date;
+  /** 카드 우측 하단 보조 문구 (예: 해결사례의 결과 요약) */
+  note?: string;
+}
+const { href, title, description, tag, tagAccent = false, date, note } = Astro.props;
+const dateStr = date
+  ? `${date.getFullYear()}.${String(date.getMonth() + 1).padStart(2, '0')}.${String(date.getDate()).padStart(2, '0')}`
+  : undefined;
+---
+
+<a class="card pc" href={href}>
+  {tag && <span class={tagAccent ? 'tag tag--accent' : 'tag'}>{tag}</span>}
+  <h3>{title}</h3>
+  <p>{description}</p>
+  {
+    (dateStr || note) && (
+      <p class="pc__foot meta">
+        {note && <strong>{note}</strong>}
+        {note && dateStr && <span aria-hidden="true"> · </span>}
+        {dateStr && <time datetime={date!.toISOString()}>{dateStr}</time>}
+      </p>
+    )
+  }
+</a>
+
+<style>
+  .pc {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  .pc .tag {
+    align-self: flex-start;
+    margin-bottom: 0.85rem;
+  }
+  .pc h3 {
+    font-size: 1.0625rem;
+  }
+  .pc > p:not(.pc__foot) {
+    flex: 1;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .pc__foot {
+    margin: 1rem 0 0;
+    padding-top: 0.85rem;
+    border-top: 1px solid var(--line);
+  }
+  .pc__foot strong {
+    color: var(--accent);
+  }
+</style>

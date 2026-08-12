@@ -1,0 +1,166 @@
+---
+import { getCollection, render } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import CtaSection from '../../components/CtaSection.astro';
+import PostCard from '../../components/PostCard.astro';
+import { articleSchema } from '../../lib/schema';
+
+export const getStaticPaths = (async () => {
+  const cases = await getCollection('case', ({ data }) => !data.draft);
+  return cases.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}) satisfies GetStaticPaths;
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const d = entry.data;
+const url = `/case/${entry.id}/`;
+
+const crumbs = [
+  { name: '해결사례', href: '/case/' },
+  { name: d.title, href: url },
+];
+
+const related = (await getCollection('case', ({ data }) => !data.draft))
+  .filter((c) => c.id !== entry.id)
+  .sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime())
+  .slice(0, 3);
+---
+
+<BaseLayout
+  title={d.title}
+  description={d.description}
+  breadcrumbs={crumbs}
+  jsonLd={[
+    articleSchema({
+      title: d.title,
+      description: d.description,
+      url,
+      datePublished: d.publishDate,
+      keywords: d.keywords,
+    }),
+  ]}
+>
+  <article class="section">
+    <div class="wrap">
+      <Breadcrumbs items={crumbs} />
+
+      <header class="cs__head">
+        <span class="tag tag--accent">{d.category}</span>
+        <h1>{d.title}</h1>
+        <p class="cs__lead">{d.description}</p>
+      </header>
+
+      <dl class="cs__facts">
+        <div>
+          <dt>사건 유형</dt>
+          <dd>{d.category}</dd>
+        </div>
+        <div>
+          <dt>의뢰인 지위</dt>
+          <dd>{d.side}</dd>
+        </div>
+        <div>
+          <dt>결과</dt>
+          <dd class="cs__outcome">{d.outcome}</dd>
+        </div>
+      </dl>
+
+      <div class="prose">
+        <Content />
+        <p class="cs__disclaimer">
+          위 사례는 의뢰인이 특정되지 않도록 학교·지역·시기 등 구체적 정보를 각색·일반화한 것입니다.
+          사건의 결과는 개별 사실관계와 증거에 따라 달라지며, 동일한 결과를 보장하지 않습니다.
+        </p>
+      </div>
+
+      {
+        related.length > 0 && (
+          <aside class="cs__related">
+            <h2>다른 해결사례</h2>
+            <div class="grid grid--3">
+              {related.map((c) => (
+                <PostCard
+                  href={`/case/${c.id}/`}
+                  title={c.data.title}
+                  description={c.data.description}
+                  tag={c.data.category}
+                  tagAccent
+                  note={c.data.outcome}
+                />
+              ))}
+            </div>
+          </aside>
+        )
+      }
+    </div>
+  </article>
+
+  <CtaSection />
+</BaseLayout>
+
+<style>
+  .cs__head {
+    max-width: var(--maxw-prose);
+    margin-bottom: 2rem;
+  }
+  .cs__head .tag {
+    margin-bottom: 1rem;
+  }
+  .cs__lead {
+    font-size: 1.0625rem;
+    color: var(--ink-2);
+    margin: 0;
+  }
+  .cs__facts {
+    display: grid;
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    max-width: var(--maxw-prose);
+    margin: 0 0 2.5rem;
+  }
+  @media (min-width: 640px) {
+    .cs__facts {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  .cs__facts > div {
+    background: #fff;
+    padding: 1rem 1.2rem;
+  }
+  .cs__facts dt {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--ink-3);
+    letter-spacing: 0.03em;
+    margin-bottom: 0.3rem;
+  }
+  .cs__facts dd {
+    margin: 0;
+    font-weight: 700;
+    color: var(--navy-900);
+    font-size: 0.95rem;
+  }
+  .cs__outcome {
+    color: var(--accent) !important;
+  }
+  .cs__disclaimer {
+    margin-top: 3rem;
+    padding: 1rem 1.2rem;
+    background: var(--bg-soft);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    font-size: 0.8125rem;
+    color: var(--ink-3);
+    line-height: 1.7;
+  }
+  .cs__related {
+    margin-top: 4rem;
+    padding-top: 2.5rem;
+    border-top: 1px solid var(--line);
+  }
+</style>

@@ -1,0 +1,68 @@
+---
+/**
+ * 모바일 하단 고정 상담 버튼.
+ * 학교폭력 사건 유입은 대부분 모바일이고, 전화 한 통이 전환의 전부입니다.
+ */
+import { CONTACT } from '../consts';
+---
+
+<div class="cta-bar">
+  <a class="cta-bar__btn cta-bar__btn--call" href={`tel:${CONTACT.phoneHref}`}>
+    <span aria-hidden="true">📞</span> 전화상담
+  </a>
+  {
+    CONTACT.kakao && (
+      <a class="cta-bar__btn cta-bar__btn--kakao" href={CONTACT.kakao} target="_blank" rel="noopener">
+        <span aria-hidden="true">💬</span> 카카오톡
+      </a>
+    )
+  }
+  <a class="cta-bar__btn cta-bar__btn--form" href="/contact/">
+    <span aria-hidden="true">✎</span> 상담신청
+  </a>
+</div>
+
+<style>
+  .cta-bar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 60;
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+    background: #fff;
+    border-top: 1px solid var(--line);
+    box-shadow: 0 -2px 12px rgba(13, 31, 51, 0.08);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .cta-bar__btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4em;
+    padding: 0.95rem 0.4rem;
+    font-weight: 700;
+    font-size: 0.9375rem;
+    text-decoration: none;
+    color: var(--navy-900);
+  }
+  .cta-bar__btn + .cta-bar__btn {
+    border-left: 1px solid var(--line);
+  }
+  .cta-bar__btn--call {
+    background: var(--navy-800);
+    color: #fff;
+  }
+  .cta-bar__btn--kakao {
+    background: #fee500;
+    color: #191600;
+  }
+
+  @media (min-width: 900px) {
+    .cta-bar {
+      display: none;
+    }
+  }
+</style>

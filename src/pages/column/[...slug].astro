@@ -1,0 +1,245 @@
+---
+import { getCollection, render } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import Faq from '../../components/Faq.astro';
+import CtaSection from '../../components/CtaSection.astro';
+import PostCard from '../../components/PostCard.astro';
+import { articleSchema, faqSchema } from '../../lib/schema';
+import { ATTORNEY } from '../../consts';
+
+export const getStaticPaths = (async () => {
+  const columns = await getCollection('column', ({ data }) => !data.draft);
+  return columns.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}) satisfies GetStaticPaths;
+
+const { entry } = Astro.props;
+const { Content, headings } = await render(entry);
+const d = entry.data;
+const url = `/column/${entry.id}/`;
+
+const crumbs = [
+  { name: '칼럼', href: '/column/' },
+  { name: d.title, href: url },
+];
+
+const toc = d.toc ? headings.filter((h) => h.depth === 2) : [];
+
+const fmt = (date: Date) =>
+  `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일`;
+
+// 같은 카테고리 → 키워드 겹침 순으로 관련 글 추천 (내부링크 = SEO의 기본기)
+const related = (await getCollection('column', ({ data }) => !data.draft))
+  .filter((c) => c.id !== entry.id)
+  .map((c) => ({
+    entry: c,
+    score:
+      (c.data.category === d.category ? 2 : 0) +
+      c.data.keywords.filter((k) => d.keywords.includes(k)).length,
+  }))
+  .sort((a, b) => b.score - a.score || b.entry.data.publishDate.getTime() - a.entry.data.publishDate.getTime())
+  .slice(0, 3)
+  .map((r) => r.entry);
+---
+
+<BaseLayout
+  title={d.title}
+  description={d.description}
+  image={d.cover}
+  breadcrumbs={crumbs}
+  jsonLd={[
+    articleSchema({
+      title: d.title,
+      description: d.description,
+      url,
+      datePublished: d.publishDate,
+      dateModified: d.updatedDate,
+      image: d.cover,
+      keywords: d.keywords,
+    }),
+    ...(d.faq.length ? [faqSchema(d.faq)] : []),
+  ]}
+>
+  <article class="section">
+    <div class="wrap">
+      <Breadcrumbs items={crumbs} />
+
+      <header class="art__head">
+        <span class="tag">{d.category}</span>
+        <h1>{d.title}</h1>
+        <p class="art__lead">{d.description}</p>
+        <p class="meta art__meta">
+          <span>{ATTORNEY.name} {ATTORNEY.jobTitle}</span>
+          <span aria-hidden="true"> · </span>
+          <time datetime={d.publishDate.toISOString()}>{fmt(d.publishDate)}</time>
+          {d.updatedDate && <span> (최종 수정 {fmt(d.updatedDate)})</span>}
+        </p>
+      </header>
+
+      {
+        d.cover && (
+          <img class="art__cover" src={d.cover} alt="" width="1200" height="630" loading="eager" />
+        )
+      }
+
+      <div class="art__layout">
+        <div class="prose art__body">
+          <Content />
+          <Faq items={d.faq} heading="이 글과 관련해 자주 묻는 질문" />
+
+          <p class="art__disclaimer">
+            본 칼럼은 일반적인 법률정보 제공을 목적으로 작성되었으며, 개별 사안에 대한 법률자문이
+            아닙니다. 구체적인 사실관계에 따라 결론이 달라질 수 있으므로 실제 사건은 반드시 상담을
+            받아보시기 바랍니다.
+          </p>
+        </div>
+
+        {
+          toc.length > 1 && (
+            <nav class="art__toc" aria-label="목차">
+              <p class="art__toc-h">목차</p>
+              <ol>
+                {toc.map((h) => (
+                  <li>
+                    <a href={`#${h.slug}`}>{h.text}</a>
+                  </li>
+                ))}
+              </ol>
+            </nav>
+          )
+        }
+      </div>
+
+      {
+        related.length > 0 && (
+          <aside class="art__related">
+            <h2>함께 읽으면 좋은 글</h2>
+            <div class="grid grid--3">
+              {related.map((c) => (
+                <PostCard
+                  href={`/column/${c.id}/`}
+                  title={c.data.title}
+                  description={c.data.description}
+                  tag={c.data.category}
+                />
+              ))}
+            </div>
+          </aside>
+        )
+      }
+    </div>
+  </article>
+
+  <CtaSection />
+</BaseLayout>
+
+<style>
+  .art__head {
+    max-width: var(--maxw-prose);
+    margin-bottom: 2rem;
+  }
+  .art__head .tag {
+    margin-bottom: 1rem;
+  }
+  .art__lead {
+    font-size: 1.0625rem;
+    color: var(--ink-2);
+  }
+  .art__meta {
+    padding-top: 1rem;
+    border-top: 1px solid var(--line);
+  }
+  .art__cover {
+    width: 100%;
+    max-width: var(--maxw-prose);
+    border-radius: var(--radius-lg);
+    margin-bottom: 2.5rem;
+  }
+
+  .art__layout {
+    display: grid;
+    gap: 3rem;
+  }
+  @media (min-width: 1040px) {
+    .art__layout {
+      grid-template-columns: minmax(0, var(--maxw-prose)) 1fr;
+      align-items: start;
+    }
+  }
+
+  .art__toc {
+    order: -1;
+    background: var(--bg-soft);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 1.25rem 1.4rem;
+    font-size: 0.9rem;
+  }
+  @media (min-width: 1040px) {
+    .art__toc {
+      order: 0;
+      position: sticky;
+      top: 5.5rem;
+      background: transparent;
+      border: 0;
+      border-left: 2px solid var(--line);
+      border-radius: 0;
+      padding: 0.2rem 0 0.2rem 1.4rem;
+    }
+  }
+  .art__toc-h {
+    font-weight: 700;
+    color: var(--navy-900);
+    margin: 0 0 0.6rem;
+    font-size: 0.8125rem;
+    letter-spacing: 0.05em;
+  }
+  /* 본문 소제목이 스스로 번호를 달고 있는 경우가 많아 목차에는 번호를 붙이지 않습니다 */
+  .art__toc ol {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .art__toc li {
+    margin-bottom: 0.5rem;
+    line-height: 1.5;
+    padding-left: 0.8em;
+    position: relative;
+  }
+  .art__toc li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.65em;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--line);
+  }
+  .art__toc a {
+    text-decoration: none;
+    color: var(--ink-2);
+  }
+  .art__toc a:hover {
+    color: var(--navy-800);
+    text-decoration: underline;
+  }
+
+  .art__disclaimer {
+    margin-top: 3rem;
+    padding: 1rem 1.2rem;
+    background: var(--bg-soft);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    font-size: 0.8125rem;
+    color: var(--ink-3);
+    line-height: 1.7;
+  }
+
+  .art__related {
+    margin-top: 4rem;
+    padding-top: 2.5rem;
+    border-top: 1px solid var(--line);
+  }
+</style>

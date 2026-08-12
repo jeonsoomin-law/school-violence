@@ -1,0 +1,115 @@
+---
+import { SITE, CONTACT, ADDRESS, NAV } from '../consts';
+const year = new Date().getFullYear();
+---
+
+<footer class="ft">
+  <div class="wrap ft__inner">
+    <div class="ft__col">
+      <p class="ft__brand">{SITE.name}</p>
+      <p class="ft__desc">{SITE.legalName}</p>
+      <address class="ft__addr">
+        {ADDRESS.city} {ADDRESS.street}<br />
+        전화 <a href={`tel:${CONTACT.phoneHref}`}>{CONTACT.phone}</a><br />
+        이메일 <a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a><br />
+        상담시간 {CONTACT.hours}
+      </address>
+    </div>
+
+    <nav class="ft__col" aria-label="푸터 메뉴">
+      <p class="ft__h">바로가기</p>
+      <ul>
+        {NAV.map((i) => <li><a href={i.href}>{i.label}</a></li>)}
+        <li><a href="/privacy/">개인정보처리방침</a></li>
+      </ul>
+    </nav>
+
+    <div class="ft__col">
+      <p class="ft__h">안내</p>
+      <p class="ft__note">
+        이 사이트의 칼럼과 해결사례는 일반적인 법률정보 제공을 목적으로 하며, 개별 사안에 대한
+        법률자문이 아닙니다. 사건의 결과는 구체적 사실관계에 따라 달라질 수 있습니다.
+      </p>
+      <p class="ft__note">
+        게시된 사례는 의뢰인이 특정되지 않도록 사건 내용을 각색·일반화한 것입니다.
+      </p>
+    </div>
+  </div>
+
+  <div class="wrap ft__bottom">
+    <p>© {year} {SITE.legalName}. All rights reserved.</p>
+  </div>
+</footer>
+
+<style>
+  .ft {
+    background: var(--navy-900);
+    color: #b9c6d6;
+    font-size: 0.9rem;
+    margin-top: 4rem;
+    /* 모바일 고정 CTA 에 가려지지 않도록 */
+    padding-bottom: 72px;
+  }
+  @media (min-width: 900px) {
+    .ft {
+      padding-bottom: 0;
+    }
+  }
+  .ft__inner {
+    display: grid;
+    gap: 2rem;
+    padding-block: 3rem 2rem;
+  }
+  @media (min-width: 780px) {
+    .ft__inner {
+      grid-template-columns: 1.2fr 0.8fr 1.2fr;
+      gap: 3rem;
+    }
+  }
+  .ft__brand {
+    color: #fff;
+    font-weight: 800;
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+  }
+  .ft__desc {
+    margin-bottom: 1rem;
+  }
+  .ft__h {
+    color: #fff;
+    font-weight: 700;
+    margin-bottom: 0.9rem;
+  }
+  .ft__addr {
+    font-style: normal;
+    line-height: 1.9;
+  }
+  .ft ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    line-height: 2;
+  }
+  .ft a {
+    color: #d4dfec;
+    text-decoration: none;
+  }
+  .ft a:hover {
+    color: #fff;
+    text-decoration: underline;
+  }
+  .ft__note {
+    font-size: 0.8125rem;
+    line-height: 1.7;
+    color: #93a3b6;
+  }
+  .ft__bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    padding-block: 1.25rem;
+    font-size: 0.8125rem;
+    color: #8496ab;
+  }
+  .ft__bottom p {
+    margin: 0;
+  }
+</style>
