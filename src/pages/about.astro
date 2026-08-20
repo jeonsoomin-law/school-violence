@@ -112,10 +112,11 @@ const focus = [
       top: 5.5rem;
     }
   }
+  /* 검정 바탕에서는 그림자가 안 보이므로 얇은 테두리로 액자처럼 잡아줍니다 */
   .ab__photo img {
     width: 100%;
     border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-md);
+    border: 1px solid var(--line-strong);
   }
   .ab__placeholder {
     aspect-ratio: 4 / 5;
@@ -125,7 +126,7 @@ const focus = [
     justify-content: center;
     gap: 0.5rem;
     text-align: center;
-    background: var(--bg-soft);
+    background: var(--surface);
     border: 1px dashed var(--line);
     border-radius: var(--radius-lg);
     color: var(--ink-3);
@@ -176,7 +177,7 @@ const focus = [
   .ab__addr {
     font-style: normal;
     line-height: 2;
-    background: var(--bg-soft);
+    background: var(--surface);
     border: 1px solid var(--line);
     border-radius: var(--radius);
     padding: 1.1rem 1.3rem;

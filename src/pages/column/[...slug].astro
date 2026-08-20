@@ -170,7 +170,7 @@ const related = (await getCollection('column', ({ data }) => !data.draft))
 
   .art__toc {
     order: -1;
-    background: var(--bg-soft);
+    background: var(--surface);
     border: 1px solid var(--line);
     border-radius: var(--radius);
     padding: 1.25rem 1.4rem;
@@ -190,7 +190,7 @@ const related = (await getCollection('column', ({ data }) => !data.draft))
   }
   .art__toc-h {
     font-weight: 700;
-    color: var(--navy-900);
+    color: var(--heading);
     margin: 0 0 0.6rem;
     font-size: 0.8125rem;
     letter-spacing: 0.05em;
@@ -222,14 +222,14 @@ const related = (await getCollection('column', ({ data }) => !data.draft))
     color: var(--ink-2);
   }
   .art__toc a:hover {
-    color: var(--navy-800);
+    color: var(--accent);
     text-decoration: underline;
   }
 
   .art__disclaimer {
     margin-top: 3rem;
     padding: 1rem 1.2rem;
-    background: var(--bg-soft);
+    background: var(--surface);
     border: 1px solid var(--line);
     border-radius: var(--radius);
     font-size: 0.8125rem;

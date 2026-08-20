@@ -11,28 +11,28 @@ import { writeFile } from 'node:fs/promises';
 // src/consts.ts 와 맞추세요.
 const NAME = '학교폭력 법률센터';
 const TAGLINE = '학교폭력 전담 변호사';
-const LINE1 = '학폭위 대응부터';
-const LINE2 = '조치 불복까지';
+const LINE1 = '아이의 3년이';
+const LINE2 = '몇 주 안에 결정됩니다';
 
 const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
+const FONT = 'Malgun Gothic, Apple SD Gothic Neo, sans-serif';
+
 const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
   <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#0d1f33"/>
-      <stop offset="100%" stop-color="#1b4771"/>
-    </linearGradient>
+    <radialGradient id="glow" cx="0.18" cy="0.12" r="0.85">
+      <stop offset="0%" stop-color="#241d10"/>
+      <stop offset="100%" stop-color="#08090b"/>
+    </radialGradient>
   </defs>
-  <rect width="1200" height="630" fill="url(#bg)"/>
-  <rect x="80" y="150" width="72" height="6" rx="3" fill="#a67c2e"/>
-  <text x="80" y="270" font-family="Malgun Gothic, Apple SD Gothic Neo, sans-serif"
-        font-size="68" font-weight="bold" fill="#ffffff">${esc(LINE1)}</text>
-  <text x="80" y="360" font-family="Malgun Gothic, Apple SD Gothic Neo, sans-serif"
-        font-size="68" font-weight="bold" fill="#ffffff">${esc(LINE2)}</text>
-  <text x="80" y="450" font-family="Malgun Gothic, Apple SD Gothic Neo, sans-serif"
-        font-size="30" fill="#a9bed6">${esc(TAGLINE)}</text>
-  <text x="80" y="545" font-family="Malgun Gothic, Apple SD Gothic Neo, sans-serif"
-        font-size="34" font-weight="bold" fill="#d9b26a">${esc(NAME)}</text>
+  <rect width="1200" height="630" fill="#08090b"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+  <rect x="80" y="150" width="72" height="6" rx="3" fill="#d9b26a"/>
+  <text x="80" y="272" font-family="${FONT}" font-size="72" font-weight="bold" fill="#f4f6f9">${esc(LINE1)}</text>
+  <text x="80" y="366" font-family="${FONT}" font-size="72" font-weight="bold" fill="#d9b26a">${esc(LINE2)}</text>
+  <text x="80" y="452" font-family="${FONT}" font-size="30" fill="#a5aebc">${esc(TAGLINE)}</text>
+  <rect x="80" y="500" width="1040" height="1" fill="#232830"/>
+  <text x="80" y="556" font-family="${FONT}" font-size="34" font-weight="bold" fill="#f4f6f9">${esc(NAME)}</text>
 </svg>`;
 
 await sharp(Buffer.from(svg)).png().toFile('public/og-default.png');

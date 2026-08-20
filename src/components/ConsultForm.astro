@@ -91,11 +91,10 @@ const configured = Boolean(FORM.endpoint && (FORM.accessKey || !FORM.endpoint.in
 
 <style>
   .cf {
-    background: #fff;
+    background: var(--surface);
     border: 1px solid var(--line);
     border-radius: var(--radius-lg);
     padding: clamp(1.25rem, 3vw, 2rem);
-    box-shadow: var(--shadow-sm);
   }
   .cf__row {
     display: grid;
@@ -129,10 +128,13 @@ const configured = Boolean(FORM.endpoint && (FORM.accessKey || !FORM.endpoint.in
     font: inherit;
     font-size: 1rem;
     padding: 0.7rem 0.85rem;
-    border: 1px solid var(--line);
+    border: 1px solid var(--line-strong);
     border-radius: var(--radius);
-    background: #fff;
+    background: var(--surface-2);
     color: var(--ink);
+  }
+  .cf ::placeholder {
+    color: var(--ink-3);
   }
   .cf textarea {
     resize: vertical;
@@ -141,7 +143,7 @@ const configured = Boolean(FORM.endpoint && (FORM.accessKey || !FORM.endpoint.in
   .cf input:focus,
   .cf select:focus,
   .cf textarea:focus {
-    border-color: var(--navy-700);
+    border-color: var(--accent);
   }
   .cf__check {
     display: flex;
@@ -157,7 +159,7 @@ const configured = Boolean(FORM.endpoint && (FORM.accessKey || !FORM.endpoint.in
     flex: none;
     width: 1.05rem;
     height: 1.05rem;
-    accent-color: var(--navy-800);
+    accent-color: var(--accent);
   }
   .cf__submit {
     width: 100%;
@@ -169,7 +171,7 @@ const configured = Boolean(FORM.endpoint && (FORM.accessKey || !FORM.endpoint.in
     text-align: center;
   }
   .cf__fallback code {
-    background: var(--bg-soft);
+    background: var(--surface-2);
     padding: 0.1em 0.35em;
     border-radius: 4px;
     font-size: 0.9em;

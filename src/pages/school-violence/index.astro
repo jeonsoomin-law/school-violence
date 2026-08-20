@@ -280,10 +280,10 @@ const services = (await getCollection('service', ({ data }) => !data.draft)).sor
   .steps__note {
     font-size: 0.9rem;
     padding: 0.7rem 1rem;
-    background: var(--navy-50);
-    border-left: 3px solid var(--navy-700);
+    background: var(--surface-2);
+    border-left: 3px solid var(--accent);
     border-radius: 0 var(--radius) var(--radius) 0;
-    color: var(--navy-800) !important;
+    color: var(--ink) !important;
     margin-bottom: 0 !important;
   }
 
@@ -292,7 +292,7 @@ const services = (await getCollection('service', ({ data }) => !data.draft)).sor
     border: 1px solid var(--line);
     border-radius: var(--radius);
     overflow: hidden;
-    background: #fff;
+    background: var(--surface);
   }
   .measures__row {
     display: flex;
@@ -308,6 +308,6 @@ const services = (await getCollection('service', ({ data }) => !data.draft)).sor
     flex: none;
     width: 2.6em;
     font-weight: 800;
-    color: var(--navy-700);
+    color: var(--accent);
   }
 </style>

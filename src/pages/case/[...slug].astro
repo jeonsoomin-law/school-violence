@@ -129,7 +129,7 @@ const related = (await getCollection('case', ({ data }) => !data.draft))
     }
   }
   .cs__facts > div {
-    background: #fff;
+    background: var(--surface);
     padding: 1rem 1.2rem;
   }
   .cs__facts dt {
@@ -142,7 +142,7 @@ const related = (await getCollection('case', ({ data }) => !data.draft))
   .cs__facts dd {
     margin: 0;
     font-weight: 700;
-    color: var(--navy-900);
+    color: var(--heading);
     font-size: 0.95rem;
   }
   .cs__outcome {
@@ -151,7 +151,7 @@ const related = (await getCollection('case', ({ data }) => !data.draft))
   .cs__disclaimer {
     margin-top: 3rem;
     padding: 1rem 1.2rem;
-    background: var(--bg-soft);
+    background: var(--surface);
     border: 1px solid var(--line);
     border-radius: var(--radius);
     font-size: 0.8125rem;

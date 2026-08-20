@@ -1,44 +1,55 @@
 /* Pretendard — 한글 가독성 표준. 동적 서브셋이라 필요한 글자만 내려받습니다. */
 @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css');
 
+/*
+ * 다크 테마 단일 팔레트.
+ * 사이트 전체가 어두운 톤이며, 밝은 화면 버전은 없습니다.
+ * 색을 바꾸려면 아래 :root 값만 고치면 전 페이지에 반영됩니다.
+ */
 :root {
-  /* 색상 — 신뢰감 있는 딥네이비 + 절제된 골드 액센트 */
-  --navy-900: #0d1f33;
-  --navy-800: #12314f;
-  --navy-700: #1b4771;
-  --navy-100: #e8eef5;
-  --navy-50: #f4f7fb;
+  /* 표면 — 아래로 갈수록 밝아집니다 */
+  --bg: #08090b; /* 페이지 바닥 */
+  --bg-soft: #0d0f13; /* 교차 섹션 */
+  --surface: #12151b; /* 카드 */
+  --surface-2: #171b23; /* 입력창·강조 블록 */
 
-  --accent: #a67c2e;
-  --accent-soft: #f6efe1;
+  /* 선 */
+  --line: #232830;
+  --line-strong: #333a45;
 
-  --ink: #16202c;
-  --ink-2: #40536a;
-  --ink-3: #6b7c91;
-  --line: #dfe5ee;
-  --bg: #ffffff;
-  --bg-soft: #f7f9fc;
+  /* 글자 */
+  --heading: #f4f6f9;
+  --ink: #dbe1ea; /* 본문 */
+  --ink-2: #a5aebc; /* 보조 설명 */
+  --ink-3: #79828f; /* 날짜·캡션 */
 
-  --danger: #b3261e;
+  /* 강조 — 골드 */
+  --accent: #d9b26a;
+  --accent-2: #e8c589;
+  --accent-soft: #191510; /* 골드 계열 어두운 배경 */
+  --accent-line: #3a301c; /* 골드 계열 테두리 */
 
-  /* 다크 영역(헤더·첫 화면)에서 쓰는 값 */
-  --dark-bg: #08090b;
-  --dark-bg-2: #101218;
-  --dark-line: rgba(255, 255, 255, 0.12);
-  --dark-ink: #f2f4f7;
-  --dark-ink-2: #a3adbb;
-  --gold: #d9b26a;
+  --danger: #e5675c;
+  --danger-soft: #1d1210;
 
   --radius: 12px;
   --radius-lg: 18px;
-  --shadow-sm: 0 1px 2px rgba(13, 31, 51, 0.06), 0 1px 3px rgba(13, 31, 51, 0.05);
-  --shadow-md: 0 4px 16px rgba(13, 31, 51, 0.08);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.55);
 
   --maxw: 1120px;
   --maxw-prose: 720px;
 
   --font: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont,
     'Apple SD Gothic Neo', 'Malgun Gothic', 'Segoe UI', system-ui, sans-serif;
+
+  /* 첫 화면·헤더에서 쓰던 이름들 — 위 토큰으로 연결해 둡니다 */
+  --dark-bg: var(--bg);
+  --dark-bg-2: var(--surface);
+  --dark-line: var(--line);
+  --dark-ink: var(--heading);
+  --dark-ink-2: var(--ink-2);
+  --gold: var(--accent);
 }
 
 *,
@@ -51,6 +62,9 @@ html {
   scroll-behavior: smooth;
   scroll-padding-top: 5rem;
   -webkit-text-size-adjust: 100%;
+  background: var(--bg);
+  /* 브라우저 기본 UI(스크롤바·폼)도 어둡게 */
+  color-scheme: dark;
 }
 
 body {
@@ -64,7 +78,6 @@ body {
   word-break: keep-all;
   overflow-wrap: break-word;
   -webkit-font-smoothing: antialiased;
-  /* 모바일 하단 고정 CTA 높이만큼 여백 */
   padding-bottom: env(safe-area-inset-bottom);
 }
 
@@ -74,7 +87,7 @@ h3,
 h4 {
   line-height: 1.35;
   letter-spacing: -0.02em;
-  color: var(--navy-900);
+  color: var(--heading);
   margin: 0 0 0.6em;
   font-weight: 700;
 }
@@ -94,11 +107,11 @@ p {
 }
 
 a {
-  color: var(--navy-700);
+  color: var(--accent);
   text-underline-offset: 3px;
 }
 a:hover {
-  color: var(--accent);
+  color: var(--accent-2);
 }
 
 img {
@@ -116,6 +129,11 @@ hr {
   border: 0;
   border-top: 1px solid var(--line);
   margin: 2.5rem 0;
+}
+
+::selection {
+  background: var(--accent);
+  color: #17130a;
 }
 
 /* ── 레이아웃 ───────────────────────────── */
@@ -183,46 +201,50 @@ hr {
   transition: background-color 0.15s, color 0.15s, border-color 0.15s;
 }
 .btn--primary {
-  background: var(--navy-800);
-  color: #fff;
+  background: var(--accent);
+  color: #17130a;
 }
 .btn--primary:hover {
-  background: var(--navy-700);
-  color: #fff;
+  background: var(--accent-2);
+  color: #17130a;
 }
 .btn--ghost {
-  border-color: var(--line);
-  background: #fff;
-  color: var(--navy-800);
+  border-color: var(--line-strong);
+  background: transparent;
+  color: var(--heading);
 }
 .btn--ghost:hover {
-  border-color: var(--navy-700);
-  color: var(--navy-800);
+  border-color: var(--heading);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--heading);
 }
+/* 본문에서는 골드 주버튼과 부딪히지 않게 아웃라인으로.
+   카카오 브랜드 노랑은 모바일 하단 고정 바에만 남깁니다. */
 .btn--kakao {
-  background: #fee500;
-  color: #191600;
+  background: transparent;
+  border-color: #6a5d12;
+  color: #fee500;
 }
 .btn--kakao:hover {
-  background: #f5dc00;
-  color: #191600;
+  background: rgba(254, 229, 0, 0.1);
+  border-color: #fee500;
+  color: #fee500;
 }
 
 /* ── 카드 ───────────────────────────────── */
 .card {
   display: block;
-  background: #fff;
+  background: var(--surface);
   border: 1px solid var(--line);
   border-radius: var(--radius-lg);
   padding: 1.5rem;
   text-decoration: none;
   color: inherit;
-  box-shadow: var(--shadow-sm);
-  transition: box-shadow 0.15s, transform 0.15s, border-color 0.15s;
+  transition: border-color 0.15s, transform 0.15s, background-color 0.15s;
 }
 a.card:hover {
-  box-shadow: var(--shadow-md);
-  border-color: var(--navy-100);
+  background: var(--surface-2);
+  border-color: var(--line-strong);
   transform: translateY(-2px);
 }
 .card h3 {
@@ -240,14 +262,14 @@ a.card:hover {
   font-weight: 700;
   padding: 0.25em 0.7em;
   border-radius: 999px;
-  background: var(--navy-50);
-  color: var(--navy-700);
-  border: 1px solid var(--navy-100);
+  background: var(--surface-2);
+  color: var(--ink-2);
+  border: 1px solid var(--line);
 }
 .tag--accent {
   background: var(--accent-soft);
-  color: #7a5a1d;
-  border-color: #ecdcbd;
+  color: var(--accent);
+  border-color: #3a301c;
 }
 
 .meta {
@@ -275,6 +297,9 @@ a.card:hover {
 .prose li {
   margin-bottom: 0.4em;
 }
+.prose strong {
+  color: var(--heading);
+}
 .prose blockquote {
   margin: 1.8em 0;
   padding: 1rem 1.25rem;
@@ -300,8 +325,9 @@ a.card:hover {
   vertical-align: top;
 }
 .prose th {
-  background: var(--bg-soft);
+  background: var(--surface-2);
   font-weight: 700;
+  color: var(--heading);
 }
 /* 표는 좁은 화면에서 가로로 스크롤되게 — 페이지 자체가 옆으로 밀리지 않도록 */
 @media (max-width: 720px) {
@@ -312,10 +338,11 @@ a.card:hover {
   }
 }
 .prose code {
-  background: var(--bg-soft);
+  background: var(--surface-2);
   padding: 0.15em 0.4em;
   border-radius: 5px;
   font-size: 0.9em;
+  color: var(--accent-2);
 }
 
 /* ── 접근성 ─────────────────────────────── */
@@ -335,10 +362,11 @@ a.card:hover {
   position: absolute;
   left: -9999px;
   top: 0;
-  background: var(--navy-800);
-  color: #fff;
+  background: var(--accent);
+  color: #17130a;
   padding: 0.7em 1.2em;
   z-index: 100;
+  font-weight: 700;
 }
 .skip-link:focus {
   left: 0;
