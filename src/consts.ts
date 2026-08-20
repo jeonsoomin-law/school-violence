@@ -100,7 +100,7 @@ export const CREDENTIALS = [
  */
 export const FORM = {
   endpoint: 'https://api.web3forms.com/submit',
-  accessKey: '', // TODO: Web3Forms access key
+  accessKey: 'bc461f94-ea87-4585-b432-d4395ac987e0',
 } as const;
 
 /** 검색엔진 웹마스터도구 소유확인 메타태그 값 (등록 후 발급받은 코드만 입력) */
