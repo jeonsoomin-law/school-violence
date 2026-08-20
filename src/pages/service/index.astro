@@ -1,7 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import PageHero from '../../components/PageHero.astro';
 import PostCard from '../../components/PostCard.astro';
 import CtaSection from '../../components/CtaSection.astro';
 
@@ -17,17 +17,17 @@ const crumbs = [{ name: '업무분야', href: '/service/' }];
   description="학폭위 대응, 가해학생 지목 사건, 피해학생 보호조치, 조치 불복 행정심판·행정소송까지. 사건 단계와 지위별로 필요한 대응을 정리했습니다."
   breadcrumbs={crumbs}
 >
+  <PageHero
+    image="/images/page/service"
+    alt="어두운 책상 위에 놓인 법률 서류와 스탠드"
+    eyebrow="업무분야"
+    title="학교폭력 업무분야"
+    lead="같은 학교폭력 사건이라도 가해학생으로 지목된 경우와 피해학생인 경우, 심의위원회 전과 조치 처분 후의 대응은 완전히 다릅니다. 현재 상황에 해당하는 항목을 확인해 보세요."
+    crumbs={crumbs}
+  />
+
   <section class="section">
     <div class="wrap">
-      <Breadcrumbs items={crumbs} />
-      <div class="section__head">
-        <span class="eyebrow">업무분야</span>
-        <h1>학교폭력 업무분야</h1>
-        <p>
-          같은 학교폭력 사건이라도 가해학생으로 지목된 경우와 피해학생인 경우, 심의위원회 전과 조치
-          처분 후의 대응은 완전히 다릅니다. 현재 상황에 해당하는 항목을 확인해 보세요.
-        </p>
-      </div>
       <div class="grid grid--2">
         {
           services.map((s) => (

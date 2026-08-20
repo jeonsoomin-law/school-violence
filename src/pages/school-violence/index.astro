@@ -1,7 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import PageHero from '../../components/PageHero.astro';
 import Faq from '../../components/Faq.astro';
 import CtaSection from '../../components/CtaSection.astro';
 import PostCard from '../../components/PostCard.astro';
@@ -108,20 +108,17 @@ const services = (await getCollection('service', ({ data }) => !data.draft)).sor
   breadcrumbs={crumbs}
   jsonLd={[faqSchema(faq)]}
 >
+  <PageHero
+    image="/images/page/school-violence"
+    alt="심의를 앞두고 서류가 놓인 빈 회의실"
+    eyebrow="절차 안내"
+    title="학교폭력 절차 총정리"
+    lead="학교폭력 사건은 신고 접수부터 조치 결정까지 대체로 몇 주 안에 끝납니다. 절차가 어떻게 흘러가는지 모른 채 대응하면 되돌리기 어려운 지점을 그냥 지나치게 됩니다. 전체 흐름과 각 단계에서 실제로 무엇이 결정되는지를 정리했습니다."
+    crumbs={crumbs}
+  />
+
   <section class="section">
     <div class="wrap">
-      <Breadcrumbs items={crumbs} />
-
-      <header class="pillar__head">
-        <span class="eyebrow">절차 안내</span>
-        <h1>학교폭력 절차 총정리</h1>
-        <p class="pillar__lead">
-          학교폭력 사건은 신고 접수부터 조치 결정까지 대체로 몇 주 안에 끝납니다. 절차가 어떻게
-          흘러가는지 모른 채 대응하면 되돌리기 어려운 지점을 그냥 지나치게 됩니다. 전체 흐름과 각
-          단계에서 실제로 무엇이 결정되는지를 정리했습니다.
-        </p>
-      </header>
-
       <ol class="steps">
         {
           steps.map((s) => (
@@ -212,22 +209,12 @@ const services = (await getCollection('service', ({ data }) => !data.draft)).sor
 <style>
   /* 이 페이지는 읽는 문서에 가깝습니다.
      넓어진 wrap(1280px) 안에서 본문 단이 왼쪽에만 붙지 않도록 한 단으로 모아 가운데 정렬합니다. */
-  .pillar__head,
   .steps,
   .measures,
   .section__head,
   .grid {
     max-width: 880px;
     margin-inline: auto;
-  }
-
-  .pillar__head {
-    margin-bottom: 3rem;
-  }
-  .pillar__lead {
-    font-size: 1.0625rem;
-    color: var(--ink-2);
-    margin: 0;
   }
 
   .steps {

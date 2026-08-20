@@ -2,7 +2,7 @@
 import { getCollection, render } from 'astro:content';
 import type { GetStaticPaths } from 'astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import PageHero from '../../components/PageHero.astro';
 import Faq from '../../components/Faq.astro';
 import CtaSection from '../../components/CtaSection.astro';
 import PostCard from '../../components/PostCard.astro';
@@ -22,6 +22,17 @@ const crumbs = [
   { name: '업무분야', href: '/service/' },
   { name: d.shortTitle, href: url },
 ];
+
+/** 업무분야별 상단 배너 이미지. 없는 슬러그는 목록 페이지 배너로 대체합니다. */
+const HERO: Record<string, string> = {
+  'school-violence-committee': 'committee',
+  accused: 'accused',
+  victim: 'victim',
+  appeal: 'appeal',
+  cyber: 'cyber',
+  criminal: 'criminal',
+};
+const heroKey = HERO[entry.id] ?? '';
 
 // 이 업무분야와 키워드가 겹치는 칼럼을 아래에 붙여 내부링크를 만듭니다.
 const related = (await getCollection('column', ({ data }) => !data.draft))
@@ -43,16 +54,17 @@ const related = (await getCollection('column', ({ data }) => !data.draft))
     ...(d.faq.length ? [faqSchema(d.faq)] : []),
   ]}
 >
+  <PageHero
+    image={heroKey ? `/images/page/service-${heroKey}` : '/images/page/service'}
+    alt={d.shortTitle}
+    eyebrow="업무분야"
+    title={d.title}
+    lead={d.summary}
+    crumbs={crumbs}
+  />
+
   <section class="section">
     <div class="wrap">
-      <Breadcrumbs items={crumbs} />
-
-      <header class="svc__head">
-        <span class="eyebrow">업무분야</span>
-        <h1>{d.title}</h1>
-        <p class="svc__summary">{d.summary}</p>
-      </header>
-
       {
         d.points.length > 0 && (
           <ul class="svc__points">
@@ -96,7 +108,6 @@ const related = (await getCollection('column', ({ data }) => !data.draft))
 
 <style>
   /* 한 단(880px)으로 모아 가운데 정렬. 넓어진 wrap(1280px) 안에서 좌측에 붙는 것을 막습니다. */
-  .svc__head,
   .svc__points,
   .svc__body,
   .svc__related {
@@ -104,14 +115,6 @@ const related = (await getCollection('column', ({ data }) => !data.draft))
     margin-inline: auto;
   }
 
-  .svc__head {
-    margin-bottom: 2.5rem;
-  }
-  .svc__summary {
-    font-size: 1.125rem;
-    color: var(--ink-2);
-    margin: 0;
-  }
   .svc__points {
     list-style: none;
     padding: 0;

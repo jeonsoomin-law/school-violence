@@ -1,0 +1,133 @@
+---
+/**
+ * 페이지 상단 대표 이미지 배너.
+ * 어두운 배경 위에 이미지를 깔고 그라데이션으로 눌러, 그 위에 제목과 리드 문장을 얹습니다.
+ * 이미지가 없으면(image 미지정) 그라데이션만 나오므로 배너 없이도 안전하게 동작합니다.
+ */
+import Breadcrumbs from './Breadcrumbs.astro';
+import type { Crumb } from '../lib/schema';
+
+interface Props {
+  /** 확장자 없는 경로. 예) /images/page/school-violence */
+  image?: string;
+  /** 이미지 대체 텍스트 */
+  alt?: string;
+  eyebrow?: string;
+  title: string;
+  lead?: string;
+  crumbs?: Crumb[];
+}
+const { image, alt = '', eyebrow, title, lead, crumbs = [] } = Astro.props;
+---
+
+<section class="ph">
+  {
+    image && (
+      <picture class="ph__media">
+        <source srcset={`${image}.webp`} type="image/webp" />
+        <img src={`${image}.jpg`} alt={alt} width="1600" height="600" fetchpriority="high" decoding="async" />
+      </picture>
+    )
+  }
+  <div class="ph__scrim" aria-hidden="true"></div>
+
+  <div class="wrap ph__inner">
+    {crumbs.length > 0 && <Breadcrumbs items={crumbs} />}
+    {eyebrow && <span class="ph__eyebrow">{eyebrow}</span>}
+    <h1>{title}</h1>
+    {lead && <p class="ph__lead">{lead}</p>}
+  </div>
+</section>
+
+<style>
+  .ph {
+    position: relative;
+    background: var(--dark-bg);
+    color: var(--dark-ink);
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .ph__media,
+  .ph__media img {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -2;
+  }
+  .ph__media img {
+    /* 다크 테마에 맞춰 눌러줍니다. 글자 가독성이 우선입니다. */
+    filter: saturate(0.7) brightness(0.55);
+  }
+  .ph__scrim {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+      linear-gradient(to right, var(--dark-bg) 4%, rgba(8, 9, 11, 0.72) 46%, rgba(8, 9, 11, 0.35) 100%),
+      linear-gradient(to bottom, rgba(8, 9, 11, 0.55) 0%, rgba(8, 9, 11, 0) 38%, var(--dark-bg) 100%);
+  }
+
+  .ph__inner {
+    position: relative;
+    padding-block: clamp(2rem, 5vw, 3.5rem) clamp(2.5rem, 6vw, 4.5rem);
+    min-height: clamp(260px, 34vw, 420px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  /* 어두운 사진 위에서는 기본 빵부스러기 색이 너무 흐립니다. */
+  .ph__inner :global(.bc) {
+    margin-bottom: auto;
+    padding-bottom: 1.25rem;
+    color: rgba(255, 255, 255, 0.62);
+  }
+  .ph__inner :global(.bc a) {
+    color: rgba(255, 255, 255, 0.62);
+  }
+  .ph__inner :global(.bc a:hover) {
+    color: var(--gold);
+  }
+  .ph__inner :global(.bc span[aria-current]) {
+    color: rgba(255, 255, 255, 0.9);
+  }
+  .ph__inner :global(.bc li + li::before) {
+    color: rgba(255, 255, 255, 0.3);
+  }
+
+  .ph__eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    color: var(--gold);
+    margin-bottom: 0.9rem;
+  }
+  .ph__eyebrow::before {
+    content: '';
+    flex: none;
+    width: 34px;
+    height: 2px;
+    background: var(--gold);
+  }
+
+  .ph h1 {
+    color: #fff;
+    font-size: clamp(1.75rem, 1.1rem + 2.4vw, 2.9rem);
+    line-height: 1.22;
+    letter-spacing: -0.03em;
+    margin: 0;
+    max-width: 18em;
+    text-wrap: balance;
+  }
+  .ph__lead {
+    color: var(--dark-ink-2);
+    font-size: clamp(0.95rem, 0.9rem + 0.25vw, 1.0625rem);
+    max-width: 44em;
+    margin: 1rem 0 0;
+  }
+</style>
