@@ -8,7 +8,16 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
 <header class="hd">
   <div class="wrap hd__inner">
     <a class="hd__brand" href="/">
-      <span class="hd__mark" aria-hidden="true"></span>
+      <svg class="hd__mark" viewBox="0 0 64 64" aria-hidden="true">
+        <g stroke="currentColor" stroke-width="4.2" stroke-linecap="round" fill="none">
+          <path d="M32 16V49" />
+          <path d="M14 20h36" />
+          <path d="M21 52h22" />
+        </g>
+        <circle cx="32" cy="14.5" r="4.4" fill="currentColor" />
+        <path d="M7 24h14a7 7 0 0 1-14 0z" fill="currentColor" />
+        <path d="M43 24h14a7 7 0 0 1-14 0z" fill="currentColor" />
+      </svg>
       <span class="hd__name">{SITE.name}</span>
     </a>
 
@@ -64,20 +73,10 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
     margin-right: auto;
   }
   .hd__mark {
-    width: 22px;
-    height: 22px;
-    border-radius: 5px;
-    background: var(--gold);
-    position: relative;
+    width: 24px;
+    height: 24px;
     flex: none;
-  }
-  .hd__mark::after {
-    content: '';
-    position: absolute;
-    inset: 6px 6px auto 6px;
-    height: 2px;
-    background: var(--dark-bg);
-    box-shadow: 0 4px 0 var(--dark-bg);
+    color: var(--gold);
   }
 
   .hd__nav ul {

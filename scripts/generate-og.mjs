@@ -9,8 +9,8 @@ import sharp from 'sharp';
 import { writeFile } from 'node:fs/promises';
 
 // src/consts.ts 와 맞추세요.
-const NAME = '학교폭력 법률센터';
-const TAGLINE = '학교폭력 전담 변호사';
+const NAME = '학교폭력변호사 전수민';
+const TAGLINE = '교사 · 서울시교육청 출신 학교폭력변호사';
 const LINE1 = '아이의 3년이';
 const LINE2 = '몇 주 안에 결정됩니다';
 
@@ -27,7 +27,16 @@ const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" v
   </defs>
   <rect width="1200" height="630" fill="#08090b"/>
   <rect width="1200" height="630" fill="url(#glow)"/>
-  <rect x="80" y="150" width="72" height="6" rx="3" fill="#d9b26a"/>
+  <g transform="translate(80 108) scale(1.05)">
+    <g stroke="#d9b26a" stroke-width="3.6" stroke-linecap="round" fill="none">
+      <path d="M32 16V49"/>
+      <path d="M14 20h36"/>
+      <path d="M21 52h22"/>
+    </g>
+    <circle cx="32" cy="14.5" r="4" fill="#d9b26a"/>
+    <path d="M7 24h14a7 7 0 0 1-14 0z" fill="#d9b26a"/>
+    <path d="M43 24h14a7 7 0 0 1-14 0z" fill="#d9b26a"/>
+  </g>
   <text x="80" y="272" font-family="${FONT}" font-size="72" font-weight="bold" fill="#f4f6f9">${esc(LINE1)}</text>
   <text x="80" y="366" font-family="${FONT}" font-size="72" font-weight="bold" fill="#d9b26a">${esc(LINE2)}</text>
   <text x="80" y="452" font-family="${FONT}" font-size="30" fill="#a5aebc">${esc(TAGLINE)}</text>

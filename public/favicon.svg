@@ -1,6 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
-  <rect width="64" height="64" rx="14" fill="#d9b26a"/>
-  <rect x="16" y="18" width="32" height="5" rx="2.5" fill="#08090b"/>
-  <rect x="16" y="29" width="32" height="5" rx="2.5" fill="#08090b"/>
-  <rect x="16" y="40" width="20" height="5" rx="2.5" fill="#08090b" opacity="0.7"/>
+  <!-- 검정 바탕 + 골드 정의의 저울 -->
+  <rect width="64" height="64" rx="14" fill="#08090b"/>
+  <g stroke="#d9b26a" stroke-width="3.6" stroke-linecap="round" fill="none">
+    <path d="M32 16V49"/>
+    <path d="M14 20h36"/>
+    <path d="M21 52h22"/>
+  </g>
+  <circle cx="32" cy="14.5" r="4" fill="#d9b26a"/>
+  <path d="M7 24h14a7 7 0 0 1-14 0z" fill="#d9b26a"/>
+  <path d="M43 24h14a7 7 0 0 1-14 0z" fill="#d9b26a"/>
 </svg>
