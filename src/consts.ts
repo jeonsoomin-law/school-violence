@@ -5,8 +5,11 @@
  * 이 파일 하나만 고치면 사이트 전체(메타태그·구조화데이터·푸터·상담버튼)에 반영됩니다.
  */
 
-/** 배포 도메인. 사이트맵/canonical/OG 태그의 기준이 됩니다. 끝에 슬래시 없이. */
-export const SITE_URL = 'https://example.com'; // TODO: 실제 도메인
+/**
+ * 배포 도메인. 사이트맵/canonical/OG 태그의 기준이 됩니다. 끝에 슬래시 없이.
+ * 지금은 Firebase 기본 주소. 도메인을 구입하면 이 값과 astro.config.mjs 를 함께 바꾸세요.
+ */
+export const SITE_URL = 'https://school-violence-b29b3.web.app';
 
 export const SITE = {
   /** 브랜드명 (헤더·푸터·JSON-LD) */

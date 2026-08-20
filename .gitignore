@@ -15,6 +15,11 @@ pnpm-debug.log*
 .env
 .env.production
 
+# firebase
+.firebase/
+firebase-debug.log*
+*-debug.log
+
 # macOS / Windows
 .DS_Store
 Thumbs.db

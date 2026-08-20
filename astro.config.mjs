@@ -3,7 +3,8 @@ import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 
 // SITE_URL 은 src/consts.ts 와 동일하게 유지하세요.
-const SITE_URL = 'https://example.com'; // TODO: 실제 도메인
+// 도메인을 구입하면 두 파일을 함께 바꿔야 합니다.
+const SITE_URL = 'https://school-violence-b29b3.web.app';
 
 export default defineConfig({
   site: SITE_URL,
