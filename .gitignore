@@ -31,3 +31,10 @@ Thumbs.db
 /표창장/
 /위촉장/
 /외부활동/
+public/images/_raw-*
+
+# 스캔 원본 폴더 (결과물만 public/images 로 커밋)
+위촉장/
+표창장/
+외부활동/
+프로필 사진/

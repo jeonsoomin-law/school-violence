@@ -6,26 +6,66 @@ import { ATTORNEY, SITE, ADDRESS, CONTACT } from '../consts';
 
 const crumbs = [{ name: '변호사 소개', href: '/about/' }];
 
-// TODO: 실제 약력으로 교체하세요.
+const education = [
+  '고려대학교 법학전문대학원 졸업 (1기)',
+  '서울대학교 사범대학 졸업',
+  '제1회 변호사시험 합격',
+];
+
 const career = [
-  '○○대학교 법학전문대학원 졸업',
-  '제○회 변호사시험 합격',
-  '前 ○○법률사무소',
-  '○○교육지원청 학교폭력대책심의위원회 위원 (예시)',
-  '○○시 청소년 법률지원단 자문변호사 (예시)',
+  '법무법인 정향 파트너변호사 (2026~)',
+  '법무법인 클래식 대표변호사 (2025)',
+  '법무법인 현재 변호사 (2018~2025)',
+  '변호사전수민법률사무소 (2017)',
+  '이화여자대학교 교육학과 겸임교수 (2015~2017)',
+  '서울시교육청 상근 변호사 (2012~2016)',
+  '고등학교 교사 (2007)',
+];
+
+const appointments = [
+  '교육부 「학교폭력 사안처리 가이드북」 집필 위원',
+  '교육부 「학교폭력 가해학생 조치별 적용 세부기준 고시」 검토 위원',
+  '서울시교육청 학교폭력 사안처리 지원단 위원',
+  '서울시교육청 교권보호위원',
+  '서울시교육청 사학법률자문위원',
+  '서울특별시학교안전공제회 보상심사위원',
+  '광진경찰서 선도심사위원',
+  '서울·부산·인천·대전·경남·충남·제주 교육청, 교원대, 교육부, 서울지방경찰청, 법무부, 서울고등검찰청, 대한변호사협회, 서울지방변호사회 연수(강의) 강사',
+];
+
+/**
+ * 위촉장·표창장 갤러리.
+ * 원본 스캔본은 저장소에 없고 scripts/optimize-credentials.mjs 로 만든 결과물만 씁니다.
+ * 개인정보(자택 주소)가 인쇄된 건과 신문기사 캡처는 제외했습니다. 스크립트 주석 참고.
+ */
+const credentials = [
+  { f: 'moe-commendation', k: '표창장', org: '교육부', t: '학교폭력 예방 및 근절 기여 표창', y: '2014' },
+  { f: 'moe-legal-support', k: '위촉장', org: '교육부', t: '학교폭력·교육활동 분쟁 법률지원단 단원', y: '2019~2021' },
+  { f: 'spa-thanks-2017', k: '감사장', org: '서울지방경찰청', t: '청소년 선도 전문가 참여제 운영 기여', y: '2017' },
+  { f: 'spa-thanks-2013', k: '감사장', org: '서울지방경찰청', t: '안전한 학교문화 조성 기여', y: '2013' },
+  { f: 'sen-support-2017', k: '위촉장', org: '서울시교육청', t: '학교폭력 사안처리지원단 동부권역 위원', y: '2017~2018' },
+  { f: 'sen-support-2016', k: '위촉장', org: '서울시교육청', t: '학교폭력 사안처리지원단 본청소속 위원', y: '2016~2017' },
+  { f: 'sen-support-2015', k: '위촉장', org: '서울시교육청', t: '학교폭력 사안처리지원단 본청소속 위원', y: '2015~2016' },
+  { f: 'sen-teacher-rights', k: '위촉장', org: '서울시교육청', t: '교권보호위원회 위원', y: '2015~2017' },
+  { f: 'sen-private-school', k: '위촉장', org: '서울시교육청', t: '사학기관 전문가 자문단 자문위원', y: '2018' },
+  { f: 'safety-fund-2015', k: '위촉장', org: '서울특별시학교안전공제회', t: '보상심사위원', y: '2015~2017' },
+  { f: 'safety-fund-2013', k: '위촉장', org: '서울특별시학교안전공제회', t: '보상심사위원', y: '2013~2015' },
+  { f: 'gwangjin-police', k: '위촉장', org: '광진경찰서', t: '선도심사위원회 전문위원', y: '2015' },
+  { f: 'kfta-counsel', k: '위촉장', org: '한국교원단체총연합회', t: '상임 법률고문', y: '2019~2020' },
+  { f: 'daejeon-lecturer', k: '위촉장', org: '대전광역시교육청', t: '학교폭력대책자치위원 연수 강사', y: '2013' },
 ];
 
 const focus = [
   '학교폭력대책심의위원회 대응 (가해·피해 양측)',
   '학교폭력 조치 처분 취소 행정심판·행정소송',
   '학교폭력 관련 형사·소년보호사건',
-  '사이버폭력·디지털 성범죄 사안',
-  '교권 침해 및 학교 안전사고',
+  '교원징계·소청심사, 교육활동침해(교권보호위원회)',
+  '교사 대상 아동학대 신고 사건',
 ];
 ---
 
 <BaseLayout
-  title={`${ATTORNEY.name} 변호사 소개`}
+  title="변호사 소개"
   description={`${SITE.name} ${ATTORNEY.name} ${ATTORNEY.jobTitle}. 학교폭력 사건을 전담하여 학폭위 대응부터 조치 불복 행정심판·행정소송까지 수행합니다.`}
   breadcrumbs={crumbs}
 >
@@ -53,14 +93,15 @@ const focus = [
           <p class="ab__lead">{ATTORNEY.bio}</p>
 
           <p>
-            학교폭력 사건에서 부모님들이 가장 자주 하시는 말씀은 "이렇게 될 줄 몰랐다"입니다. 학교에서
-            연락이 왔을 때는 큰일이 아닌 줄 알았고, 아이 말만 믿고 확인서를 그대로 냈는데, 결과를
-            받아보니 되돌릴 수 없는 상태가 되어 있었다는 것입니다.
+            교탁을 떠나 변호사가 되었습니다. 서울시교육청에서 학교폭력, 교원징계, 교권침해, 아동학대
+            사건을 다루면서 학교가 어떻게 움직이는지, 사안조사와 심의 절차에서 무엇이 결과를 가르는지를
+            현장에서 익혔습니다.
           </p>
           <p>
-            학교폭력 절차는 짧고, 한 번 형성된 사실관계는 뒤에서 뒤집기가 매우 어렵습니다. 그래서 저는
-            사건을 맡으면 결과를 약속하는 대신, 지금 이 단계에서 무엇이 결정되고 무엇을 준비해야 하는지를
-            먼저 정확히 알려드립니다.
+            학교폭력 사건에서 부모님들이 가장 자주 하시는 말씀은 "이렇게 될 줄 몰랐다"입니다. 절차는
+            짧고, 한 번 형성된 사실관계는 뒤에서 뒤집기가 매우 어렵습니다. 그래서 저는 사건을 맡으면
+            결과를 약속하는 대신, 지금 이 단계에서 무엇이 결정되고 무엇을 준비해야 하는지를 먼저 정확히
+            알려드립니다.
           </p>
 
           <h2>주요 취급 분야</h2>
@@ -68,9 +109,19 @@ const focus = [
             {focus.map((f) => <li>{f}</li>)}
           </ul>
 
+          <h2>학력</h2>
+          <ul class="ab__list ab__list--plain">
+            {education.map((e) => <li>{e}</li>)}
+          </ul>
+
           <h2>약력</h2>
           <ul class="ab__list ab__list--plain">
             {career.map((c) => <li>{c}</li>)}
+          </ul>
+
+          <h2>위촉 · 연수</h2>
+          <ul class="ab__list ab__list--plain">
+            {appointments.map((a) => <li>{a}</li>)}
           </ul>
 
           <h2>사무소 안내</h2>
@@ -84,6 +135,59 @@ const focus = [
       </div>
     </div>
   </section>
+
+  <section class="section section--soft" id="creds">
+    <div class="wrap">
+      <div class="section__head">
+        <span class="eyebrow">공인된 자격</span>
+        <h2>위촉장 · 표창장</h2>
+        <p>
+          교육부, 교육청, 경찰청, 교원단체가 위촉하거나 수여한 문서입니다. 이미지를 누르면 크게 볼 수
+          있습니다.
+        </p>
+      </div>
+
+      <ul class="creds">
+        {
+          credentials.map((c) => (
+            <li class="creds__item">
+              <a class="creds__thumb" href={`#doc-${c.f}`} aria-label={`${c.org} ${c.t} 크게 보기`}>
+                <img
+                  src={`/images/credentials/${c.f}.webp`}
+                  alt={`${c.org} ${c.k} — ${c.t}`}
+                  width="440"
+                  height="622"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </a>
+              <div class="creds__cap">
+                <span class="creds__org">{c.org}</span>
+                <strong>{c.t}</strong>
+                <span class="creds__year">{c.k} · {c.y}</span>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  {/* 자바스크립트 없이 :target 만으로 동작하는 크게 보기 */}
+  {
+    credentials.map((c) => (
+      <div class="lb" id={`doc-${c.f}`}>
+        <a class="lb__bg" href="#creds" aria-label="닫기" />
+        <figure class="lb__box">
+          <img src={`/images/credentials/${c.f}-lg.webp`} alt={`${c.org} ${c.k} — ${c.t}`} loading="lazy" />
+          <figcaption>
+            {c.org} · {c.t} <span>({c.k} {c.y})</span>
+          </figcaption>
+        </figure>
+        <a class="lb__close" href="#creds" aria-label="닫기">닫기 ✕</a>
+      </div>
+    ))
+  }
 
   <CtaSection />
 </BaseLayout>
@@ -174,6 +278,122 @@ const focus = [
     color: var(--accent);
     font-weight: 800;
   }
+  /* ── 위촉장 · 표창장 갤러리 ─────────────── */
+  .creds {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 1.5rem 1.25rem;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+  @media (min-width: 700px) {
+    .creds {
+      grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+    }
+  }
+  .creds__thumb {
+    display: block;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: #fff;
+    transition: border-color 0.15s, transform 0.15s;
+  }
+  .creds__thumb:hover,
+  .creds__thumb:focus-visible {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+  .creds__thumb img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 707 / 1000;
+    object-fit: cover;
+    object-position: top;
+  }
+  .creds__cap {
+    padding-top: 0.6rem;
+    font-size: 0.8125rem;
+    line-height: 1.5;
+  }
+  .creds__org {
+    display: block;
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 0.75rem;
+  }
+  .creds__cap strong {
+    display: block;
+    color: var(--heading);
+    font-weight: 600;
+  }
+  .creds__year {
+    display: block;
+    color: var(--ink-3);
+    font-size: 0.75rem;
+  }
+
+  /* 크게 보기 (CSS :target) */
+  .lb {
+    display: none;
+  }
+  .lb:target {
+    display: flex;
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+  }
+  .lb__bg {
+    position: absolute;
+    inset: 0;
+    background: rgba(4, 5, 6, 0.9);
+  }
+  .lb__box {
+    position: relative;
+    margin: 0;
+    max-height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .lb__box img {
+    display: block;
+    min-height: 0;
+    max-width: min(760px, 100%);
+    max-height: calc(100vh - 8rem);
+    width: auto;
+    object-fit: contain;
+    border-radius: var(--radius);
+    background: #fff;
+  }
+  .lb__box figcaption {
+    text-align: center;
+    font-size: 0.875rem;
+    color: var(--ink-2);
+  }
+  .lb__box figcaption span {
+    color: var(--ink-3);
+  }
+  .lb__close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    z-index: 1;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    text-decoration: none;
+    color: var(--heading);
+    background: var(--surface);
+    border: 1px solid var(--line-strong);
+    border-radius: 999px;
+    padding: 0.5rem 0.9rem;
+  }
+
   .ab__addr {
     font-style: normal;
     line-height: 2;
