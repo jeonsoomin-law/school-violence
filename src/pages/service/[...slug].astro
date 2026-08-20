@@ -95,8 +95,16 @@ const related = (await getCollection('column', ({ data }) => !data.draft))
 </BaseLayout>
 
 <style>
+  /* 한 단(880px)으로 모아 가운데 정렬. 넓어진 wrap(1280px) 안에서 좌측에 붙는 것을 막습니다. */
+  .svc__head,
+  .svc__points,
+  .svc__body,
+  .svc__related {
+    max-width: 880px;
+    margin-inline: auto;
+  }
+
   .svc__head {
-    max-width: var(--maxw-prose);
     margin-bottom: 2.5rem;
   }
   .svc__summary {
@@ -107,7 +115,7 @@ const related = (await getCollection('column', ({ data }) => !data.draft))
   .svc__points {
     list-style: none;
     padding: 0;
-    margin: 0 0 3rem;
+    margin-block: 0 3rem;
     display: grid;
     gap: 1rem;
   }

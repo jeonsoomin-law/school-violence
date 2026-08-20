@@ -37,8 +37,8 @@
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
   --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.55);
 
-  --maxw: 1120px;
-  --maxw-prose: 720px;
+  --maxw: 1280px;
+  --maxw-prose: 760px;
 
   --font: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont,
     'Apple SD Gothic Neo', 'Malgun Gothic', 'Segoe UI', system-ui, sans-serif;
@@ -143,6 +143,11 @@ hr {
   margin-inline: auto;
   padding-inline: 20px;
 }
+@media (min-width: 900px) {
+  .wrap {
+    padding-inline: 40px;
+  }
+}
 
 .section {
   padding-block: clamp(3rem, 6vw, 5rem);
@@ -153,7 +158,7 @@ hr {
 }
 
 .section__head {
-  max-width: 640px;
+  max-width: 720px;
   margin-bottom: 2.25rem;
 }
 .section__head p {
@@ -280,6 +285,8 @@ a.card:hover {
 /* ── 본문(prose) ────────────────────────── */
 .prose {
   max-width: var(--maxw-prose);
+  /* wrap 이 넓어졌으므로 본문 단이 왼쪽에만 붙지 않도록 가운데로 */
+  margin-inline: auto;
   font-size: 1.0625rem;
 }
 .prose > h2 {

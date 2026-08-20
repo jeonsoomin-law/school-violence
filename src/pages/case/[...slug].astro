@@ -101,8 +101,16 @@ const related = (await getCollection('case', ({ data }) => !data.draft))
 </BaseLayout>
 
 <style>
+  /* 한 단(880px)으로 모아 가운데 정렬 */
+  .cs__head,
+  .cs__facts,
+  .prose,
+  .cs__related {
+    max-width: 880px;
+    margin-inline: auto;
+  }
+
   .cs__head {
-    max-width: var(--maxw-prose);
     margin-bottom: 2rem;
   }
   .cs__head .tag {
@@ -120,8 +128,7 @@ const related = (await getCollection('case', ({ data }) => !data.draft))
     border: 1px solid var(--line);
     border-radius: var(--radius);
     overflow: hidden;
-    max-width: var(--maxw-prose);
-    margin: 0 0 2.5rem;
+    margin-block: 0 2.5rem;
   }
   @media (min-width: 640px) {
     .cs__facts {
