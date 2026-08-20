@@ -3,61 +3,38 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PostCard from '../components/PostCard.astro';
 import CtaSection from '../components/CtaSection.astro';
-import Faq from '../components/Faq.astro';
 import { SITE, CONTACT, ATTORNEY, CREDENTIALS } from '../consts';
-import { faqSchema } from '../lib/schema';
 
 const services = (await getCollection('service', ({ data }) => !data.draft)).sort(
   (a, b) => a.data.order - b.data.order,
 );
 
-const columns = (await getCollection('column', ({ data }) => !data.draft))
-  .sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime())
-  .slice(0, 3);
-
 const cases = (await getCollection('case', ({ data }) => !data.draft))
   .sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime())
   .slice(0, 3);
 
-const homeFaq = [
-  {
-    q: '학교폭력 사건에 변호사가 꼭 필요한가요?',
-    a: '학교폭력대책심의위원회는 형사재판과 달리 서면과 진술 위주로 짧은 시간 안에 결론이 나고, 한 번 내려진 조치는 생활기록부에 기재되어 상급학교 진학까지 영향을 줍니다. 사안조사 단계에서 무엇을 어떻게 진술하느냐가 결과를 좌우하기 때문에, 통지서를 받은 시점에 상담을 받아보시는 것을 권합니다.',
-  },
-  {
-    q: '언제 상담받는 것이 가장 좋나요?',
-    a: '학교로부터 학교폭력 사안 접수 사실을 통보받은 직후가 가장 좋습니다. 이미 진술서를 제출했거나 심의위원회가 끝난 뒤라도 조치 통보를 받은 날부터 90일 이내라면 행정심판·행정소송으로 다툴 수 있으므로 늦었다고 판단하지 마시고 문의해 주세요.',
-  },
-  {
-    q: '심의위원회에 변호사가 함께 들어갈 수 있나요?',
-    a: '학생과 보호자는 심의위원회에 출석하여 의견을 진술할 수 있고, 대리인을 선임할 수 있습니다. 다만 위원회 운영 방식에 따라 진술 시간과 대리인 참여 범위가 달라질 수 있어, 사전에 서면 의견서를 충실히 준비하는 것이 중요합니다.',
-  },
-  {
-    q: '상담 비용은 어떻게 되나요?',
-    a: '초기 상담에서 사건의 쟁점과 예상 절차, 비용을 먼저 안내드립니다. 비용은 사건 유형(심의위원회 대응, 행정심판, 소송 등)과 진행 단계에 따라 달라지므로 상담 시 구체적으로 말씀드립니다.',
-  },
-];
-
-const heroPoints = [
-  { n: '01', t: '통지서를 받은 그날부터', d: '사안조사 진술, 확인서 작성, 증거 정리까지 첫 대응 방향을 잡아드립니다.' },
-  { n: '02', t: '심의위원회 서면·출석 대응', d: '의견서와 자료를 구조적으로 정리해 위원회가 사실관계를 오해하지 않도록 합니다.' },
-  { n: '03', t: '조치 처분 불복', d: '행정심판·행정소송, 집행정지 신청까지 생활기록부 기재를 다투는 절차를 진행합니다.' },
+/** 홈 중간 사진 밴드. 실제 사건 사진이 아니라 상황을 표현한 이미지입니다. */
+const shots = [
+  { src: '/images/scene-classroom', alt: '해질 무렵 빈 교실에 혼자 앉아 있는 학생', cap: '아이는 먼저 말하지 않습니다' },
+  { src: '/images/scene-hallway', alt: '아무도 없는 학교 복도와 사물함', cap: '학교는 조용히 절차를 진행합니다' },
+  { src: '/images/scene-phone', alt: '어두운 방에서 휴대폰 화면을 보고 있는 손', cap: '기록은 화면 안에 남아 있습니다' },
 ];
 ---
 
 <BaseLayout
-  title={`학교폭력 변호사 | ${SITE.name}`}
+  title="학교폭력변호사 | 전수민"
   description={SITE.description}
   bareTitle
-  jsonLd={[faqSchema(homeFaq)]}
 >
   <section class="hero">
     <div class="hero__glow" aria-hidden="true"></div>
 
     <div class="wrap hero__inner">
       <div class="hero__text">
-        <span class="hero__eyebrow">학교폭력 전담</span>
-        <h1>아이의 3년이<br /><em>몇 주 안에</em> 결정됩니다</h1>
+        <h1>
+          <span class="hero__kw">교사 · 서울시교육청 출신 학교폭력변호사 전수민</span>
+          아이의 3년이<br /><em>몇 주 안에</em> 결정됩니다
+        </h1>
         <p class="hero__lead">
           학교폭력 사건은 신고 접수부터 조치 결정까지 길지 않습니다. 그 사이에 쓴 진술서 한 장이
           조치 수위를 바꾸고, 그 조치는 생활기록부에 남습니다.
@@ -100,19 +77,19 @@ const heroPoints = [
     </div>
   </section>
 
-  <section class="steps3">
-    <div class="wrap">
-      <ol>
-        {
-          heroPoints.map((p) => (
-            <li>
-              <span class="steps3__num">{p.n}</span>
-              <strong>{p.t}</strong>
-              <p>{p.d}</p>
-            </li>
-          ))
-        }
-      </ol>
+  <section class="shots">
+    <div class="wrap shots__inner">
+      {
+        shots.map((s) => (
+          <figure class="shots__item">
+            <picture>
+              <source srcset={`${s.src}.webp`} type="image/webp" />
+              <img src={`${s.src}.jpg`} alt={s.alt} width="900" height="600" loading="lazy" decoding="async" />
+            </picture>
+            <figcaption>{s.cap}</figcaption>
+          </figure>
+        ))
+      }
     </div>
   </section>
 
@@ -134,26 +111,16 @@ const heroPoints = [
           ))
         }
       </div>
+      <p class="more">
+        <a href="/school-violence/">신고 접수부터 불복까지, 학교폭력 절차 전체 보기 →</a>
+      </p>
     </div>
   </section>
 
-  <section class="section section--soft">
-    <div class="wrap">
-      <div class="section__head">
-        <span class="eyebrow">절차 안내</span>
-        <h2>학교폭력 사건은 이렇게 진행됩니다</h2>
-        <p>
-          신고 접수부터 조치 결정, 그리고 불복까지. 전체 흐름을 먼저 이해하셔야 지금 무엇을 준비해야
-          하는지가 보입니다.
-        </p>
-      </div>
-      <a class="btn btn--primary" href="/school-violence/">학교폭력 절차 전체 보기</a>
-    </div>
-  </section>
 
   {
     cases.length > 0 && (
-      <section class="section">
+      <section class="section section--soft">
         <div class="wrap">
           <div class="section__head">
             <span class="eyebrow">해결사례</span>
@@ -184,39 +151,6 @@ const heroPoints = [
     )
   }
 
-  {
-    columns.length > 0 && (
-      <section class="section section--soft">
-        <div class="wrap">
-          <div class="section__head">
-            <span class="eyebrow">칼럼</span>
-            <h2>자주 받는 질문을 글로 정리했습니다</h2>
-          </div>
-          <div class="grid grid--3">
-            {columns.map((c) => (
-              <PostCard
-                href={`/column/${c.id}/`}
-                title={c.data.title}
-                description={c.data.description}
-                tag={c.data.category}
-                date={c.data.publishDate}
-              />
-            ))}
-          </div>
-          <p class="more">
-            <a href="/column/">칼럼 전체 보기 →</a>
-          </p>
-        </div>
-      </section>
-    )
-  }
-
-  <section class="section">
-    <div class="wrap" style="max-width: var(--maxw-prose); margin-inline: auto;">
-      <Faq items={homeFaq} />
-    </div>
-  </section>
-
   <CtaSection />
 </BaseLayout>
 
@@ -246,23 +180,32 @@ const heroPoints = [
   @media (min-width: 900px) {
     .hero__inner {
       grid-template-columns: 1.08fr 0.92fr;
+      /* 사진은 아래 가장자리가 배경에 녹아들어야 하므로 바닥 고정 */
       align-items: end;
       gap: 2rem;
     }
+    /* 사진이 텍스트보다 커서 end 정렬이면 문구가 아래로 밀립니다 — 문구만 가운데로 */
+    .hero__text {
+      align-self: center;
+    }
   }
 
-  .hero__eyebrow {
-    display: inline-flex;
+  /* 라벨을 h1 안에 넣어 주요 키워드가 h1 에 잡히게 합니다.
+     보이는 모습은 기존 eyebrow 와 동일합니다. */
+  .hero__kw {
+    display: flex;
     align-items: center;
     gap: 0.7rem;
     font-size: 0.8125rem;
     font-weight: 700;
     letter-spacing: 0.14em;
+    line-height: 1.5;
     color: var(--gold);
     margin-bottom: 1.4rem;
   }
-  .hero__eyebrow::before {
+  .hero__kw::before {
     content: '';
+    flex: none;
     width: 34px;
     height: 2px;
     background: var(--gold);
@@ -409,47 +352,46 @@ const heroPoints = [
     color: var(--dark-ink-2);
   }
 
-  /* ── 히어로 아래 3단계 ─────────────────────── */
-  .steps3 {
+  /* ── 히어로 아래 사진 밴드 ───────────────────── */
+  .shots {
     background: var(--bg-soft);
     border-bottom: 1px solid var(--line);
   }
-  .steps3 ol {
-    list-style: none;
-    margin: 0;
-    padding: 0;
+  .shots__inner {
     display: grid;
-    gap: 1.75rem;
-    padding-block: clamp(2.25rem, 4vw, 3rem);
+    gap: 1rem;
+    padding-block: clamp(1.75rem, 3.5vw, 2.75rem);
   }
-  @media (min-width: 780px) {
-    .steps3 ol {
+  @media (min-width: 760px) {
+    .shots__inner {
       grid-template-columns: repeat(3, 1fr);
-      gap: 2.5rem;
+      gap: 1.25rem;
     }
   }
-  .steps3 li {
-    padding-top: 1rem;
-    border-top: 2px solid var(--line-strong);
-  }
-  .steps3__num {
-    display: block;
-    font-size: 0.75rem;
-    font-weight: 800;
-    letter-spacing: 0.1em;
-    color: var(--accent);
-    margin-bottom: 0.5rem;
-  }
-  .steps3 strong {
-    display: block;
-    color: var(--heading);
-    margin-bottom: 0.3rem;
-  }
-  .steps3 p {
+  .shots__item {
+    position: relative;
     margin: 0;
-    font-size: 0.9rem;
-    color: var(--ink-2);
-    line-height: 1.65;
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: 1px solid var(--line);
+  }
+  .shots__item img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 3 / 2;
+    object-fit: cover;
+    /* 다크 테마에 맞춰 살짝 눌러줍니다 */
+    filter: saturate(0.75) brightness(0.82);
+  }
+  .shots__item figcaption {
+    position: absolute;
+    inset: auto 0 0 0;
+    padding: 2.5rem 1rem 0.95rem;
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: #fff;
+    background: linear-gradient(to top, rgba(8, 9, 11, 0.92), rgba(8, 9, 11, 0));
   }
 
   .more {
