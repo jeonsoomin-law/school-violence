@@ -20,9 +20,12 @@ export const PREVIEW_MODE = false;
 
 /**
  * 배포 도메인. 사이트맵/canonical/OG 태그의 기준이 됩니다. 끝에 슬래시 없이.
- * 지금은 Firebase 기본 주소. 도메인을 연결하면 이 값과 astro.config.mjs 를 함께 바꾸세요.
+ * 한글 도메인 `학교폭력변호사.net` 의 퓨니코드 표기입니다.
+ * (한글 그대로 적어도 브라우저가 같은 값으로 변환하지만, 파일 인코딩 문제를 피하려고 퓨니코드로 둡니다)
+ *
+ * ⚠️ 이 값을 바꾸면 astro.config.mjs 의 SITE_URL 도 반드시 함께 바꾸세요.
  */
-export const SITE_URL = 'https://school-violence-b29b3.web.app';
+export const SITE_URL = 'https://xn--9d0bl9rcud00eco4am3bz1b.net'; // 학교폭력변호사.net
 
 export const SITE = {
   /** 브랜드명 (헤더·푸터·JSON-LD). 주요 타깃 키워드를 앞에 둡니다. */

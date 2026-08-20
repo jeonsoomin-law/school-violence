@@ -2,9 +2,9 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 
-// SITE_URL 은 src/consts.ts 와 동일하게 유지하세요.
-// 도메인을 구입하면 두 파일을 함께 바꿔야 합니다.
-const SITE_URL = 'https://school-violence-b29b3.web.app';
+// SITE_URL 은 src/consts.ts 와 동일하게 유지하세요. 두 파일을 함께 바꿔야 합니다.
+// 한글 도메인 `학교폭력변호사.net` 의 퓨니코드 표기입니다.
+const SITE_URL = 'https://xn--9d0bl9rcud00eco4am3bz1b.net'; // 학교폭력변호사.net
 
 export default defineConfig({
   site: SITE_URL,
