@@ -29,20 +29,42 @@ npm run build
 
 ---
 
-## 2. 가장 먼저 바꿔야 할 것 (TODO)
+## 2. 미리보기 모드 (지금 켜져 있음)
+
+`src/consts.ts` 의 `PREVIEW_MODE` 가 `true` 인 동안에는 **검색엔진이 이 사이트를 수집하지 않습니다.**
+모든 페이지에 `noindex` 가 붙고, `robots.txt` 가 전체 수집을 거부합니다.
+사무소 정보가 아직 예시값(`02-000-0000`, `홍길동`)인 상태로 색인되는 것을 막기 위한 장치입니다.
+
+빌드할 때마다 터미널에 경고가 뜹니다.
+
+```
+⚠️  PREVIEW_MODE 가 켜져 있어 검색엔진 수집이 차단된 상태로 빌드됩니다.
+```
+
+**아래 세 가지가 끝나면** `PREVIEW_MODE = false` 로 바꾸고 다시 배포하세요.
+
+1. 사무소 실제 정보 입력 (3번 표)
+2. 칼럼·해결사례 법률 내용 검토 (8번)
+3. 도메인 연결 후 `SITE_URL` 변경
+
+이걸 `false` 로 바꾸지 않으면 **영원히 검색에 안 잡힙니다.** 잊지 마세요.
+
+## 3. 가장 먼저 바꿔야 할 것 (TODO)
 
 코드 전체에 `TODO` 로 표시해 두었습니다. 아래 순서로 처리하시면 됩니다.
 
 | 파일 | 바꿀 내용 |
 | --- | --- |
 | `src/consts.ts` | 상호, 전화번호, 주소, 이메일, 카카오톡 채널, 대표 변호사 정보 |
-| `src/consts.ts` | `SITE_URL` — 실제 도메인 |
+| `src/consts.ts` | `SITE_URL` — 도메인 구입 후 실제 도메인으로 |
 | `astro.config.mjs` | `SITE_URL` — 위와 동일하게 |
-| `public/robots.txt` | 맨 아래 `Sitemap:` 도메인 |
-| `public/admin/config.yml` | `backend.repo`, `base_url` |
+| `src/consts.ts` | `FORM.accessKey` — 상담신청 폼 연결 |
+| `src/consts.ts` | `VERIFICATION` — 구글·네이버 소유확인 코드 |
 | `src/pages/about.astro` | 약력·취급분야 (`career`, `focus` 배열) |
 | `src/pages/privacy.astro` | 개인정보처리방침 전체 검토 |
 | `scripts/generate-og.mjs` | 상호 변경 후 `node scripts/generate-og.mjs` 재실행 |
+
+> `robots.txt` 는 `src/pages/robots.txt.ts` 에서 자동 생성됩니다. 직접 고칠 필요 없습니다.
 
 ---
 

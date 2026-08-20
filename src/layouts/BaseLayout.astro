@@ -4,7 +4,7 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import StickyCta from '../components/StickyCta.astro';
 import JsonLd from '../components/JsonLd.astro';
-import { SITE, SITE_URL, VERIFICATION, absoluteUrl } from '../consts';
+import { SITE, SITE_URL, VERIFICATION, PREVIEW_MODE, absoluteUrl } from '../consts';
 import { organizationSchema, websiteSchema, breadcrumbSchema, type Crumb } from '../lib/schema';
 
 interface Props {
@@ -28,12 +28,14 @@ const {
   title,
   description,
   image = '/og-default.png',
-  noindex = false,
+  // 미리보기 모드에서는 페이지 설정과 무관하게 전부 색인 차단
+  noindex: noindexProp = false,
   breadcrumbs = [],
   jsonLd = [],
   bareTitle = false,
 } = Astro.props;
 
+const noindex = noindexProp || PREVIEW_MODE;
 const pageTitle = bareTitle ? title : `${title} | ${SITE.name}`;
 const canonical = new URL(Astro.url.pathname, SITE_URL + '/').href;
 
