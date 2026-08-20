@@ -1,0 +1,42 @@
+# ─────────────────────────────────────────────────────────────
+# main 브랜치에 변경이 올라오면 자동으로 빌드해서 Firebase Hosting 에 배포합니다.
+# 관리자 화면(/admin/)에서 변호사님이 글을 저장하면 이 워크플로가 돌면서
+# 몇 분 안에 사이트에 반영됩니다.
+#
+# ⚠️ 처음 한 번은 저장소 시크릿 등록이 필요합니다.
+#    Settings → Secrets and variables → Actions → New repository secret
+#      이름: FIREBASE_SERVICE_ACCOUNT
+#      값  : Firebase 콘솔 → 프로젝트 설정 → 서비스 계정 → 새 비공개 키 생성
+#             으로 받은 JSON 파일 내용 전체
+# ─────────────────────────────────────────────────────────────
+name: 배포
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: # 필요할 때 수동 실행
+
+concurrency:
+  group: deploy-main
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+      - run: npm run build
+
+      - uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          channelId: live
+          projectId: school-violence-b29b3
