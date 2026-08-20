@@ -36,13 +36,14 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
 </header>
 
 <style>
+  /* 첫 화면의 검정 히어로와 이어지도록 헤더도 다크로 통일 */
   .hd {
     position: sticky;
     top: 0;
     z-index: 50;
-    background: rgba(255, 255, 255, 0.92);
-    backdrop-filter: saturate(180%) blur(8px);
-    border-bottom: 1px solid var(--line);
+    background: rgba(8, 9, 11, 0.92);
+    backdrop-filter: saturate(180%) blur(10px);
+    border-bottom: 1px solid var(--dark-line);
   }
   .hd__inner {
     display: flex;
@@ -57,7 +58,7 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
     gap: 0.6rem;
     font-weight: 800;
     font-size: 1.0625rem;
-    color: var(--navy-900);
+    color: var(--dark-ink);
     text-decoration: none;
     letter-spacing: -0.02em;
     margin-right: auto;
@@ -66,7 +67,7 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
     width: 22px;
     height: 22px;
     border-radius: 5px;
-    background: linear-gradient(135deg, var(--navy-800), var(--navy-700));
+    background: var(--gold);
     position: relative;
     flex: none;
   }
@@ -75,8 +76,8 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
     position: absolute;
     inset: 6px 6px auto 6px;
     height: 2px;
-    background: var(--accent);
-    box-shadow: 0 4px 0 var(--accent);
+    background: var(--dark-bg);
+    box-shadow: 0 4px 0 var(--dark-bg);
   }
 
   .hd__nav ul {
@@ -90,16 +91,16 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
     text-decoration: none;
     font-size: 0.9375rem;
     font-weight: 600;
-    color: var(--ink-2);
+    color: var(--dark-ink-2);
     white-space: nowrap;
   }
   .hd__nav a:hover,
   .hd__nav a[aria-current='page'] {
-    color: var(--navy-800);
+    color: #fff;
   }
   .hd__nav a[aria-current='page'] {
     text-decoration: underline;
-    text-decoration-color: var(--accent);
+    text-decoration-color: var(--gold);
     text-decoration-thickness: 2px;
   }
   .hd__tel {
@@ -119,11 +120,11 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
     .hd__tel {
       display: inline-block;
       font-weight: 800;
-      color: var(--navy-800);
+      color: var(--gold);
       text-decoration: none;
       font-size: 1rem;
       padding-left: 1.2rem;
-      border-left: 1px solid var(--line);
+      border-left: 1px solid var(--dark-line);
     }
   }
 
@@ -135,7 +136,7 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
       justify-content: center;
       width: 40px;
       height: 40px;
-      border: 1px solid var(--line);
+      border: 1px solid var(--dark-line);
       border-radius: 10px;
       cursor: pointer;
     }
@@ -143,7 +144,7 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
       display: block;
       width: 18px;
       height: 2px;
-      background: var(--navy-800);
+      background: var(--dark-ink);
       position: relative;
     }
     .hd__burger span[aria-hidden]::before,
@@ -153,7 +154,7 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
       left: 0;
       width: 18px;
       height: 2px;
-      background: var(--navy-800);
+      background: var(--dark-ink);
     }
     .hd__burger span[aria-hidden]::before {
       top: -6px;
@@ -173,10 +174,10 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
     .hd__nav ul {
       flex-direction: column;
       gap: 0;
-      border-top: 1px solid var(--line);
+      border-top: 1px solid var(--dark-line);
     }
     .hd__nav li + li {
-      border-top: 1px solid var(--line);
+      border-top: 1px solid var(--dark-line);
     }
     .hd__nav a {
       display: block;

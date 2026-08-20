@@ -93,6 +93,14 @@ const focus = [
     display: grid;
     gap: 2.5rem;
   }
+  /* 한 단으로 쌓이는 좁은 화면에서 사진이 화면을 다 먹지 않도록 */
+  @media (max-width: 899px) {
+    .ab__photo {
+      max-width: 300px;
+      margin-inline: auto;
+      width: 100%;
+    }
+  }
   @media (min-width: 900px) {
     .ab {
       grid-template-columns: 340px 1fr;

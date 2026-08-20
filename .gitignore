@@ -23,3 +23,11 @@ firebase-debug.log*
 # macOS / Windows
 .DS_Store
 Thumbs.db
+
+# 원본 사진 폴더 (용량이 커서 저장소에 올리지 않습니다)
+# public/images/ 에 최적화된 결과물만 커밋됩니다.
+# 원본이 필요하면 scripts/optimize-photos.mjs 를 다시 실행하세요.
+/프로필 사진/
+/표창장/
+/위촉장/
+/외부활동/

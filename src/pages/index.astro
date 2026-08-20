@@ -4,7 +4,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import PostCard from '../components/PostCard.astro';
 import CtaSection from '../components/CtaSection.astro';
 import Faq from '../components/Faq.astro';
-import { SITE, CONTACT } from '../consts';
+import { SITE, CONTACT, ATTORNEY, CREDENTIALS } from '../consts';
 import { faqSchema } from '../lib/schema';
 
 const services = (await getCollection('service', ({ data }) => !data.draft)).sort(
@@ -52,31 +52,63 @@ const heroPoints = [
   jsonLd={[faqSchema(homeFaq)]}
 >
   <section class="hero">
+    <div class="hero__glow" aria-hidden="true"></div>
+
     <div class="wrap hero__inner">
       <div class="hero__text">
-        <span class="eyebrow">학교폭력 전담</span>
-        <h1>학폭위 통지서를 받으셨다면,<br />지금이 가장 중요한 시점입니다</h1>
-        <p>
-          학교폭력 사건은 신고 접수부터 심의위원회 결정까지 몇 주 만에 끝납니다. 그 사이에 작성한
-          진술서 한 장이 조치 수위를 바꾸고, 그 조치는 생활기록부에 남습니다. 학교폭력 사건만
-          집중적으로 다루는 변호사가 첫 대응부터 불복 절차까지 함께합니다.
+        <span class="hero__eyebrow">학교폭력 전담</span>
+        <h1>아이의 3년이<br /><em>몇 주 안에</em> 결정됩니다</h1>
+        <p class="hero__lead">
+          학교폭력 사건은 신고 접수부터 조치 결정까지 길지 않습니다. 그 사이에 쓴 진술서 한 장이
+          조치 수위를 바꾸고, 그 조치는 생활기록부에 남습니다.
         </p>
         <div class="hero__actions">
-          <a class="btn btn--primary" href={`tel:${CONTACT.phoneHref}`}>{CONTACT.phone} 전화상담</a>
-          <a class="btn btn--ghost" href="/contact/">온라인 상담신청</a>
+          <a class="hero__cta hero__cta--primary" href={`tel:${CONTACT.phoneHref}`}>
+            {CONTACT.phone} 전화상담
+          </a>
+          <a class="hero__cta hero__cta--ghost" href="/contact/">온라인 상담신청</a>
         </div>
-        <p class="hero__hours">상담시간 {CONTACT.hours} · 사건 상황에 따라 시간 외 상담도 가능합니다</p>
+        <p class="hero__hours">상담시간 {CONTACT.hours} · 사안이 급하면 시간 외에도 연락 주세요</p>
       </div>
 
-      <ol class="hero__steps">
+      <div class="hero__photo">
+        <picture>
+          <source srcset="/images/attorney-hero.webp" type="image/webp" />
+          <img
+            src="/images/attorney-hero.jpg"
+            alt={`${ATTORNEY.name} ${ATTORNEY.jobTitle}`}
+            width="1000"
+            height="1328"
+            fetchpriority="high"
+            decoding="async"
+          />
+        </picture>
+      </div>
+    </div>
+
+    <div class="creds">
+      <div class="wrap creds__inner">
+        {
+          CREDENTIALS.map((c) => (
+            <div class="creds__item">
+              <strong>{c.label}</strong>
+              <span>{c.detail}</span>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="steps3">
+    <div class="wrap">
+      <ol>
         {
           heroPoints.map((p) => (
             <li>
-              <span class="hero__num">{p.n}</span>
-              <div>
-                <strong>{p.t}</strong>
-                <p>{p.d}</p>
-              </div>
+              <span class="steps3__num">{p.n}</span>
+              <strong>{p.t}</strong>
+              <p>{p.d}</p>
             </li>
           ))
         }
@@ -189,78 +221,235 @@ const heroPoints = [
 </BaseLayout>
 
 <style>
+  /* ── 첫 화면 (다크) ───────────────────────── */
   .hero {
-    background: linear-gradient(180deg, var(--navy-50), #fff);
-    border-bottom: 1px solid var(--line);
-    padding-block: clamp(2.5rem, 6vw, 4.5rem);
+    position: relative;
+    background: var(--dark-bg);
+    color: var(--dark-ink);
+    overflow: hidden;
+  }
+  .hero__glow {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(720px 420px at 12% 8%, rgba(217, 178, 106, 0.13), transparent 68%),
+      radial-gradient(560px 420px at 78% 90%, rgba(64, 96, 148, 0.18), transparent 70%);
+    pointer-events: none;
   }
   .hero__inner {
+    position: relative;
+    z-index: 1;
     display: grid;
-    gap: 2.5rem;
+    gap: 0;
+    padding-top: clamp(2.75rem, 6vw, 5rem);
   }
-  @media (min-width: 960px) {
+  @media (min-width: 900px) {
     .hero__inner {
-      grid-template-columns: 1.15fr 0.85fr;
-      gap: 4rem;
-      align-items: center;
+      grid-template-columns: 1.08fr 0.92fr;
+      align-items: end;
+      gap: 2rem;
     }
   }
+
+  .hero__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    color: var(--gold);
+    margin-bottom: 1.4rem;
+  }
+  .hero__eyebrow::before {
+    content: '';
+    width: 34px;
+    height: 2px;
+    background: var(--gold);
+  }
+
   .hero h1 {
-    margin-bottom: 1rem;
+    color: #fff;
+    font-size: clamp(2.15rem, 1.15rem + 4vw, 4rem);
+    line-height: 1.16;
+    letter-spacing: -0.04em;
+    margin-bottom: 1.15rem;
   }
-  .hero__text > p {
-    color: var(--ink-2);
-    font-size: 1.0625rem;
-    max-width: 34em;
+  .hero h1 em {
+    font-style: normal;
+    color: var(--gold);
   }
+  .hero__lead {
+    color: var(--dark-ink-2);
+    font-size: clamp(1rem, 0.95rem + 0.3vw, 1.125rem);
+    max-width: 27em;
+    margin-bottom: 2rem;
+  }
+
   .hero__actions {
     display: flex;
     flex-wrap: wrap;
     gap: 0.75rem;
-    margin-top: 1.75rem;
+  }
+  .hero__cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.95em 1.7em;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 1rem;
+    text-decoration: none;
+    border: 1px solid transparent;
+    transition: background-color 0.15s, border-color 0.15s, color 0.15s;
+  }
+  .hero__cta--primary {
+    background: var(--gold);
+    color: #17130a;
+  }
+  .hero__cta--primary:hover {
+    background: #e6c281;
+    color: #17130a;
+  }
+  .hero__cta--ghost {
+    border-color: rgba(255, 255, 255, 0.28);
+    color: #fff;
+  }
+  .hero__cta--ghost:hover {
+    border-color: #fff;
+    background: rgba(255, 255, 255, 0.07);
+    color: #fff;
   }
   .hero__hours {
     font-size: 0.8125rem;
-    color: var(--ink-3);
-    margin-top: 1rem;
+    color: #7c8697;
+    margin: 1.1rem 0 0;
   }
 
-  .hero__steps {
+  .hero__photo {
+    position: relative;
+    width: 100%;
+    max-width: 260px;
+    margin: 1.5rem auto 0;
+    align-self: end;
+  }
+  /* 좁은 화면에서는 히어로가 길어지지 않도록 조입니다 */
+  @media (max-width: 899px) {
+    .hero__inner {
+      padding-top: 2.25rem;
+    }
+    .hero__lead {
+      margin-bottom: 1.5rem;
+    }
+    .hero__cta {
+      font-size: 0.875rem;
+      padding: 0.85em 1.15em;
+    }
+  }
+  @media (min-width: 900px) {
+    .hero__photo {
+      max-width: 440px;
+      margin: 0 0 0 auto;
+    }
+  }
+  .hero__photo img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  /* 사진 가장자리를 검정으로 녹여서 인물이 어둠에서 떠오르게 */
+  .hero__photo::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 52% 50% at 52% 38%, rgba(8, 9, 11, 0) 34%, rgba(8, 9, 11, 0.55) 62%, var(--dark-bg) 88%),
+      linear-gradient(to top, rgba(8, 9, 11, 0) 74%, var(--dark-bg) 100%),
+      linear-gradient(to bottom, rgba(8, 9, 11, 0) 46%, var(--dark-bg) 96%);
+    pointer-events: none;
+  }
+
+  /* 자격 스트립 */
+  .creds {
+    position: relative;
+    z-index: 1;
+    border-top: 1px solid var(--dark-line);
+  }
+  .creds__inner {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 1.6rem;
+    padding-block: 1rem;
+  }
+  .creds__item {
+    display: flex;
+    align-items: baseline;
+    gap: 0.45rem;
+    padding-block: 0.35rem;
+    font-size: 0.8125rem;
+    position: relative;
+  }
+  .creds__item + .creds__item::before {
+    content: '';
+    position: absolute;
+    left: -0.85rem;
+    top: 50%;
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.25);
+    transform: translateY(-50%);
+  }
+  .creds__item strong {
+    color: var(--gold);
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  .creds__item span {
+    color: var(--dark-ink-2);
+  }
+
+  /* ── 히어로 아래 3단계 ─────────────────────── */
+  .steps3 {
+    background: var(--bg-soft);
+    border-bottom: 1px solid var(--line);
+  }
+  .steps3 ol {
     list-style: none;
     margin: 0;
     padding: 0;
-    background: #fff;
-    border: 1px solid var(--line);
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-md);
-    overflow: hidden;
+    display: grid;
+    gap: 1.75rem;
+    padding-block: clamp(2.25rem, 4vw, 3rem);
   }
-  .hero__steps li {
-    display: flex;
-    gap: 1rem;
-    padding: 1.25rem 1.5rem;
+  @media (min-width: 780px) {
+    .steps3 ol {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2.5rem;
+    }
   }
-  .hero__steps li + li {
-    border-top: 1px solid var(--line);
+  .steps3 li {
+    padding-top: 1rem;
+    border-top: 2px solid var(--navy-100);
   }
-  .hero__num {
+  .steps3__num {
+    display: block;
+    font-size: 0.75rem;
     font-weight: 800;
+    letter-spacing: 0.1em;
     color: var(--accent);
-    font-size: 0.8125rem;
-    letter-spacing: 0.05em;
-    padding-top: 0.3em;
-    flex: none;
+    margin-bottom: 0.5rem;
   }
-  .hero__steps strong {
+  .steps3 strong {
     display: block;
     color: var(--navy-900);
-    margin-bottom: 0.2rem;
+    margin-bottom: 0.3rem;
   }
-  .hero__steps p {
+  .steps3 p {
     margin: 0;
     font-size: 0.9rem;
     color: var(--ink-2);
-    line-height: 1.6;
+    line-height: 1.65;
   }
 
   .more {
