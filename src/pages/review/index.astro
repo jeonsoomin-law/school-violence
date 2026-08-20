@@ -1,0 +1,141 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import CtaSection from '../../components/CtaSection.astro';
+
+const reviews = (await getCollection('review', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime(),
+);
+const rendered = await Promise.all(
+  reviews.map(async (r) => ({ ...r, Body: (await render(r)).Content })),
+);
+
+const crumbs = [{ name: '의뢰인 후기', href: '/review/' }];
+const fmt = (d: Date) => `${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, '0')}`;
+---
+
+<BaseLayout
+  title="의뢰인 후기"
+  description="학교폭력 사건을 함께 마무리한 의뢰인들이 보내온 후기입니다. 의뢰인이 특정되지 않도록 이름과 학교, 지역은 가려 게시합니다."
+  breadcrumbs={crumbs}
+>
+  <PageHero
+    image="/images/page/review"
+    alt="책상 위에 놓인 손편지와 봉투"
+    eyebrow="의뢰인 후기"
+    title="의뢰인 후기"
+    lead="사건을 함께 마무리한 뒤 의뢰인들이 보내온 말씀을 그대로 옮겼습니다. 의뢰인이 특정되지 않도록 이름과 학교, 지역은 가려 게시합니다."
+    crumbs={crumbs}
+  />
+
+  <section class="section">
+    <div class="wrap">
+      <p class="notice">
+        게시된 후기는 해당 사건에 대한 의뢰인 개인의 소감이며, 다른 사건의 결과를 보장하지 않습니다.
+        학교폭력 사건은 사실관계와 증거, 학교의 운영 방식에 따라 결론이 크게 달라집니다.
+      </p>
+
+      {
+        rendered.length > 0 ? (
+          <ul class="rv">
+            {rendered.map((r) => (
+              <li class="rv__item">
+                <div class="rv__head">
+                  <span class="tag tag--accent">{r.data.category}</span>
+                  {r.data.outcome && <span class="rv__outcome">{r.data.outcome}</span>}
+                </div>
+                <h2>{r.data.title}</h2>
+                <div class="rv__body">
+                  <r.Body />
+                </div>
+                <p class="rv__meta">
+                  {r.data.author}
+                  {r.data.via && <> · {r.data.via}</>}
+                  <> · {fmt(r.data.publishDate)}</>
+                </p>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p class="notice">아직 게시된 후기가 없습니다.</p>
+        )
+      }
+    </div>
+  </section>
+
+  <CtaSection />
+</BaseLayout>
+
+<style>
+  .notice,
+  .rv {
+    max-width: 880px;
+    margin-inline: auto;
+  }
+  .notice {
+    font-size: 0.875rem;
+    color: var(--ink-2);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    padding: 0.9rem 1.2rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .rv {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: 1.25rem;
+  }
+  .rv__item {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    padding: clamp(1.25rem, 3vw, 1.9rem);
+  }
+  .rv__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 0.9rem;
+  }
+  .rv__outcome {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    color: var(--accent);
+  }
+  .rv__item h2 {
+    font-size: 1.1rem;
+    margin: 0 0 0.9rem;
+  }
+  .rv__body {
+    color: var(--ink-2);
+    font-size: 0.9375rem;
+  }
+  .rv__body :global(p) {
+    margin-bottom: 0.9rem;
+  }
+  /* 의뢰인이 보내온 말은 인용으로 구분 */
+  .rv__body :global(blockquote) {
+    margin: 0;
+    padding: 1rem 1.2rem;
+    background: var(--surface-2);
+    border-left: 3px solid var(--line-strong);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    color: var(--ink);
+  }
+  .rv__body :global(blockquote p:last-child) {
+    margin-bottom: 0;
+  }
+  .rv__meta {
+    margin: 1rem 0 0;
+    padding-top: 0.9rem;
+    border-top: 1px solid var(--line);
+    font-size: 0.8125rem;
+    color: var(--ink-3);
+  }
+</style>

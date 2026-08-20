@@ -111,6 +111,7 @@ export const NAV = [
   { label: '학교폭력 절차', href: '/school-violence/' },
   { label: '업무분야', href: '/service/' },
   { label: '해결사례', href: '/case/' },
+  { label: '의뢰인 후기', href: '/review/' },
   { label: '칼럼', href: '/column/' },
   { label: '변호사 소개', href: '/about/' },
   { label: '상담신청', href: '/contact/' },

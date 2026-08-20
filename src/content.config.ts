@@ -66,4 +66,28 @@ const service = defineCollection({
   }),
 });
 
-export const collections = { column, case: caseStudy, service };
+/**
+ * 의뢰인 후기.
+ * ⚠️ 반드시 실제로 받은 내용만 올리세요. 지어낸 후기는 표시광고법·변호사 광고규정 위반입니다.
+ *    의뢰인이 특정되지 않도록 이름·학교·지역은 반드시 가리고 게시하세요.
+ */
+const review = defineCollection({
+  loader: glob({ base: './src/content/review', pattern: '**/*.md' }),
+  schema: z.object({
+    /** 후기 요지 한 줄 (목록 카드 제목) */
+    title: z.string(),
+    /** 게시 순서용 */
+    publishDate: z.coerce.date(),
+    /** 사건 유형 */
+    category: z.enum(['학폭위', '행정심판·소송', '형사·소년보호', '교권·아동학대', '기타']),
+    /** 어떻게 마무리된 사건인지 한 줄. 예: "조치없음 결정" */
+    outcome: z.string().optional(),
+    /** 작성자 표기. 실명 금지 — "고등학생 학부모" 처럼 익명으로 */
+    author: z.string().default('의뢰인'),
+    /** 전달 경로. 예: 문자, 이메일 */
+    via: z.string().optional(),
+    draft: z.boolean().default(false),
+  }),
+});
+
+export const collections = { column, case: caseStudy, service, review };

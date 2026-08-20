@@ -28,6 +28,7 @@ const jobs = [
   ['_p8', 'service-criminal', 'centre'],
   ['_p9', 'case', 'centre'],
   ['_p10', 'column', 'centre'],
+  ['_p11', 'review', 'centre'],
 ];
 
 let total = 0;

@@ -236,3 +236,60 @@ collections:
       - label: 본문
         name: body
         widget: markdown
+
+  # ── 의뢰인 후기 ─────────────────────────────────────────
+  # ⚠️ 실제로 받은 내용만 올리세요. 지어낸 후기는 표시광고법·변호사 광고규정 위반입니다.
+  #    의뢰인 이름·학교·지역은 반드시 가리고 올리세요.
+  - name: review
+    label: 의뢰인 후기
+    label_singular: 후기
+    folder: src/content/review
+    create: true
+    slug: '{{fields.slug}}'
+    extension: md
+    format: frontmatter
+    identifier_field: title
+    summary: '{{title}}'
+    sortable_fields: [publishDate, category]
+    fields:
+      - label: 후기 요지 (목록 제목)
+        name: title
+        widget: string
+        hint: 어떤 사건이었는지 한 줄로. 학교명·지역·실명이 들어가지 않게 쓰세요.
+      - label: URL 주소 (영문)
+        name: slug
+        widget: string
+        pattern: ['^[a-z0-9-]+$', '영문 소문자, 숫자, 하이픈(-)만 사용하세요']
+      - label: 게시일
+        name: publishDate
+        widget: datetime
+        date_format: YYYY-MM-DD
+        time_format: false
+        picker_utc: false
+      - label: 사건 유형
+        name: category
+        widget: select
+        options: [학폭위, 행정심판·소송, 형사·소년보호, 교권·아동학대, 기타]
+      - label: 결과 한 줄
+        name: outcome
+        widget: string
+        required: false
+        hint: 예) 조치없음 결정
+      - label: 작성자 표기
+        name: author
+        widget: string
+        default: 의뢰인
+        hint: 실명 금지. 예) 중학생 학부모
+      - label: 전달 경로
+        name: via
+        widget: string
+        required: false
+        hint: 예) 문자, 이메일
+      - label: 임시저장(공개 안 함)
+        name: draft
+        widget: boolean
+        default: false
+      - label: 본문
+        name: body
+        widget: markdown
+        hint: 의뢰인이 보내온 말은 인용(>)으로 감싸면 따로 구분되어 표시됩니다.
