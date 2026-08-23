@@ -4,7 +4,7 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import StickyCta from '../components/StickyCta.astro';
 import JsonLd from '../components/JsonLd.astro';
-import { SITE, SITE_URL, VERIFICATION, PREVIEW_MODE, absoluteUrl } from '../consts';
+import { SITE, SITE_URL, ATTORNEY, VERIFICATION, PREVIEW_MODE, absoluteUrl } from '../consts';
 import { organizationSchema, websiteSchema, breadcrumbSchema, type Crumb } from '../lib/schema';
 
 interface Props {
@@ -24,16 +24,29 @@ interface Props {
   bareTitle?: boolean;
 }
 
+/**
+ * 기본 공유 썸네일 (scripts/generate-og.mjs 로 생성 — 왼쪽 문구 + 오른쪽 변호사 사진).
+ *
+ * OG_VERSION: 카카오톡·페이스북은 이미지 주소별로 썸네일을 캐시합니다.
+ * 그림 파일만 바꾸면 한동안 예전 썸네일이 계속 보이므로,
+ * og-default.png 를 다시 만들 때마다 이 숫자를 1 올려주세요.
+ */
+const OG_DEFAULT = '/og-default.png';
+const OG_DEFAULT_SIZE = { width: 1200, height: 630 };
+const OG_VERSION = 2;
+
 const {
   title,
   description,
-  image = '/og-default.png',
+  image = OG_DEFAULT,
   // 미리보기 모드에서는 페이지 설정과 무관하게 전부 색인 차단
   noindex: noindexProp = false,
   breadcrumbs = [],
   jsonLd = [],
   bareTitle = false,
 } = Astro.props;
+
+const ogImage = `${absoluteUrl(image)}?v=${OG_VERSION}`;
 
 const noindex = noindexProp || PREVIEW_MODE;
 const pageTitle = bareTitle ? title : `${title} | ${SITE.name}`;
@@ -66,8 +79,19 @@ const schemas: Record<string, unknown>[] = [
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
-    <meta property="og:image" content={absoluteUrl(image)} />
+    <meta property="og:image" content={ogImage} />
+    {
+      image === OG_DEFAULT && (
+        <>
+          <meta property="og:image:alt" content={`${ATTORNEY.name} ${ATTORNEY.jobTitle} — ${SITE.name}`} />
+          <meta property="og:image:type" content="image/png" />
+          <meta property="og:image:width" content={String(OG_DEFAULT_SIZE.width)} />
+          <meta property="og:image:height" content={String(OG_DEFAULT_SIZE.height)} />
+        </>
+      )
+    }
     <meta property="og:locale" content={SITE.locale} />
+    <meta name="twitter:image" content={ogImage} />
     <meta name="twitter:card" content="summary_large_image" />
 
     <!-- 검색엔진 소유확인 -->
