@@ -1,5 +1,5 @@
 ---
-title: 피해학생 보호조치와 신고
+title: 학교폭력 신고 방법 및 절차
 shortTitle: 피해학생 신고 절차
 slug: report-school-violence
 description: 아이가 학교폭력 피해를 당했을 때 신고 방법, 증거 확보, 피해학생 보호조치 신청, 분리조치와 손해배상까지 실제 절차를 정리했습니다.
