@@ -118,8 +118,8 @@ export const FORM = {
 
 /** 검색엔진 웹마스터도구 소유확인 메타태그 값 (등록 후 발급받은 코드만 입력) */
 export const VERIFICATION = {
-  google: '', // TODO: Google Search Console
-  naver: '', // TODO: 네이버 서치어드바이저
+  google: '', // Google 은 메타태그 대신 가비아 DNS TXT 레코드(도메인 속성)로 인증 — 비워 둡니다
+  naver: '2a82453ddd22d9ba34ac3c8c8bdb114ff7654147',
 } as const;
 
 /** 상단 내비게이션 */
