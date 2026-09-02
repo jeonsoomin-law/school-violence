@@ -67,7 +67,7 @@ export const ADDRESS = {
 /** 대표 변호사 정보 — Attorney 구조화 데이터에 사용 */
 export const ATTORNEY = {
   name: '전수민',
-  jobTitle: '파트너변호사',
+  jobTitle: '학교폭력 전문 변호사',
   /** 약력 한 줄 */
   bio: '고등학교 교사와 서울시교육청 상근 변호사를 거친 학교폭력변호사. 학폭위 대응과 조치 불복을 중심으로 소년사건, 교원징계, 아동학대, 교육활동침해 사건을 전담합니다.',
   /** 프로필 사진 경로 (public 기준). 없으면 '' */
@@ -84,11 +84,24 @@ export const ATTORNEY = {
  * 항목을 지우려면 그냥 줄을 삭제하면 됩니다.
  */
 export const CREDENTIALS = [
-  { label: '교육부', detail: '학교폭력 사안처리 가이드북 집필위원' },
-  { label: '서울시교육청', detail: '학교폭력 사안처리 지원단 위원' },
-  { label: '서울시교육청', detail: '교권보호위원' },
-  { label: '대한변호사협회', detail: '연수 강사' },
-  { label: '前 서울시교육청', detail: '상근 변호사 (2012–2016)' },
+  { label: '교육부', detail: '학교폭력사안처리 가이드북 집필위원' },
+  { label: '서울시교육청', detail: '학교폭력 전담 변호사' },
+  { label: '학교', detail: '고등학교 교사 경력' },
+  { label: '자문', detail: '100개 이상의 학교, 교육부, 교육청, 한국교총 등 자문 변호사' },
+  { label: '연수', detail: '대한변협, 교육청, 학교전담경찰관, 장학사, 학폭심의위원 등 연수 강사' },
+] as const;
+
+/**
+ * 자격 스트립 아래 기관 로고. 위촉·자문·연수 이력이 있는 기관만 넣습니다.
+ * 파일은 public/images/logos/ 에 있고, 출처는 각 기관 공식 CI 또는 위키미디어 공용(정부저작물)입니다.
+ * 항목을 빼려면 줄을 지우면 됩니다. w/h 는 원본 비율 유지용이고,
+ * scale 은 세로로 긴 로고가 작게 보일 때 살짝 키우는 배율입니다(생략하면 1).
+ */
+export const CREDENTIAL_LOGOS = [
+  { name: '교육부', src: '/images/logos/moe.svg', w: 2048, h: 828, scale: 1.1 },
+  { name: '서울특별시교육청', src: '/images/logos/sen.svg', w: 2048, h: 458 },
+  { name: '대한변호사협회', src: '/images/logos/kba.png', w: 213, h: 43, scale: 1.15 },
+  { name: '한국교원단체총연합회', src: '/images/logos/kfta.svg', w: 353, h: 56 },
 ] as const;
 
 /**

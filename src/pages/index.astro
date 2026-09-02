@@ -3,7 +3,7 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PostCard from '../components/PostCard.astro';
 import CtaSection from '../components/CtaSection.astro';
-import { SITE, CONTACT, ATTORNEY, CREDENTIALS } from '../consts';
+import { SITE, CONTACT, ATTORNEY, CREDENTIALS, CREDENTIAL_LOGOS } from '../consts';
 
 const services = (await getCollection('service', ({ data }) => !data.draft)).sort(
   (a, b) => a.data.order - b.data.order,
@@ -19,6 +19,16 @@ const shots = [
   { src: '/images/scene-hallway', alt: '아무도 없는 학교 복도와 사물함', cap: '학교는 조용히 절차를 진행합니다' },
   { src: '/images/scene-phone', alt: '어두운 방에서 휴대폰 화면을 보고 있는 손', cap: '기록은 화면 안에 남아 있습니다' },
 ];
+
+/** 사진 밴드 아래 절차 흐름. 단계 설명은 /school-violence/ 의 steps 와 맞춰 둡니다. */
+const flow = [
+  { t: '신고 · 접수', d: '보호자 통지, 교육청 사안보고' },
+  { t: '초기 조사', d: '학생·보호자 확인서 작성' },
+  { t: '전담조사관 조사', d: '면담 후 조사 결과 보고서 작성' },
+  { t: '학교폭력 전담기구', d: '학교장 자체해결 여부 판단' },
+  { t: '학교폭력대책심의위원회', d: '학교폭력 여부와 조치 결정' },
+  { t: '행정심판 · 행정소송', d: '조치에 대한 불복 절차' },
+];
 ---
 
 <BaseLayout
@@ -33,11 +43,13 @@ const shots = [
       <div class="hero__text">
         <h1>
           <span class="hero__kw">교사 · 서울시교육청 출신 학교폭력변호사 전수민</span>
-          아이의 3년이<br /><em>몇 주 안에</em> 결정됩니다
+          {/* 900px 이상에서만 <br> 이 보이므로, 좁은 화면에서 단어가 붙지 않게 띄어쓰기를 태그 앞에 둡니다 */}
+          전수민 변호사는 <br class="hero__br" />전공, 경력, 소송수행 및 <br class="hero__br" />사건 처리 경험에서 차별화된 <br class="hero__br" /><em>학교폭력 전문 변호사</em>입니다.
         </h1>
         <p class="hero__lead">
-          학교폭력 사건은 신고 접수부터 조치 결정까지 길지 않습니다. 그 사이에 쓴 진술서 한 장이
-          조치 수위를 바꾸고, 그 조치는 생활기록부에 남습니다.
+          학교폭력 사건은 상대학생 측의 주장, 학교의 입장 등 고려할 점이 너무나 많고, 조심스럽게
+          접근해야 합니다. 신고접수, 초기 진술서 작성, 전담조사관 조사, 학교폭력전담기구, 학폭위 개최
+          등 매 단계에서 전문가의 밀착 조력이 필요합니다.
         </p>
         <div class="hero__actions">
           <a class="hero__cta hero__cta--primary" href={`tel:${CONTACT.phoneHref}`}>
@@ -74,6 +86,18 @@ const shots = [
           ))
         }
       </div>
+      <div class="wrap creds__logos">
+        <span class="creds__logos-label">위촉 · 자문 · 연수 기관</span>
+        <ul class="creds__logo-list">
+          {
+            CREDENTIAL_LOGOS.map((l) => (
+              <li class="creds__logo" style={'scale' in l ? `--s:${l.scale}` : undefined}>
+                <img src={l.src} alt={l.name} width={l.w} height={l.h} loading="lazy" decoding="async" />
+              </li>
+            ))
+          }
+        </ul>
+      </div>
     </div>
   </section>
 
@@ -90,6 +114,32 @@ const shots = [
           </figure>
         ))
       }
+    </div>
+  </section>
+
+  <section class="pledge">
+    <div class="wrap pledge__inner">
+      <blockquote class="pledge__quote">
+        <p>
+          상담하는 변호사와 사건수행 변호사가 다르지 않고, <strong>전수민 변호사가 직접 상담부터 사건 수행까지 모든 절차를 함께 합니다.</strong>
+        </p>
+      </blockquote>
+
+      <div class="flow__head">
+        <span class="eyebrow">학교폭력 사건 처리 절차</span>
+        <a href="/school-violence/">단계별 자세히 보기 →</a>
+      </div>
+      <ol class="flow">
+        {
+          flow.map((f) => (
+            <li class="flow__item">
+              <span class="flow__num" aria-hidden="true" />
+              <strong class="flow__t">{f.t}</strong>
+              <span class="flow__d">{f.d}</span>
+            </li>
+          ))
+        }
+      </ol>
     </div>
   </section>
 
@@ -124,7 +174,7 @@ const shots = [
         <div class="wrap">
           <div class="section__head">
             <span class="eyebrow">해결사례</span>
-            <h2>실제로 어떻게 다투었는지 보여드립니다</h2>
+            <h2>전수민 변호사가 수행하여 좋은 결과를 냈던 사건의 일부입니다.</h2>
             <p>
               의뢰인이 특정되지 않도록 사건 내용을 각색·일반화하여 정리했습니다. 결과는 구체적
               사실관계에 따라 달라질 수 있습니다.
@@ -213,10 +263,19 @@ const shots = [
 
   .hero h1 {
     color: #fff;
-    font-size: clamp(2.15rem, 1.15rem + 4vw, 4rem);
-    line-height: 1.16;
-    letter-spacing: -0.04em;
+    /* 문장형 헤드라인이라 예전 구호형보다 한 단계 작게, 900px 이상에서는 네 줄로 고정 */
+    font-size: clamp(1.7rem, 0.4rem + 2.7vw, 2.75rem);
+    line-height: 1.24;
+    letter-spacing: -0.035em;
     margin-bottom: 1.15rem;
+  }
+  .hero__br {
+    display: none;
+  }
+  @media (min-width: 900px) {
+    .hero__br {
+      display: inline;
+    }
   }
   .hero h1 em {
     font-style: normal;
@@ -225,7 +284,7 @@ const shots = [
   .hero__lead {
     color: var(--dark-ink-2);
     font-size: clamp(1rem, 0.95rem + 0.3vw, 1.125rem);
-    max-width: 27em;
+    max-width: 30em;
     margin-bottom: 2rem;
   }
 
@@ -352,6 +411,60 @@ const shots = [
     color: var(--dark-ink-2);
   }
 
+  /* 기관 로고 — 공식 색을 그대로 쓰기 위해 밝은 칩 위에 올립니다 */
+  .creds__logos {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem 1.25rem;
+    padding-block: 0.25rem 1.25rem;
+  }
+  .creds__logos-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--ink-3);
+    white-space: nowrap;
+  }
+  .creds__logo-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+  .creds__logo {
+    display: inline-flex;
+    align-items: center;
+    height: 44px;
+    padding: 0 0.95rem;
+    border-radius: 10px;
+    background: #f4f6f9;
+    opacity: 0.92;
+    transition: opacity 0.15s;
+  }
+  .creds__logo:hover {
+    opacity: 1;
+  }
+  .creds__logo img {
+    display: block;
+    height: calc(24px * var(--s, 1));
+    width: auto;
+  }
+  @media (max-width: 899px) {
+    .creds__logos {
+      gap: 0.6rem 1rem;
+    }
+    .creds__logo {
+      height: 40px;
+      padding: 0 0.8rem;
+    }
+    .creds__logo img {
+      height: calc(21px * var(--s, 1));
+    }
+  }
+
   /* ── 히어로 아래 사진 밴드 ───────────────────── */
   .shots {
     background: var(--bg-soft);
@@ -392,6 +505,145 @@ const shots = [
     font-weight: 700;
     color: #fff;
     background: linear-gradient(to top, rgba(8, 9, 11, 0.92), rgba(8, 9, 11, 0));
+  }
+
+  /* ── 인용문 + 절차 흐름 ─────────────────────── */
+  .pledge {
+    background: var(--bg);
+    border-bottom: 1px solid var(--line);
+  }
+  .pledge__inner {
+    padding-block: clamp(2.75rem, 5vw, 4.5rem);
+  }
+  .pledge__quote {
+    max-width: 880px;
+    margin: 0 0 clamp(2.25rem, 4vw, 3.5rem);
+    padding: 0;
+  }
+  .pledge__quote p {
+    margin: 0;
+    font-size: clamp(1.2rem, 1rem + 0.9vw, 1.7rem);
+    line-height: 1.55;
+    letter-spacing: -0.02em;
+    color: var(--ink-2);
+  }
+  /* 따옴표는 본문과 같은 크기로, 색만 골드 */
+  .pledge__quote p::before,
+  .pledge__quote p::after {
+    color: var(--gold);
+    font-weight: 700;
+  }
+  .pledge__quote p::before {
+    content: '“';
+    margin-right: 0.1em;
+  }
+  .pledge__quote p::after {
+    content: '”';
+    margin-left: 0.1em;
+  }
+  .pledge__quote strong {
+    color: var(--heading);
+    font-weight: 700;
+  }
+
+  .flow__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem 1rem;
+    margin-bottom: 1.5rem;
+  }
+  .flow__head .eyebrow {
+    margin-bottom: 0;
+  }
+  .flow__head a {
+    font-size: 0.875rem;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .flow {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    counter-reset: flow;
+  }
+  .flow__item {
+    position: relative;
+    counter-increment: flow;
+    display: grid;
+    gap: 0.15rem;
+    padding: 0 0 1.5rem 2rem;
+  }
+  /* 좁은 화면: 왼쪽 세로 선 + 점 */
+  .flow__item::before {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 0.6rem;
+    bottom: -0.6rem;
+    width: 1px;
+    background: var(--line-strong);
+  }
+  .flow__item:last-child::before {
+    display: none;
+  }
+  .flow__item::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.3rem;
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: var(--gold);
+    box-shadow: 0 0 0 4px var(--bg);
+  }
+  .flow__num::before {
+    content: counter(flow, decimal-leading-zero);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--gold);
+  }
+  .flow__t {
+    color: var(--heading);
+    font-size: 1rem;
+    line-height: 1.35;
+  }
+  .flow__d {
+    color: var(--ink-2);
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+  /* 넓은 화면: 여섯 칸을 가로로 놓고 위쪽 선으로 잇습니다 */
+  @media (min-width: 900px) {
+    .flow {
+      grid-template-columns: repeat(6, 1fr);
+      gap: 0 1.25rem;
+    }
+    .flow__item {
+      padding: 1.6rem 0 0;
+    }
+    .flow__item::before {
+      display: block;
+      left: 0;
+      right: -1.25rem;
+      top: 5px;
+      bottom: auto;
+      width: auto;
+      height: 1px;
+    }
+    .flow__item:last-child::before {
+      display: block;
+      right: 0;
+    }
+    .flow__item::after {
+      left: 0;
+      top: 0;
+    }
   }
 
   .more {
