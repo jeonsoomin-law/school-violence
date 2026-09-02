@@ -13,14 +13,7 @@ const cases = (await getCollection('case', ({ data }) => !data.draft))
   .sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime())
   .slice(0, 3);
 
-/** 홈 중간 사진 밴드. 실제 사건 사진이 아니라 상황을 표현한 이미지입니다. */
-const shots = [
-  { src: '/images/scene-classroom', alt: '해질 무렵 빈 교실에 혼자 앉아 있는 학생', cap: '아이는 먼저 말하지 않습니다' },
-  { src: '/images/scene-hallway', alt: '아무도 없는 학교 복도와 사물함', cap: '학교는 조용히 절차를 진행합니다' },
-  { src: '/images/scene-phone', alt: '어두운 방에서 휴대폰 화면을 보고 있는 손', cap: '기록은 화면 안에 남아 있습니다' },
-];
-
-/** 사진 밴드 아래 절차 흐름. 단계 설명은 /school-violence/ 의 steps 와 맞춰 둡니다. */
+/** 절차 흐름. 단계 설명은 /school-violence/ 의 steps 와 맞춰 둡니다. */
 const flow = [
   { t: '신고 · 접수', d: '보호자 통지, 교육청 사안보고' },
   { t: '초기 조사', d: '학생·보호자 확인서 작성' },
@@ -98,22 +91,6 @@ const flow = [
           }
         </ul>
       </div>
-    </div>
-  </section>
-
-  <section class="shots">
-    <div class="wrap shots__inner">
-      {
-        shots.map((s) => (
-          <figure class="shots__item">
-            <picture>
-              <source srcset={`${s.src}.webp`} type="image/webp" />
-              <img src={`${s.src}.jpg`} alt={s.alt} width="900" height="600" loading="lazy" decoding="async" />
-            </picture>
-            <figcaption>{s.cap}</figcaption>
-          </figure>
-        ))
-      }
     </div>
   </section>
 
@@ -463,48 +440,6 @@ const flow = [
     .creds__logo img {
       height: calc(21px * var(--s, 1));
     }
-  }
-
-  /* ── 히어로 아래 사진 밴드 ───────────────────── */
-  .shots {
-    background: var(--bg-soft);
-    border-bottom: 1px solid var(--line);
-  }
-  .shots__inner {
-    display: grid;
-    gap: 1rem;
-    padding-block: clamp(1.75rem, 3.5vw, 2.75rem);
-  }
-  @media (min-width: 760px) {
-    .shots__inner {
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1.25rem;
-    }
-  }
-  .shots__item {
-    position: relative;
-    margin: 0;
-    border-radius: var(--radius);
-    overflow: hidden;
-    border: 1px solid var(--line);
-  }
-  .shots__item img {
-    display: block;
-    width: 100%;
-    height: 100%;
-    aspect-ratio: 3 / 2;
-    object-fit: cover;
-    /* 다크 테마에 맞춰 살짝 눌러줍니다 */
-    filter: saturate(0.75) brightness(0.82);
-  }
-  .shots__item figcaption {
-    position: absolute;
-    inset: auto 0 0 0;
-    padding: 2.5rem 1rem 0.95rem;
-    font-size: 0.875rem;
-    font-weight: 700;
-    color: #fff;
-    background: linear-gradient(to top, rgba(8, 9, 11, 0.92), rgba(8, 9, 11, 0));
   }
 
   /* ── 인용문 + 절차 흐름 ─────────────────────── */
