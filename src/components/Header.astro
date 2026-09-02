@@ -19,6 +19,12 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
         <path d="M43 24h14a7 7 0 0 1-14 0z" fill="currentColor" />
       </svg>
       <span class="hd__name">{SITE.name}</span>
+      <span class="hd__divider" aria-hidden="true"></span>
+      {/* 로고 PNG 한 장을 두 번 그립니다. 글자 부분은 흰색으로 반전하고 오른쪽 도장은 원색으로 겹칩니다. */}
+      <span class="hd__firm">
+        <img class="hd__firm-text" src="/images/logos/jeonghyang.png" alt={SITE.legalName} width="573" height="126" />
+        <img class="hd__firm-stamp" src="/images/logos/jeonghyang.png" alt="" width="573" height="126" aria-hidden="true" />
+      </span>
     </a>
 
     <input type="checkbox" id="nav-toggle" class="visually-hidden hd__check" />
@@ -77,6 +83,59 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
     height: 24px;
     flex: none;
     color: var(--gold);
+  }
+  .hd__divider {
+    flex: none;
+    width: 1px;
+    height: 24px;
+    margin: 0 0.15rem;
+    background: rgba(255, 255, 255, 0.3);
+  }
+  .hd__firm {
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: 34px;
+    flex: none;
+  }
+  .hd__firm img {
+    display: block;
+    height: 100%;
+    width: auto;
+  }
+  /* 글자 부분: 흰색으로 반전, 오른쪽 8% 도장 영역은 잘라냄 */
+  .hd__firm-text {
+    filter: brightness(0) invert(1);
+    clip-path: inset(0 8% 0 0);
+    opacity: 0.95;
+  }
+  /* 도장 부분: 원색 유지, 왼쪽 92% 글자 영역은 잘라냄 */
+  .hd__firm-stamp {
+    position: absolute;
+    top: 0;
+    left: 0;
+    clip-path: inset(0 0 0 92%);
+  }
+  /* 좁은 화면: 브랜드명이 길어 전체 로고를 두면 메뉴 버튼이 둘째 줄로 밀립니다.
+     로고 오른쪽 절반(正向 글씨 + 도장)만 보이도록 잘라 씁니다. */
+  @media (max-width: 480px) {
+    .hd__firm {
+      height: 24px;
+      width: 53px;
+      overflow: hidden;
+      justify-content: flex-end;
+    }
+    .hd__firm img {
+      max-width: none;
+    }
+    .hd__firm-stamp {
+      left: auto;
+      right: 0;
+    }
+    .hd__divider {
+      height: 18px;
+      margin: 0;
+    }
   }
 
   .hd__nav ul {
