@@ -1,6 +1,9 @@
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 
+/** 관리자 화면(CMS)은 비워둔 선택 필드를 빈 문자열('')로 저장한다. 빈 문자열은 값 없음으로 취급해 빌드가 깨지지 않게 한다. */
+const emptyToUndefined = (v: unknown) => (v === '' || v === null ? undefined : v);
+
 /** 칼럼 — 검색 유입의 핵심. 롱테일 질문형 키워드 1개당 글 1개 원칙. */
 const column = defineCollection({
   loader: glob({ base: './src/content/column', pattern: '**/*.md' }),
@@ -10,13 +13,13 @@ const column = defineCollection({
     /** 메타 디스크립션. 한글 70~90자 (넘으면 검색결과에서 잘림) */
     description: z.string(),
     publishDate: z.coerce.date(),
-    updatedDate: z.coerce.date().optional(),
+    updatedDate: z.preprocess(emptyToUndefined, z.coerce.date().optional()),
     /** 목록 필터용 카테고리 */
     category: z.enum(['학폭위 절차', '가해학생 대응', '피해학생 보호', '불복·소송', '생활기록부', '기타']),
     /** 이 글이 노리는 검색어들. 메타 keywords 및 내부 관련글 매칭에 사용 */
     keywords: z.array(z.string()).default([]),
     /** 대표 이미지 (public 기준 경로, 예: /images/columns/foo.jpg) */
-    cover: z.string().optional(),
+    cover: z.preprocess(emptyToUndefined, z.string().optional()),
     /** 목차 자동 생성 여부 */
     toc: z.boolean().default(true),
     /** 이 글 하단에 노출할 FAQ. FAQPage 구조화 데이터로도 출력됨 */
