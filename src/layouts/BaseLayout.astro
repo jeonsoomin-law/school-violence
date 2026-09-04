@@ -96,7 +96,7 @@ const schemas: Record<string, unknown>[] = [
 
     <!-- 검색엔진 소유확인 -->
     {VERIFICATION.google && <meta name="google-site-verification" content={VERIFICATION.google} />}
-    {VERIFICATION.naver && <meta name="naver-site-verification" content={VERIFICATION.naver} />}
+    {VERIFICATION.naver.map((code) => <meta name="naver-site-verification" content={code} />)}
 
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="alternate" type="application/rss+xml" title={`${SITE.name} 칼럼`} href="/rss.xml" />
