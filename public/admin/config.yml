@@ -75,14 +75,13 @@ collections:
         hint: 내용을 크게 고쳤을 때만 채우세요. 검색엔진에 갱신 신호가 됩니다.
       - label: 분류
         name: category
-        widget: select
-        options:
-          - 학폭위 절차
-          - 가해학생 대응
-          - 피해학생 보호
-          - 불복·소송
-          - 생활기록부
-          - 기타
+        widget: relation
+        collection: taxonomy
+        file: categories
+        value_field: '{{column.*.name}}'
+        display_fields: ['{{column.*.name}}']
+        search_fields: ['{{column.*.name}}']
+        hint: 목록에 없는 분류가 필요하면 왼쪽 메뉴의 "분류 관리" 에서 먼저 추가하세요.
       - label: 목표 검색어
         name: keywords
         widget: list
@@ -153,8 +152,13 @@ collections:
         picker_utc: false
       - label: 사건 유형
         name: category
-        widget: select
-        options: [학폭위, 행정심판, 행정소송, 형사·소년보호, 민사, 기타]
+        widget: relation
+        collection: taxonomy
+        file: categories
+        value_field: '{{case.*.name}}'
+        display_fields: ['{{case.*.name}}']
+        search_fields: ['{{case.*.name}}']
+        hint: 목록에 없는 분류가 필요하면 왼쪽 메뉴의 "분류 관리" 에서 먼저 추가하세요.
       - label: 의뢰인 지위
         name: side
         widget: select
@@ -268,8 +272,13 @@ collections:
         picker_utc: false
       - label: 사건 유형
         name: category
-        widget: select
-        options: [학폭위, 행정심판·소송, 형사·소년보호, 교권·아동학대, 기타]
+        widget: relation
+        collection: taxonomy
+        file: categories
+        value_field: '{{review.*.name}}'
+        display_fields: ['{{review.*.name}}']
+        search_fields: ['{{review.*.name}}']
+        hint: 목록에 없는 분류가 필요하면 왼쪽 메뉴의 "분류 관리" 에서 먼저 추가하세요.
       - label: 결과 한 줄
         name: outcome
         widget: string
@@ -293,3 +302,38 @@ collections:
         name: body
         widget: markdown
         hint: 의뢰인이 보내온 말은 인용(>)으로 감싸면 따로 구분되어 표시됩니다.
+
+  # ── 분류 관리 ───────────────────────────────────────────
+  # 칼럼·해결사례·후기에서 고를 수 있는 분류 목록입니다.
+  # 여기서 추가·삭제·순서변경하면 글 작성 화면의 분류 선택지가 바로 따라 바뀝니다.
+  - name: taxonomy
+    label: 분류 관리
+    files:
+      - name: categories
+        label: 분류 목록
+        file: src/data/categories.json
+        fields:
+          - label: 칼럼 분류
+            name: column
+            widget: list
+            label_singular: 분류
+            summary: '{{fields.name}}'
+            hint: 여기서 정한 순서대로 칼럼 목록 페이지에 묶여서 표시됩니다. 이미 글에서 쓰고 있는 분류를 지우거나 이름을 바꾸면, 그 분류로 써둔 글도 함께 고쳐주세요.
+            fields:
+              - { label: 분류 이름, name: name, widget: string }
+          - label: 해결사례 사건 유형
+            name: case
+            widget: list
+            label_singular: 사건 유형
+            summary: '{{fields.name}}'
+            hint: 이미 글에서 쓰고 있는 분류를 지우거나 이름을 바꾸면, 그 분류로 써둔 글도 함께 고쳐주세요.
+            fields:
+              - { label: 사건 유형, name: name, widget: string }
+          - label: 의뢰인 후기 사건 유형
+            name: review
+            widget: list
+            label_singular: 사건 유형
+            summary: '{{fields.name}}'
+            hint: 이미 글에서 쓰고 있는 분류를 지우거나 이름을 바꾸면, 그 분류로 써둔 글도 함께 고쳐주세요.
+            fields:
+              - { label: 사건 유형, name: name, widget: string }

@@ -14,8 +14,13 @@ const column = defineCollection({
     description: z.string(),
     publishDate: z.coerce.date(),
     updatedDate: z.preprocess(emptyToUndefined, z.coerce.date().optional()),
-    /** 목록 필터용 카테고리 */
-    category: z.enum(['학폭위 절차', '가해학생 대응', '피해학생 보호', '불복·소송', '생활기록부', '기타']),
+    /**
+     * 목록 필터용 카테고리.
+     * 고를 수 있는 값은 src/data/categories.json 에 들어 있고, 관리자 화면 → "분류 관리" 에서 편집합니다.
+     * 여기서 값을 고정하지 않는 이유: 분류를 지우거나 이름을 바꿨을 때 배포가 통째로 실패하지 않게 하기 위함입니다.
+     * 대신 목록에 없는 분류가 쓰이면 배포 로그에 경고가 남습니다. (src/data/categories.ts)
+     */
+    category: z.string().min(1),
     /** 이 글이 노리는 검색어들. 메타 keywords 및 내부 관련글 매칭에 사용 */
     keywords: z.array(z.string()).default([]),
     /** 대표 이미지 (public 기준 경로, 예: /images/columns/foo.jpg) */
@@ -38,8 +43,8 @@ const caseStudy = defineCollection({
     title: z.string(),
     description: z.string(),
     publishDate: z.coerce.date(),
-    /** 사건 유형 */
-    category: z.enum(['학폭위', '행정심판', '행정소송', '형사·소년보호', '민사', '기타']),
+    /** 사건 유형. 고를 수 있는 값은 관리자 화면 → "분류 관리" 에서 편집합니다. */
+    category: z.string().min(1),
     /** 의뢰인 지위 */
     side: z.enum(['가해학생으로 지목된 학생', '피해학생']),
     /** 결과 한 줄 요약. 예: "조치없음 결정" */
@@ -81,8 +86,8 @@ const review = defineCollection({
     title: z.string(),
     /** 게시 순서용 */
     publishDate: z.coerce.date(),
-    /** 사건 유형 */
-    category: z.enum(['학폭위', '행정심판·소송', '형사·소년보호', '교권·아동학대', '기타']),
+    /** 사건 유형. 고를 수 있는 값은 관리자 화면 → "분류 관리" 에서 편집합니다. */
+    category: z.string().min(1),
     /** 어떻게 마무리된 사건인지 한 줄. 예: "조치없음 결정" */
     outcome: z.string().optional(),
     /** 작성자 표기. 실명 금지 — "고등학생 학부모" 처럼 익명으로 */
