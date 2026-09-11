@@ -96,14 +96,13 @@ const fmt = (d: Date) => `${d.getFullYear()}.${String(d.getMonth() + 1).padStart
     margin-inline: auto;
   }
   .notice {
+    background: var(--accent-soft);
+    border: 1px solid var(--accent-line);
+    border-radius: var(--radius);
+    padding: 0.9rem 1.1rem;
     font-size: 0.875rem;
-    color: var(--ink-2);
-    background: var(--surface);
-    border: 1px solid var(--line);
-    border-left: 3px solid var(--accent);
-    border-radius: 0 var(--radius) var(--radius) 0;
-    padding: 0.9rem 1.2rem;
-    margin-bottom: 2.5rem;
+    color: var(--accent-2);
+    margin-bottom: 2rem;
   }
 
   .rv {
