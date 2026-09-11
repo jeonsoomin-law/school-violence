@@ -78,9 +78,9 @@ collections:
         widget: relation
         collection: taxonomy
         file: categories
-        value_field: '{{column.*.name}}'
-        display_fields: ['{{column.*.name}}']
-        search_fields: ['{{column.*.name}}']
+        value_field: '{{categories.*.name}}'
+        display_fields: ['{{categories.*.name}}']
+        search_fields: ['{{categories.*.name}}']
         hint: 목록에 없는 분류가 필요하면 왼쪽 메뉴의 "분류 관리" 에서 먼저 추가하세요.
       - label: 목표 검색어
         name: keywords
@@ -150,14 +150,14 @@ collections:
         date_format: YYYY-MM-DD
         time_format: false
         picker_utc: false
-      - label: 사건 유형
+      - label: 분류
         name: category
         widget: relation
         collection: taxonomy
         file: categories
-        value_field: '{{case.*.name}}'
-        display_fields: ['{{case.*.name}}']
-        search_fields: ['{{case.*.name}}']
+        value_field: '{{categories.*.name}}'
+        display_fields: ['{{categories.*.name}}']
+        search_fields: ['{{categories.*.name}}']
         hint: 목록에 없는 분류가 필요하면 왼쪽 메뉴의 "분류 관리" 에서 먼저 추가하세요.
       - label: 의뢰인 지위
         name: side
@@ -270,14 +270,14 @@ collections:
         date_format: YYYY-MM-DD
         time_format: false
         picker_utc: false
-      - label: 사건 유형
+      - label: 분류
         name: category
         widget: relation
         collection: taxonomy
         file: categories
-        value_field: '{{review.*.name}}'
-        display_fields: ['{{review.*.name}}']
-        search_fields: ['{{review.*.name}}']
+        value_field: '{{categories.*.name}}'
+        display_fields: ['{{categories.*.name}}']
+        search_fields: ['{{categories.*.name}}']
         hint: 목록에 없는 분류가 필요하면 왼쪽 메뉴의 "분류 관리" 에서 먼저 추가하세요.
       - label: 결과 한 줄
         name: outcome
@@ -313,27 +313,11 @@ collections:
         label: 분류 목록
         file: src/data/categories.json
         fields:
-          - label: 칼럼 분류
-            name: column
+          - label: 분류
+            name: categories
             widget: list
             label_singular: 분류
             summary: '{{fields.name}}'
-            hint: 여기서 정한 순서대로 칼럼 목록 페이지에 묶여서 표시됩니다. 이미 글에서 쓰고 있는 분류를 지우거나 이름을 바꾸면, 그 분류로 써둔 글도 함께 고쳐주세요.
+            hint: 칼럼·해결사례·후기가 이 목록을 함께 씁니다. 여기서 정한 순서대로 각 목록 페이지에 묶여서 표시됩니다. 이미 글에서 쓰고 있는 분류를 지우거나 이름을 바꾸면, 그 분류로 써둔 글도 함께 고쳐주세요.
             fields:
               - { label: 분류 이름, name: name, widget: string }
-          - label: 해결사례 사건 유형
-            name: case
-            widget: list
-            label_singular: 사건 유형
-            summary: '{{fields.name}}'
-            hint: 이미 글에서 쓰고 있는 분류를 지우거나 이름을 바꾸면, 그 분류로 써둔 글도 함께 고쳐주세요.
-            fields:
-              - { label: 사건 유형, name: name, widget: string }
-          - label: 의뢰인 후기 사건 유형
-            name: review
-            widget: list
-            label_singular: 사건 유형
-            summary: '{{fields.name}}'
-            hint: 이미 글에서 쓰고 있는 분류를 지우거나 이름을 바꾸면, 그 분류로 써둔 글도 함께 고쳐주세요.
-            fields:
-              - { label: 사건 유형, name: name, widget: string }

@@ -5,7 +5,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import Faq from '../../components/Faq.astro';
 import CtaSection from '../../components/CtaSection.astro';
-import PostCard from '../../components/PostCard.astro';
+import RelatedByCategory from '../../components/RelatedByCategory.astro';
 import { articleSchema, faqSchema } from '../../lib/schema';
 import { ATTORNEY } from '../../consts';
 
@@ -29,18 +29,6 @@ const toc = d.toc ? headings.filter((h) => h.depth === 2) : [];
 const fmt = (date: Date) =>
   `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일`;
 
-// 같은 카테고리 → 키워드 겹침 순으로 관련 글 추천 (내부링크 = SEO의 기본기)
-const related = (await getCollection('column', ({ data }) => !data.draft))
-  .filter((c) => c.id !== entry.id)
-  .map((c) => ({
-    entry: c,
-    score:
-      (c.data.category === d.category ? 2 : 0) +
-      c.data.keywords.filter((k) => d.keywords.includes(k)).length,
-  }))
-  .sort((a, b) => b.score - a.score || b.entry.data.publishDate.getTime() - a.entry.data.publishDate.getTime())
-  .slice(0, 3)
-  .map((r) => r.entry);
 ---
 
 <BaseLayout
@@ -111,23 +99,7 @@ const related = (await getCollection('column', ({ data }) => !data.draft))
         }
       </div>
 
-      {
-        related.length > 0 && (
-          <aside class="art__related">
-            <h2>함께 읽으면 좋은 글</h2>
-            <div class="grid grid--3">
-              {related.map((c) => (
-                <PostCard
-                  href={`/column/${c.id}/`}
-                  title={c.data.title}
-                  description={c.data.description}
-                  tag={c.data.category}
-                />
-              ))}
-            </div>
-          </aside>
-        )
-      }
+      <RelatedByCategory category={d.category} currentId={entry.id} keywords={d.keywords} />
     </div>
   </article>
 
@@ -237,9 +209,4 @@ const related = (await getCollection('column', ({ data }) => !data.draft))
     line-height: 1.7;
   }
 
-  .art__related {
-    margin-top: 4rem;
-    padding-top: 2.5rem;
-    border-top: 1px solid var(--line);
-  }
 </style>

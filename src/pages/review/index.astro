@@ -3,7 +3,7 @@ import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PageHero from '../../components/PageHero.astro';
 import CtaSection from '../../components/CtaSection.astro';
-import { reviewCategories, warnUnknownCategories } from '../../data/categories';
+import { orderCategories } from '../../data/categories';
 
 const reviews = (await getCollection('review', ({ data }) => !data.draft)).sort(
   (a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime(),
@@ -12,8 +12,8 @@ const rendered = await Promise.all(
   reviews.map(async (r) => ({ ...r, Body: (await render(r)).Content })),
 );
 
-// "분류 관리"에 없는 사건 유형이 쓰이고 있으면 배포 로그에 경고를 남긴다.
-warnUnknownCategories(reviews.map((r) => r.data.category), reviewCategories, '의뢰인 후기');
+// 분류는 관리자 화면 → "분류 관리" 에 등록된 순서대로 묶어서 보여준다.
+const categories = orderCategories(reviews.map((r) => r.data.category), '의뢰인 후기');
 
 const crumbs = [{ name: '의뢰인 후기', href: '/review/' }];
 const fmt = (d: Date) => `${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, '0')}`;
@@ -42,14 +42,18 @@ const fmt = (d: Date) => `${d.getFullYear()}.${String(d.getMonth() + 1).padStart
 
       {
         rendered.length > 0 ? (
+          categories.map((cat) => (
+          <div class="catblock" id={`cat-${encodeURIComponent(cat)}`}>
+            <h2>{cat}</h2>
           <ul class="rv">
-            {rendered.map((r) => (
-              <li class="rv__item">
-                <div class="rv__head">
-                  <span class="tag tag--accent">{r.data.category}</span>
-                  {r.data.outcome && <span class="rv__outcome">{r.data.outcome}</span>}
-                </div>
-                <h2>{r.data.title}</h2>
+            {rendered.filter((r) => r.data.category === cat).map((r) => (
+              <li class="rv__item" id={`rv-${r.id}`}>
+                {r.data.outcome && (
+                  <div class="rv__head">
+                    <span class="rv__outcome">{r.data.outcome}</span>
+                  </div>
+                )}
+                <h3>{r.data.title}</h3>
                 <div class="rv__body">
                   <r.Body />
                 </div>
@@ -61,6 +65,8 @@ const fmt = (d: Date) => `${d.getFullYear()}.${String(d.getMonth() + 1).padStart
               </li>
             ))}
           </ul>
+          </div>
+          ))
         ) : (
           <p class="notice">아직 게시된 후기가 없습니다.</p>
         )
@@ -72,6 +78,18 @@ const fmt = (d: Date) => `${d.getFullYear()}.${String(d.getMonth() + 1).padStart
 </BaseLayout>
 
 <style>
+  .catblock + .catblock {
+    margin-top: 3.5rem;
+  }
+  .catblock h2 {
+    font-size: 1.2rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 2px solid var(--line-strong);
+    margin-bottom: 1.5rem;
+  }
+  .rv__item {
+    scroll-margin-top: 6rem;
+  }
   .notice,
   .rv {
     max-width: 880px;
@@ -112,7 +130,7 @@ const fmt = (d: Date) => `${d.getFullYear()}.${String(d.getMonth() + 1).padStart
     font-weight: 700;
     color: var(--accent);
   }
-  .rv__item h2 {
+  .rv__item h3 {
     font-size: 1.1rem;
     margin: 0 0 0.9rem;
   }

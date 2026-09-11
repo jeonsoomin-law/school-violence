@@ -4,14 +4,15 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import PageHero from '../../components/PageHero.astro';
 import PostCard from '../../components/PostCard.astro';
 import CtaSection from '../../components/CtaSection.astro';
-import { caseCategories, warnUnknownCategories } from '../../data/categories';
+import { orderCategories } from '../../data/categories';
 
 const cases = (await getCollection('case', ({ data }) => !data.draft)).sort(
   (a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime(),
 );
 
-// "분류 관리"에 없는 사건 유형이 쓰이고 있으면 배포 로그에 경고를 남긴다.
-warnUnknownCategories(cases.map((c) => c.data.category), caseCategories, '해결사례');
+// 분류는 관리자 화면 → "분류 관리" 에 등록된 순서대로 묶어서 보여준다.
+// 사례가 하나도 없는 분류는 목록에 나타나지 않는다.
+const categories = orderCategories(cases.map((c) => c.data.category), '해결사례');
 
 const crumbs = [{ name: '해결사례', href: '/case/' }];
 ---
@@ -37,21 +38,41 @@ const crumbs = [{ name: '해결사례', href: '/case/' }];
         운영 방식에 따라 결론이 크게 달라집니다.
       </p>
 
-      <div class="grid grid--2">
-        {
-          cases.map((c) => (
-            <PostCard
-              href={`/case/${c.id}/`}
-              title={c.data.title}
-              description={c.data.description}
-              tag={c.data.category}
-              tagAccent
-              note={c.data.outcome}
-              date={c.data.publishDate}
-            />
-          ))
-        }
-      </div>
+      {
+        categories.length > 1 && (
+          <ul class="cats">
+            {categories.map((cat) => (
+              <li>
+                <a href={`#cat-${encodeURIComponent(cat)}`} class="tag">
+                  {cat}
+                </a>
+              </li>
+            ))}
+          </ul>
+        )
+      }
+
+      {
+        categories.map((cat) => (
+          <div class="catblock" id={`cat-${encodeURIComponent(cat)}`}>
+            <h2>{cat}</h2>
+            <div class="grid grid--2">
+              {cases
+                .filter((c) => c.data.category === cat)
+                .map((c) => (
+                  <PostCard
+                    href={`/case/${c.id}/`}
+                    title={c.data.title}
+                    description={c.data.description}
+                    tagAccent
+                    note={c.data.outcome}
+                    date={c.data.publishDate}
+                  />
+                ))}
+            </div>
+          </div>
+        ))
+      }
 
       {cases.length === 0 && <p>아직 등록된 사례가 없습니다.</p>}
     </div>
@@ -60,6 +81,26 @@ const crumbs = [{ name: '해결사례', href: '/case/' }];
 </BaseLayout>
 
 <style>
+  .cats {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 0;
+    margin: 0 0 2.5rem;
+  }
+  .cats a {
+    text-decoration: none;
+  }
+  .catblock + .catblock {
+    margin-top: 3.5rem;
+  }
+  .catblock h2 {
+    font-size: 1.2rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 2px solid var(--line-strong);
+    margin-bottom: 1.5rem;
+  }
   .notice {
     background: var(--accent-soft);
     border: 1px solid var(--accent-line);

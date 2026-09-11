@@ -2,7 +2,8 @@
 interface Props {
   href: string;
   title: string;
-  description: string;
+  /** 없으면 본문 문단을 그리지 않는다 (예: 요약이 없는 후기 카드) */
+  description?: string;
   tag?: string;
   tagAccent?: boolean;
   date?: Date;
@@ -18,7 +19,7 @@ const dateStr = date
 <a class="card pc" href={href}>
   {tag && <span class={tagAccent ? 'tag tag--accent' : 'tag'}>{tag}</span>}
   <h3>{title}</h3>
-  <p>{description}</p>
+  {description && <p>{description}</p>}
   {
     (dateStr || note) && (
       <p class="pc__foot meta">

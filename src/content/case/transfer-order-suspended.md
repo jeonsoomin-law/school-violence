@@ -3,7 +3,7 @@ title: 전학 처분에 대해 집행정지를 받아 학교를 유지한 사례
 slug: transfer-suspend
 description: 8호 전학 처분을 받은 사안에서 행정심판 청구와 함께 집행정지를 신청해 처분의 효력을 정지시키고, 본안에서 조치 수위를 낮춘 사례입니다.
 publishDate: 2026-05-20
-category: 행정소송
+category: 불복절차(행정심판ㆍ행정소송)
 side: 가해학생으로 지목된 학생
 outcome: 집행정지 인용 후 조치 감경
 keywords:

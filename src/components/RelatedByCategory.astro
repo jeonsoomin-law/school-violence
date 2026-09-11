@@ -1,0 +1,160 @@
+---
+/**
+ * 같은 분류에 속한 다른 글을 모아 보여준다.
+ *
+ * 칼럼·해결사례·후기가 분류 목록을 함께 쓰기 때문에, 칼럼을 읽던 사람에게
+ * 같은 분류의 해결사례와 후기를 함께 보여줄 수 있다.
+ *
+ * 같은 분류 글이 하나도 없으면 목표 검색어가 겹치는 순으로 다른 글을 채운다.
+ * 분류가 그 글 하나뿐일 때 관련글 영역이 통째로 사라져 내부링크가 끊기는 것을 막기 위함이다.
+ * 이때는 제목이 "함께 읽으면 좋은 글" 로 바뀌어, 같은 분류가 아님을 드러낸다.
+ */
+import { getCollection } from 'astro:content';
+import PostCard from './PostCard.astro';
+import { BOARD_LABEL } from '../data/categories';
+
+interface Props {
+  /** 지금 보고 있는 글의 분류 */
+  category: string;
+  /** 지금 보고 있는 글의 id. 목록에서 제외한다 */
+  currentId?: string;
+  /** 지금 보고 있는 글의 목표 검색어. 겹칠수록 위로 올린다 */
+  keywords?: string[];
+  /** 최대 노출 개수 */
+  limit?: number;
+}
+const { category, currentId, keywords = [], limit = 6 } = Astro.props;
+
+/** 같은 분류 글이 없을 때 대신 채울 개수 */
+const FALLBACK = 3;
+
+type Item = {
+  href: string;
+  title: string;
+  description?: string;
+  tag: string;
+  tagAccent: boolean;
+  date: Date;
+  note?: string;
+  score: number;
+  sameCat: boolean;
+};
+
+const live = ({ data }: { data: { draft: boolean } }) => !data.draft;
+const overlap = (ks: string[] = []) => ks.filter((k) => keywords.includes(k)).length;
+
+const [columns, cases, reviews] = await Promise.all([
+  getCollection('column', live),
+  getCollection('case', live),
+  getCollection('review', live),
+]);
+
+const colItems: Item[] = columns
+  .filter((c) => c.id !== currentId)
+  .map((c) => ({
+    href: `/column/${c.id}/`,
+    title: c.data.title,
+    description: c.data.description,
+    tag: BOARD_LABEL.column,
+    tagAccent: false,
+    date: c.data.publishDate,
+    score: overlap(c.data.keywords),
+    sameCat: c.data.category === category,
+  }));
+
+const caseItems: Item[] = cases
+  .filter((c) => c.id !== currentId)
+  .map((c) => ({
+    href: `/case/${c.id}/`,
+    title: c.data.title,
+    description: c.data.description,
+    tag: BOARD_LABEL.case,
+    tagAccent: true,
+    date: c.data.publishDate,
+    note: c.data.outcome,
+    score: overlap(c.data.keywords),
+    sameCat: c.data.category === category,
+  }));
+
+// 후기는 개별 페이지가 없으므로 목록 페이지의 해당 항목으로 보낸다.
+const reviewItems: Item[] = reviews
+  .filter((r) => r.id !== currentId)
+  .map((r) => ({
+    href: `/review/#rv-${r.id}`,
+    title: r.data.title,
+    tag: BOARD_LABEL.review,
+    tagAccent: true,
+    date: r.data.publishDate,
+    note: r.data.outcome,
+    score: 0,
+    sameCat: r.data.category === category,
+  }));
+
+const byScore = (a: Item, b: Item) => b.score - a.score || b.date.getTime() - a.date.getTime();
+
+/** 한 게시판 글만 가득 차지 않도록 칼럼 → 해결사례 → 후기 순으로 번갈아 담는다. */
+function roundRobin(pool: Item[], max: number): Item[] {
+  const buckets = [BOARD_LABEL.column, BOARD_LABEL.case, BOARD_LABEL.review].map((t) =>
+    pool.filter((it) => it.tag === t).sort(byScore),
+  );
+  const out: Item[] = [];
+  for (let i = 0; out.length < max && buckets.some((b) => b.length > i); i++) {
+    for (const b of buckets) {
+      if (b[i] && out.length < max) out.push(b[i]);
+    }
+  }
+  return out;
+}
+
+const pool = [...colItems, ...caseItems, ...reviewItems];
+const same = roundRobin(pool.filter((it) => it.sameCat), limit);
+
+const filler =
+  same.length === 0 ? roundRobin(pool.filter((it) => !it.sameCat), FALLBACK) : [];
+
+const items = [...same, ...filler];
+const pure = filler.length === 0 && same.length > 0;
+---
+
+{
+  items.length > 0 && (
+    <aside class="rbc">
+      <h2>
+        {pure ? (
+          <>
+            <span class="rbc__cat">{category}</span> 분류의 다른 글
+          </>
+        ) : (
+          '함께 읽으면 좋은 글'
+        )}
+      </h2>
+      <div class="grid grid--3">
+        {items.map((it) => (
+          <PostCard
+            href={it.href}
+            title={it.title}
+            description={it.description}
+            tag={it.tag}
+            tagAccent={it.tagAccent}
+            note={it.note}
+          />
+        ))}
+      </div>
+    </aside>
+  )
+}
+
+<style>
+  .rbc {
+    margin-top: 4rem;
+    padding-top: 2.5rem;
+    border-top: 1px solid var(--line);
+  }
+  .rbc h2 {
+    font-size: 1.15rem;
+    margin-bottom: 1.5rem;
+  }
+  .rbc__cat {
+    color: var(--accent);
+  }
+</style>

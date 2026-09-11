@@ -4,7 +4,7 @@ import type { GetStaticPaths } from 'astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import CtaSection from '../../components/CtaSection.astro';
-import PostCard from '../../components/PostCard.astro';
+import RelatedByCategory from '../../components/RelatedByCategory.astro';
 import { articleSchema } from '../../lib/schema';
 
 export const getStaticPaths = (async () => {
@@ -22,10 +22,7 @@ const crumbs = [
   { name: d.title, href: url },
 ];
 
-const related = (await getCollection('case', ({ data }) => !data.draft))
-  .filter((c) => c.id !== entry.id)
-  .sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime())
-  .slice(0, 3);
+
 ---
 
 <BaseLayout
@@ -75,25 +72,9 @@ const related = (await getCollection('case', ({ data }) => !data.draft))
         </p>
       </div>
 
-      {
-        related.length > 0 && (
-          <aside class="cs__related">
-            <h2>다른 해결사례</h2>
-            <div class="grid grid--3">
-              {related.map((c) => (
-                <PostCard
-                  href={`/case/${c.id}/`}
-                  title={c.data.title}
-                  description={c.data.description}
-                  tag={c.data.category}
-                  tagAccent
-                  note={c.data.outcome}
-                />
-              ))}
-            </div>
-          </aside>
-        )
-      }
+      <div class="cs__related">
+        <RelatedByCategory category={d.category} currentId={entry.id} keywords={d.keywords} />
+      </div>
     </div>
   </article>
 
@@ -165,9 +146,5 @@ const related = (await getCollection('case', ({ data }) => !data.draft))
     color: var(--ink-3);
     line-height: 1.7;
   }
-  .cs__related {
-    margin-top: 4rem;
-    padding-top: 2.5rem;
-    border-top: 1px solid var(--line);
-  }
+
 </style>
