@@ -4,7 +4,7 @@ slug: school-violence-process
 description: 학교폭력을 심의위원회 없이 학교에서 종결하는 학교장 자체해결제. 네 가지 요건과 피해학생 측 동의, 실무에서 쟁점이 되는 부분을 정리했습니다.
 publishDate: 2026-04-08
 updatedDate: ''
-category: 학폭위
+category: 학폭위 절차
 keywords:
   - 학교장 자체해결
   - 학폭위 안 열리는 경우
