@@ -401,4 +401,8 @@ node scripts/generate-og.mjs
 
 **분류 추가·수정** — 관리자 화면 → 분류 관리. 파일로는 `src/data/categories.json`.
 
-**글 임시저장** — frontmatter에 `draft: true` 를 넣으면 빌드에서 제외됩니다.
+**글 비공개** — frontmatter에 `draft: true` 를 넣으면 빌드에서 제외됩니다. 관리자 화면에서는 "비공개 (켜면 사이트에 안 보임)" 스위치입니다.
+(예전 이름이 "임시저장" 이라 저장 버튼으로 오해해서 켜고 저장한 글이 사이트에 안 나온 적이 있어 이름을 바꿨습니다.)
+
+**해결사례 의뢰인 지위** — 선택지는 `가해학생 / 피해학생 / 교원 / 기타`. 바꾸려면 `public/admin/config.yml` 의
+`side.options` 와 `src/content.config.ts` 의 `CASE_SIDES` 를 **같이** 고쳐야 합니다. 한쪽만 고치면 배포가 실패합니다.

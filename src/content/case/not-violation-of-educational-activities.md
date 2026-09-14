@@ -4,7 +4,7 @@ slug: not-violation-of-educational-activities
 description: 교원 대상 교육활동 침해(교권침해) 신고 사안에서 심의 결과 '교육활동 침해 아님' 및 '학생·보호자 조치 해당없음' 으로 불처분을 받음
 publishDate: 2026-09-12
 category: 교권보호위원회
-side: 가해학생으로 지목된 학생
+side: 가해학생
 outcome: 교권침해(교육활동침해) 아님
 keywords:
   - 교권보호위원회

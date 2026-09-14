@@ -4,7 +4,7 @@ slug: stay-of-execution-school-service
 description: 학폭위에서 교내봉사 4시간 처분을 받은 학생이 본안소송(취소소송) 제기 후 집행정지를 신청하여 인용 결정을 받은 학교폭력 전문 전수민 변호사의 성공사례입니다.
 publishDate: 2026-09-11
 category: 집행정지
-side: 가해학생으로 지목된 학생
+side: 가해학생
 outcome: 학교에서의봉사 집행정지 성공사례
 keywords:
   - 학교폭력 집행정지

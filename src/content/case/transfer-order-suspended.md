@@ -4,7 +4,7 @@ slug: transfer-suspend
 description: 8호 전학 처분을 받은 사안에서 행정심판 청구와 함께 집행정지를 신청해 처분의 효력을 정지시키고, 본안에서 조치 수위를 낮춘 사례입니다.
 publishDate: 2026-05-20
 category: 집행정지
-side: 가해학생으로 지목된 학생
+side: 가해학생
 outcome: 집행정지 인용 후 조치 감경
 keywords:
   - 학폭 전학 처분

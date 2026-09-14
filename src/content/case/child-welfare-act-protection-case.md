@@ -4,7 +4,7 @@ slug: child-welfare-act-protection-case
 description: 현직 교원이 학생에 대한 아동학대(성희롱)으로 신고되었으나 형사재판으로 가지 않고 아동보호사건 송치되어 보호처분을 받고 종결됨
 publishDate: 2026-09-12
 category: 아동학대
-side: 가해학생으로 지목된 학생
+side: 교원
 outcome: 아동학대 불기소(아동보호사건 송치)
 keywords:
   - 교원 아동학대

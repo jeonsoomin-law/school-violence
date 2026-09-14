@@ -4,6 +4,13 @@ import { glob } from 'astro/loaders';
 /** 관리자 화면(CMS)은 비워둔 선택 필드를 빈 문자열('')로 저장한다. 빈 문자열은 값 없음으로 취급해 빌드가 깨지지 않게 한다. */
 const emptyToUndefined = (v: unknown) => (v === '' || v === null ? undefined : v);
 
+/**
+ * 해결사례 의뢰인 지위 선택지. public/admin/config.yml 의 side.options 와 반드시 같게 유지하세요.
+ * 예전 선택지였던 '가해학생으로 지목된 학생' 으로 저장된 글도 배포가 깨지지 않게 '가해학생' 으로 읽는다.
+ */
+const CASE_SIDES = ['가해학생', '피해학생', '교원', '기타'] as const;
+const legacySide = (v: unknown) => (v === '가해학생으로 지목된 학생' ? '가해학생' : v);
+
 /** 칼럼 — 검색 유입의 핵심. 롱테일 질문형 키워드 1개당 글 1개 원칙. */
 const column = defineCollection({
   loader: glob({ base: './src/content/column', pattern: '**/*.md' }),
@@ -46,7 +53,7 @@ const caseStudy = defineCollection({
     /** 사건 유형. 고를 수 있는 값은 관리자 화면 → "분류 관리" 에서 편집합니다. */
     category: z.string().min(1),
     /** 의뢰인 지위 */
-    side: z.enum(['가해학생으로 지목된 학생', '피해학생']),
+    side: z.preprocess(legacySide, z.enum(CASE_SIDES)),
     /** 결과 한 줄 요약. 예: "조치없음 결정" */
     outcome: z.string(),
     keywords: z.array(z.string()).default([]),

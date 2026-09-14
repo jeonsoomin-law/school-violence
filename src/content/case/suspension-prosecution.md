@@ -4,7 +4,7 @@ slug: suspension-prosecution
 description: 쌍방폭행 사건에서 상대방은 소년부 송치되었고, 의뢰인은 소년부 송치 없이 검찰 단계에서 '기소유예' 불기소 결정을 받음
 publishDate: 2026-09-12
 category: 형사·소년보호
-side: 가해학생으로 지목된 학생
+side: 가해학생
 outcome: 쌍방폭행 기소유예
 keywords:
   - 학교폭력 형사고소

@@ -28,6 +28,23 @@ publish_mode: simple
 media_folder: public/images
 public_folder: /images
 
+# ── 이미지 업로드 자동 최적화 ──────────────────────────────
+# 캡처 화면을 본문에 붙여넣으면 원본 PNG 가 수 MB 가 되기도 합니다.
+# 글과 이미지는 GitHub 에 한 번에 커밋되는데, 요청이 너무 크면 GitHub 가 빈 응답을 돌려주고
+# "엔트리를 저장하는 중 오류 / Unexpected end of JSON input" 이 뜨면서 저장이 실패합니다.
+# 그래서 업로드(붙여넣기·끌어놓기·파일 선택 모두) 전에 브라우저에서 WebP 로 변환하고
+# 긴 변을 2000px 이하로 줄입니다. 결정문 글씨가 읽히는 해상도는 충분히 유지됩니다.
+media_libraries:
+  default:
+    config:
+      max_file_size: 3145728 # 변환 후 3MB 초과면 업로드 전에 안내 메시지로 막음
+      transformations:
+        raster_image:
+          format: webp
+          quality: 85
+          width: 2000
+          height: 2000
+
 locale: ko
 
 collections:
@@ -111,10 +128,11 @@ collections:
         widget: boolean
         default: false
         required: false
-      - label: 임시저장(공개 안 함)
+      - label: 비공개 (켜면 사이트에 안 보임)
         name: draft
         widget: boolean
         default: false
+        hint: 저장 버튼과는 별개입니다. 켠 채로 저장하면 글은 저장되지만 사이트에는 나오지 않습니다. 공개하려면 끄고 저장하세요.
       - label: 본문
         name: body
         widget: markdown
@@ -162,7 +180,8 @@ collections:
       - label: 의뢰인 지위
         name: side
         widget: select
-        options: [가해학생으로 지목된 학생, 피해학생]
+        # 선택지를 바꾸면 src/content.config.ts 의 CASE_SIDES 도 같이 바꿔야 배포가 됩니다.
+        options: [가해학생, 피해학생, 교원, 기타]
       - label: 결과 한 줄
         name: outcome
         widget: string
@@ -171,10 +190,11 @@ collections:
         name: keywords
         widget: list
         required: false
-      - label: 임시저장(공개 안 함)
+      - label: 비공개 (켜면 사이트에 안 보임)
         name: draft
         widget: boolean
         default: false
+        hint: 저장 버튼과는 별개입니다. 켠 채로 저장하면 글은 저장되지만 사이트에는 나오지 않습니다. 공개하려면 끄고 저장하세요.
       - label: 본문
         name: body
         widget: markdown
@@ -233,10 +253,11 @@ collections:
         fields:
           - { label: 질문, name: q, widget: string }
           - { label: 답변, name: a, widget: text }
-      - label: 임시저장(공개 안 함)
+      - label: 비공개 (켜면 사이트에 안 보임)
         name: draft
         widget: boolean
         default: false
+        hint: 저장 버튼과는 별개입니다. 켠 채로 저장하면 글은 저장되지만 사이트에는 나오지 않습니다. 공개하려면 끄고 저장하세요.
       - label: 본문
         name: body
         widget: markdown
@@ -294,10 +315,11 @@ collections:
         widget: string
         required: false
         hint: 예) 문자, 이메일
-      - label: 임시저장(공개 안 함)
+      - label: 비공개 (켜면 사이트에 안 보임)
         name: draft
         widget: boolean
         default: false
+        hint: 저장 버튼과는 별개입니다. 켠 채로 저장하면 글은 저장되지만 사이트에는 나오지 않습니다. 공개하려면 끄고 저장하세요.
       - label: 본문
         name: body
         widget: markdown

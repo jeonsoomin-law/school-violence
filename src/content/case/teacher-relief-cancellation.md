@@ -4,7 +4,7 @@ slug: teacher-relief-cancellation
 description: 교육장의 중학교 교사 직위해제 처분에 대해 교원소청심사를 청구하여, 재량권 일탈·남용 및 실체적 요건 흠결을 입증함으로써 인용 결정을 받아 직위해제 처분 취소를 받았습니다.
 publishDate: 2026-09-09
 category: 교원소청
-side: 가해학생으로 지목된 학생
+side: 교원
 outcome: 교원소청 직위해제 처분 취소
 keywords:
   - 교원소청
