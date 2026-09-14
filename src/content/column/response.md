@@ -4,7 +4,7 @@ slug: response
 description: 학교폭력은 학폭위 절차뿐 아니라 폭행·협박 등 사안에 따라 소년사건으로 이어질 수 있어 초기 진술과 증거를 신중히 준비해야 합니다.
 publishDate: 2026-09-14
 updatedDate: ''
-category: 기타
+category: 형사·소년보호
 keywords: []
 cover: ''
 toc: true
