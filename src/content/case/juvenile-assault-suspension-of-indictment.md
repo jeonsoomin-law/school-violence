@@ -1,5 +1,5 @@
 ---
-title: 소년사건 쌍방폭행 사건에서 기소유예를 받은 사례
+title: 학교폭력 쌍방폭행 맞고소 사건 기소유예를 받은 사례
 slug: juvenile-assault-suspension-of-indictment
 description: 소년사건 쌍방폭행으로 검찰 송치된 사안에서 검찰 단계에서 '기소유예' 불기소 처분을 이끌어낸 실제 해결 사례와 단계별 대응 전략을 공개합니다.
 publishDate: 2026-10-04
