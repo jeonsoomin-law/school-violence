@@ -9,7 +9,7 @@ outcome: 쌍방폭행으로 맞고소되었으나 기소유예 처분을 받음
 keywords:
   - 쌍방폭행
   - 쌍방폭행기소유예
-draft: false
+draft: true
 ---
 
 ## 1. 실제 불기소결정서로 확인하는 해결 사례
