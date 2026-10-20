@@ -1,14 +1,16 @@
 ---
 title: 피해학생 보호조치와 분리를 확보하고 조치 수위를 다툰 사례
+slug: victim-protection-measures
 description: 반복된 괴롭힘으로 등교를 거부하던 학생을 대리해 분리조치와 보호조치를 확보하고, 지속성을 입증해 가해학생 조치 수위를 다툰 사례입니다.
 publishDate: 2026-06-10
-category: 학폭위
+category: 학교폭력대책심의위원회
 side: 피해학생
 outcome: 보호조치 및 학급교체 확보
 keywords:
   - 피해학생 보호조치
   - 학교폭력 분리조치
   - 학폭 지속성 입증
+draft: false
 ---
 
 ## 사건의 경위
