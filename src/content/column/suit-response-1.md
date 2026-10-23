@@ -1,6 +1,6 @@
 ---
 title: 학교폭력변호사 형사고소, 학폭위와 함께 검토해야 하는 이유
-slug: suit-response
+slug: suit-response-1
 description: 학교폭력은 학폭위뿐 아니라 폭행·상해·협박·사이버폭력 등에 따라 형사고소로 이어질 수 있어 증거와 진술을 일관되게 정리하는 것이 중요합니다.
 publishDate: 2026-09-30
 updatedDate: ''

@@ -40,3 +40,7 @@ jobs:
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
           channelId: live
           projectId: school-violence-b29b3
+          # 기본값(latest)을 쓰면 새 버전이 나올 때마다 배포가 깨질 수 있어 고정합니다.
+          # 15.34.1 부터 serviceusage.services.get 권한이 없으면 403 으로 실패합니다.
+          # (firebase/firebase-tools#11335) 고쳐진 버전이 나오면 올려도 됩니다.
+          firebaseToolsVersion: 15.34.0

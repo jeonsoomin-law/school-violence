@@ -1,6 +1,6 @@
 ---
 title: 학교폭력변호사 쌍방폭력 사건, 서로 맞았다고 끝나는 문제가 아닙니다
-slug: response
+slug: response-2
 description: 쌍방폭력은 선행행위·방어인지 추가 공격인지·피해 정도·진술과 증거에 따라 책임과 학폭위 조치가 달라지므로, 초기부터 사실관계를 일관되게 정리해야 합니다.
 publishDate: 2026-09-17
 updatedDate: ''
