@@ -4,7 +4,7 @@ slug: response-1
 description: 사이버폭력은 단체방·SNS·딥페이크 등으로 발생하며, 캡처와 대화 흐름 등 증거 확보가 중요합니다. 피해 정도와 반복성에 따라 학폭위 조치가 달라져 초기 대응이 필요합니다.
 publishDate: 2026-09-15
 updatedDate: ''
-category: 기타
+category: 학교폭력대책심의위원회
 keywords: []
 cover: ''
 toc: true
