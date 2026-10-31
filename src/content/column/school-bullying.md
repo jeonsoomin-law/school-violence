@@ -4,7 +4,7 @@ slug: school-bullying
 description: 집단따돌림은 반복적인 배제와 심리적 공격으로 피해를 주는 행위로, 학생별 관여 정도와 증거를 바탕으로 학폭위에 대응해야 합니다.
 publishDate: 2026-10-29
 updatedDate: ''
-category: 기타
+category: 학교폭력대책심의위원회
 keywords: []
 cover: ''
 toc: true
