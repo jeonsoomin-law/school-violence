@@ -4,7 +4,7 @@ slug: sexual-bullying
 description: 학교 성희롱은 신체접촉이 없어도 학교폭력이 될 수 있습니다. 발언 내용과 피해 정도를 확인하고 증거 확보와 초기 진술, 학폭위 절차에 맞춰 대응해야 합니다.
 publishDate: 2026-10-22
 updatedDate: ''
-category: 기타
+category: 학교폭력대책심의위원회
 keywords: []
 cover: ''
 toc: true
