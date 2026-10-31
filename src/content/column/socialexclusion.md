@@ -4,7 +4,7 @@ slug: socialexclusion
 description: 집단따돌림은 반복적인 배제와 조롱으로 정신적 피해를 주면 학교폭력이 될 수 있습니다. 학생별 행동과 피해 증거를 정리하고 학폭위 절차에 맞춰 대응해야 합니다.
 publishDate: 2026-10-23
 updatedDate: ''
-category: 기타
+category: 학교폭력대책심의위원회
 keywords: []
 cover: ''
 toc: true
