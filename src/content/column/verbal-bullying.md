@@ -4,7 +4,7 @@ slug: verbal-bullying
 description: 언어폭력은 반복성, 발언 내용, 피해 정도에 따라 학교폭력으로 인정될 수 있으며, 객관적 증거와 정확한 진술을 바탕으로 대응해야 합니다.
 publishDate: 2026-10-26
 updatedDate: ''
-category: 기타
+category: 학교폭력대책심의위원회
 keywords: []
 cover: ''
 toc: true
