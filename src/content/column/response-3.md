@@ -4,7 +4,7 @@ slug: response-3
 description: 단톡방 성희롱은 피해학생이 채팅방에 없었더라도 학교폭력이 될 수 있습니다. 대화 원본과 확산 경위, 피해 정도를 확인하고 학폭위 절차와 형사책임을 구분해 대응해야 합니다.
 publishDate: 2026-10-21
 updatedDate: ''
-category: 기타
+category: 학교폭력대책심의위원회
 keywords: []
 cover: ''
 toc: true
