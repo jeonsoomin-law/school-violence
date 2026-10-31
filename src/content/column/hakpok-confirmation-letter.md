@@ -4,7 +4,7 @@ slug: student-statement
 description: 학교폭력 사안조사에서 받는 확인서는 절차 전체의 출발점이 됩니다. 무엇을 쓰고 무엇을 쓰지 말아야 하는지, 실제로 문제가 되는 지점을 정리했습니다.
 publishDate: 2026-03-04
 updatedDate: ''
-category: 학폭위 절차
+category: 학교폭력대책심의위원회
 keywords:
   - 학폭 확인서
   - 학폭위 진술서
