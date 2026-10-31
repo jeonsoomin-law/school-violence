@@ -4,10 +4,19 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import PageHero from '../../components/PageHero.astro';
 import PostCard from '../../components/PostCard.astro';
 import CtaSection from '../../components/CtaSection.astro';
+import { orderCategories } from '../../data/categories';
 
 const services = (await getCollection('service', ({ data }) => !data.draft)).sort(
   (a, b) => a.data.order - b.data.order,
 );
+
+// 분류를 하나도 고르지 않은 업무분야도 목록에서 빠지지 않도록 '기타' 로 묶는다.
+const catsOf = (s: (typeof services)[number]) =>
+  s.data.categories.length > 0 ? s.data.categories : ['기타'];
+
+// 분류는 관리자 화면 → "분류 관리" 에 등록된 순서대로 묶어서 보여준다.
+// 분류를 여러 개 고른 업무분야는 해당하는 분류마다 나타난다.
+const categories = orderCategories(services.flatMap(catsOf), '업무분야');
 
 const crumbs = [{ name: '업무분야', href: '/service/' }];
 ---
@@ -21,21 +30,71 @@ const crumbs = [{ name: '업무분야', href: '/service/' }];
     image="/images/page/service"
     alt="어두운 책상 위에 놓인 법률 서류와 스탠드"
     eyebrow="업무분야"
-    title="학교폭력 업무분야"
+    title="전수민 변호사 업무분야"
     lead="같은 학교폭력 사건이라도 가해학생으로 지목된 경우와 피해학생인 경우, 심의위원회 전과 조치 처분 후의 대응은 완전히 다릅니다. 현재 상황에 해당하는 항목을 확인해 보세요."
     crumbs={crumbs}
   />
 
   <section class="section">
     <div class="wrap">
-      <div class="grid grid--2">
-        {
-          services.map((s) => (
-            <PostCard href={`/service/${s.id}/`} title={s.data.title} description={s.data.summary} />
-          ))
-        }
-      </div>
+      {
+        categories.length > 1 && (
+          <ul class="cats">
+            {categories.map((cat) => (
+              <li>
+                <a href={`#cat-${encodeURIComponent(cat)}`} class="tag">
+                  {cat}
+                </a>
+              </li>
+            ))}
+          </ul>
+        )
+      }
+
+      {
+        categories.map((cat) => (
+          <div class="catblock" id={`cat-${encodeURIComponent(cat)}`}>
+            <h2>{cat}</h2>
+            <div class="grid grid--2">
+              {services
+                .filter((s) => catsOf(s).includes(cat))
+                .map((s) => (
+                  <PostCard href={`/service/${s.id}/`} title={s.data.title} description={s.data.summary} />
+                ))}
+            </div>
+          </div>
+        ))
+      }
     </div>
   </section>
   <CtaSection />
 </BaseLayout>
+
+<style>
+  .cats {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    padding: 0;
+    margin: 0 0 2.5rem;
+  }
+  .cats a {
+    text-decoration: none;
+    font-size: 0.9375rem;
+    padding: 0.55em 1.15em;
+  }
+  .cats a:hover {
+    color: var(--accent);
+    border-color: var(--accent-line);
+  }
+  .catblock + .catblock {
+    margin-top: 3.5rem;
+  }
+  .catblock h2 {
+    font-size: 1.2rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 2px solid var(--line-strong);
+    margin-bottom: 1.5rem;
+  }
+</style>

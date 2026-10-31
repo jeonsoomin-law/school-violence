@@ -2,7 +2,7 @@
 title: 교권보호위원회 조치없음
 slug: successcase-teacher-rights
 publishDate: 2026-09-02
-category: 교권·아동학대
+category: 교권보호위원회
 outcome: 조치없음
 author: 고등학생 학부모
 via: 문자

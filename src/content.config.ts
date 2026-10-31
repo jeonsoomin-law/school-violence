@@ -73,6 +73,12 @@ const service = defineCollection({
     summary: z.string(),
     /** 카드/목록 노출 순서 */
     order: z.number().default(99),
+    /**
+     * 분류. 칼럼·해결사례·후기와 같은 목록(관리자 화면 → "분류 관리")에서 여러 개 고를 수 있다.
+     * 목록 페이지는 이 분류별로 묶이고, 글 하단에는 같은 분류의 칼럼·해결사례·후기가 붙는다.
+     * 한 업무분야가 여러 분류에 걸치는 경우(예: 교권침해 및 아동학대)가 있어 배열로 둔다.
+     */
+    categories: z.preprocess(emptyToUndefined, z.array(z.string()).default([])),
     keywords: z.array(z.string()).default([]),
     /** 핵심 포인트 3~5개 */
     points: z.array(z.object({ title: z.string(), body: z.string() })).default([]),

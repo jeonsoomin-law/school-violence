@@ -5,7 +5,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import PageHero from '../../components/PageHero.astro';
 import Faq from '../../components/Faq.astro';
 import CtaSection from '../../components/CtaSection.astro';
-import PostCard from '../../components/PostCard.astro';
+import RelatedByCategory from '../../components/RelatedByCategory.astro';
 import { faqSchema, serviceSchema } from '../../lib/schema';
 
 export const getStaticPaths = (async () => {
@@ -33,16 +33,6 @@ const HERO: Record<string, string> = {
   criminal: 'criminal',
 };
 const heroKey = HERO[entry.id] ?? '';
-
-// 이 업무분야와 키워드가 겹치는 칼럼을 아래에 붙여 내부링크를 만듭니다.
-const related = (await getCollection('column', ({ data }) => !data.draft))
-  .map((c) => ({
-    entry: c,
-    score: c.data.keywords.filter((k) => d.keywords.includes(k)).length,
-  }))
-  .sort((a, b) => b.score - a.score || b.entry.data.publishDate.getTime() - a.entry.data.publishDate.getTime())
-  .slice(0, 3)
-  .map((r) => r.entry);
 ---
 
 <BaseLayout
@@ -83,23 +73,10 @@ const related = (await getCollection('column', ({ data }) => !data.draft))
         <Faq items={d.faq} />
       </div>
 
-      {
-        related.length > 0 && (
-          <aside class="svc__related">
-            <h2>관련 칼럼</h2>
-            <div class="grid grid--3">
-              {related.map((c) => (
-                <PostCard
-                  href={`/column/${c.id}/`}
-                  title={c.data.title}
-                  description={c.data.description}
-                  tag={c.data.category}
-                />
-              ))}
-            </div>
-          </aside>
-        )
-      }
+      {/* 같은 분류의 칼럼·해결사례·후기를 붙여 내부링크를 만듭니다. */}
+      <div class="svc__related">
+        <RelatedByCategory categories={d.categories} keywords={d.keywords} />
+      </div>
     </div>
   </section>
 
@@ -143,10 +120,5 @@ const related = (await getCollection('column', ({ data }) => !data.draft))
     font-size: 0.9rem;
     color: var(--ink-2);
     line-height: 1.65;
-  }
-  .svc__related {
-    margin-top: 4rem;
-    padding-top: 2.5rem;
-    border-top: 1px solid var(--line);
   }
 </style>

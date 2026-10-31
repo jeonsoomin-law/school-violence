@@ -5,6 +5,8 @@ slug: young-offender
 description: 학교폭력이 형사고소로 이어졌을 때. 촉법소년과 범죄소년의 구분, 소년보호처분 1호~10호, 경찰 조사 대응까지 정리했습니다.
 summary: 학폭위 절차와 형사 절차는 별개이며, 동시에 진행될 수 있습니다.
 order: 6
+categories:
+  - 형사·소년보호
 keywords:
   - 학교폭력 형사
   - 소년보호사건

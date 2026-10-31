@@ -99,7 +99,7 @@ const fmt = (date: Date) =>
         }
       </div>
 
-      <RelatedByCategory category={d.category} currentId={entry.id} keywords={d.keywords} />
+      <RelatedByCategory categories={[d.category]} currentId={entry.id} keywords={d.keywords} />
     </div>
   </article>
 

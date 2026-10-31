@@ -8,6 +8,9 @@
  * 같은 분류 글이 하나도 없으면 목표 검색어가 겹치는 순으로 다른 글을 채운다.
  * 분류가 그 글 하나뿐일 때 관련글 영역이 통째로 사라져 내부링크가 끊기는 것을 막기 위함이다.
  * 이때는 제목이 "함께 읽으면 좋은 글" 로 바뀌어, 같은 분류가 아님을 드러낸다.
+ *
+ * 업무분야 페이지는 분류를 여러 개 가질 수 있어 분류를 배열로 받는다.
+ * 그 분류 중 하나라도 같으면 같은 분류 글로 본다.
  */
 import { getCollection } from 'astro:content';
 import PostCard from './PostCard.astro';
@@ -15,15 +18,15 @@ import { BOARD_LABEL } from '../data/categories';
 
 interface Props {
   /** 지금 보고 있는 글의 분류 */
-  category: string;
-  /** 지금 보고 있는 글의 id. 목록에서 제외한다 */
+  categories: string[];
+  /** 지금 보고 있는 글의 id. 목록에서 제외한다. 업무분야처럼 목록에 없는 글이면 넘기지 않는다 */
   currentId?: string;
   /** 지금 보고 있는 글의 목표 검색어. 겹칠수록 위로 올린다 */
   keywords?: string[];
   /** 최대 노출 개수 */
   limit?: number;
 }
-const { category, currentId, keywords = [], limit = 6 } = Astro.props;
+const { categories, currentId, keywords = [], limit = 6 } = Astro.props;
 
 /** 같은 분류 글이 없을 때 대신 채울 개수 */
 const FALLBACK = 3;
@@ -59,7 +62,7 @@ const colItems: Item[] = columns
     tagAccent: false,
     date: c.data.publishDate,
     score: overlap(c.data.keywords),
-    sameCat: c.data.category === category,
+    sameCat: categories.includes(c.data.category),
   }));
 
 const caseItems: Item[] = cases
@@ -73,7 +76,7 @@ const caseItems: Item[] = cases
     date: c.data.publishDate,
     note: c.data.outcome,
     score: overlap(c.data.keywords),
-    sameCat: c.data.category === category,
+    sameCat: categories.includes(c.data.category),
   }));
 
 // 후기는 개별 페이지가 없으므로 목록 페이지의 해당 항목으로 보낸다.
@@ -87,7 +90,7 @@ const reviewItems: Item[] = reviews
     date: r.data.publishDate,
     note: r.data.outcome,
     score: 0,
-    sameCat: r.data.category === category,
+    sameCat: categories.includes(r.data.category),
   }));
 
 const byScore = (a: Item, b: Item) => b.score - a.score || b.date.getTime() - a.date.getTime();
@@ -122,7 +125,7 @@ const pure = filler.length === 0 && same.length > 0;
       <h2>
         {pure ? (
           <>
-            <span class="rbc__cat">{category}</span> 분류의 다른 글
+            <span class="rbc__cat">{categories.join(' · ')}</span> {currentId ? '분류의 다른 글' : '관련 글'}
           </>
         ) : (
           '함께 읽으면 좋은 글'

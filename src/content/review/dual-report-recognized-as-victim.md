@@ -1,7 +1,7 @@
 ---
 title: 쌍방으로 신고되었으나 일방적인 피해학생으로 인정된 사건
 publishDate: 2026-05-28
-category: 학폭위
+category: 학교폭력대책심의위원회
 outcome: 상대학생 2·4호 처분, 의뢰인 조치없음
 author: 중학생 학부모
 via: 문자
