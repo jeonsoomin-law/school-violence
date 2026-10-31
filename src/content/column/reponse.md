@@ -4,7 +4,7 @@ slug: reponse
 description: 학교폭력 가해학생은 실제 행동과 과장된 신고 내용을 구분하고, 객관적 증거와 일관된 진술을 바탕으로 학폭위 조치에 대응해야 합니다.
 publishDate: 2026-10-28
 updatedDate: ''
-category: 기타
+category: 학교폭력대책심의위원회
 keywords: []
 cover: ''
 toc: true
