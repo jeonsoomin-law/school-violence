@@ -1,5 +1,5 @@
 ---
-title: 원로교사 임용 거부 처분 성공사례
+title: 원로교사 임용 거부 처분 취소
 slug: senior-teacher-appointment-refusal-cancellation
 description: 교장으로 재직하다 정년 전 임기가 만료되었으나 학교법인이 원로교사 임용을 거부하여 소청심사를 통해 원로교사 임용 거부 처분 취소 결정을 이끌어낸 성공사례
 publishDate: 2026-10-24
