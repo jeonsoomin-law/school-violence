@@ -25,6 +25,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          # 전체 이력이 있어야 사이트맵에 글마다 실제 수정일(마지막 커밋 시각)을 넣을 수 있습니다.
+          # (scripts/content-lastmod.mjs) 빼면 모든 글의 수정일이 같아집니다.
+          fetch-depth: 0
 
       - uses: actions/setup-node@v4
         with:
@@ -33,6 +37,11 @@ jobs:
 
       - run: npm ci
       - run: npm run build
+
+      # IndexNow: 배포 "전" 실제 사이트의 사이트맵을 저장해 둡니다. (뒤에서 무엇이 바뀌었는지 비교용)
+      - name: IndexNow — 배포 전 사이트맵 저장
+        run: node scripts/indexnow.mjs snapshot "$RUNNER_TEMP/live-sitemap.json"
+        continue-on-error: true
 
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
@@ -44,3 +53,9 @@ jobs:
           # 15.34.1 부터 serviceusage.services.get 권한이 없으면 403 으로 실패합니다.
           # (firebase/firebase-tools#11335) 고쳐진 버전이 나오면 올려도 됩니다.
           firebaseToolsVersion: 15.34.0
+
+      # IndexNow: 새 글·수정·삭제된 주소를 네이버(와 Bing 등)에 바로 알립니다.
+      # 실패해도 배포는 이미 끝났으므로 실패로 표시하지 않습니다. 결과는 실행 화면 알림에 남습니다.
+      - name: IndexNow — 바뀐 주소 알림
+        run: node scripts/indexnow.mjs submit "$RUNNER_TEMP/live-sitemap.json"
+        continue-on-error: true

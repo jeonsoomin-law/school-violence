@@ -348,7 +348,14 @@ Cloudflare Workers로 무료로 띄울 수 있고 한 번만 설정하면 됩니
 1. [네이버 서치어드바이저](https://searchadvisor.naver.com) → 사이트 등록
 2. HTML 태그 확인 → 코드를 `VERIFICATION.naver` 에 입력 후 재배포
 3. **요청 → 사이트맵 제출** 에 `sitemap-index.xml` 제출
-4. **요청 → 웹페이지 수집** 으로 주요 페이지를 개별 수집 요청
+4. **요청 → RSS 제출** 에 `rss.xml` 제출 (칼럼·해결사례 새 글이 사이트맵보다 빨리 알려집니다)
+5. **요청 → 웹페이지 수집** 으로 주요 페이지를 개별 수집 요청
+
+### 새 글 자동 알림 (따로 할 일 없음)
+
+- 사이트맵은 배포할 때마다 새로 만들어지고, 글마다 실제 수정일(그 글이 마지막으로 저장된 시각)이 들어갑니다. → `scripts/content-lastmod.mjs`
+- 배포가 끝나면 새로 생긴·수정된·삭제된 주소만 골라 **IndexNow** 로 네이버·Bing 에 바로 알립니다. → `scripts/indexnow.mjs`
+  결과는 GitHub Actions 실행 화면의 "IndexNow" 알림에 남습니다. 구글은 IndexNow 를 쓰지 않으므로 사이트맵으로 갑니다.
 
 ### 다음
 
