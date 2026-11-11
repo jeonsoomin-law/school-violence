@@ -133,6 +133,11 @@ export const VERIFICATION = {
 export const ANALYTICS = {
   /** 네이버 애널리틱스 — 발급받은 스크립트의 wcs_add["wa"] 값 */
   naver: '1be55bc77b22d10',
+  /**
+   * 구글 태그 관리자(GTM) 컨테이너 ID. <head> 맨 위에 들어갑니다.
+   * 실제로 무엇을 수집할지(구글 애널리틱스 등)는 코드가 아니라 태그 관리자 화면에서 설정·게시합니다.
+   */
+  googleTagManager: 'GTM-KGFCCNRQ',
 } as const;
 
 /** 상단 내비게이션 */

@@ -65,6 +65,21 @@ const schemas: Record<string, unknown>[] = [
 <html lang={SITE.lang}>
   <head>
     <meta charset="utf-8" />
+    {/* 구글 태그 관리자: 구글 안내대로 <head> 맨 위, 페이지당 하나. is:inline 이 없으면 gtag 가 전역 함수가 되지 않습니다. */}
+    {
+      ANALYTICS.googleTagManager && (
+        <>
+          <script is:inline async src={`https://www.googletagmanager.com/gtm.js?id=${ANALYTICS.googleTagManager}`}></script>
+          <script is:inline>
+            window.dataLayer = window.dataLayer || [];
+            function gtag() {
+              dataLayer.push(arguments);
+            }
+            gtag('js', new Date());
+          </script>
+        </>
+      )
+    }
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>{pageTitle}</title>
