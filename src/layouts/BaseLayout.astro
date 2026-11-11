@@ -65,18 +65,26 @@ const schemas: Record<string, unknown>[] = [
 <html lang={SITE.lang}>
   <head>
     <meta charset="utf-8" />
-    {/* 구글 태그 관리자: 구글 안내대로 <head> 맨 위, 페이지당 하나. is:inline 이 없으면 gtag 가 전역 함수가 되지 않습니다. */}
+    {/* 구글 애널리틱스·태그 관리자: 구글 안내대로 <head> 맨 위, 페이지당 하나.
+        is:inline 이 없으면 Astro 가 모듈로 묶어 gtag 가 전역 함수가 되지 않습니다. */}
     {
-      ANALYTICS.googleTagManager && (
+      (ANALYTICS.googleAnalytics || ANALYTICS.googleTagManager) && (
         <>
-          <script is:inline async src={`https://www.googletagmanager.com/gtm.js?id=${ANALYTICS.googleTagManager}`}></script>
-          <script is:inline>
-            window.dataLayer = window.dataLayer || [];
-            function gtag() {
-              dataLayer.push(arguments);
-            }
-            gtag('js', new Date());
-          </script>
+          {ANALYTICS.googleTagManager && (
+            <script is:inline async src={`https://www.googletagmanager.com/gtm.js?id=${ANALYTICS.googleTagManager}`} />
+          )}
+          {ANALYTICS.googleAnalytics && (
+            <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${ANALYTICS.googleAnalytics}`} />
+          )}
+          <script
+            is:inline
+            set:html={[
+              'window.dataLayer = window.dataLayer || [];',
+              'function gtag(){dataLayer.push(arguments);}',
+              "gtag('js', new Date());",
+              ...(ANALYTICS.googleAnalytics ? [`gtag('config', ${JSON.stringify(ANALYTICS.googleAnalytics)});`] : []),
+            ].join('\n')}
+          />
         </>
       )
     }

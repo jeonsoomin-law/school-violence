@@ -133,11 +133,15 @@ export const VERIFICATION = {
 export const ANALYTICS = {
   /** 네이버 애널리틱스 — 발급받은 스크립트의 wcs_add["wa"] 값 */
   naver: '1be55bc77b22d10',
+  /** 구글 애널리틱스(GA4) 측정 ID (G- 로 시작). 구글 태그(gtag.js)로 사이트에 직접 연결합니다. */
+  googleAnalytics: 'G-XZ200SJ1GE',
   /**
-   * 구글 태그 관리자(GTM) 컨테이너 ID. <head> 맨 위에 들어갑니다.
-   * 실제로 무엇을 수집할지(구글 애널리틱스 등)는 코드가 아니라 태그 관리자 화면에서 설정·게시합니다.
+   * 구글 태그 관리자(GTM) 컨테이너 ID. 채우면 <head> 맨 위에 들어갑니다.
+   * 변호사님 컨테이너 'GTM-KGFCCNRQ' 는 2026-11-11 기준 태그가 하나도 없어 비워 둡니다
+   * (애널리틱스는 위 googleAnalytics 로 직접 연결). 나중에 광고 전환 등을 태그 관리자에서
+   * 관리하게 되면 다시 넣되, 그 안에 같은 G- ID 를 또 넣으면 방문이 두 번 집계되니 주의.
    */
-  googleTagManager: 'GTM-KGFCCNRQ',
+  googleTagManager: '',
 } as const;
 
 /** 상단 내비게이션 */
