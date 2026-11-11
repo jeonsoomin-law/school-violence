@@ -4,7 +4,7 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import StickyCta from '../components/StickyCta.astro';
 import JsonLd from '../components/JsonLd.astro';
-import { SITE, SITE_URL, ATTORNEY, VERIFICATION, PREVIEW_MODE, absoluteUrl } from '../consts';
+import { SITE, SITE_URL, ATTORNEY, VERIFICATION, ANALYTICS, PREVIEW_MODE, absoluteUrl } from '../consts';
 import { organizationSchema, websiteSchema, breadcrumbSchema, type Crumb } from '../lib/schema';
 
 interface Props {
@@ -114,5 +114,19 @@ const schemas: Record<string, unknown>[] = [
     </main>
     <Footer />
     <StickyCta />
+
+    {/* 네이버 애널리틱스: 네이버 안내대로 </body> 바로 앞.
+        is:inline 이 없으면 Astro 가 모듈로 묶어 wcs_add 가 전역 변수가 되지 않아 동작하지 않습니다. */}
+    {
+      ANALYTICS.naver && (
+        <>
+          <script is:inline src="https://wcs.pstatic.net/wcslog.js"></script>
+          <script
+            is:inline
+            set:html={`if(!wcs_add) var wcs_add = {};\nwcs_add["wa"] = ${JSON.stringify(ANALYTICS.naver)};\nif(window.wcs) {\n  wcs_do();\n}`}
+          />
+        </>
+      )
+    }
   </body>
 </html>

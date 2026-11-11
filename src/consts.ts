@@ -126,6 +126,15 @@ export const VERIFICATION = {
   ],
 } as const;
 
+/**
+ * 방문자 통계 스크립트 ID. 공통 레이아웃(BaseLayout)이 모든 페이지의 </body> 앞에 넣으므로
+ * 글을 새로 써도 따로 붙일 필요가 없습니다. 비우면 스크립트를 넣지 않습니다.
+ */
+export const ANALYTICS = {
+  /** 네이버 애널리틱스 — 발급받은 스크립트의 wcs_add["wa"] 값 */
+  naver: '1be55bc77b22d10',
+} as const;
+
 /** 상단 내비게이션 */
 export const NAV = [
   { label: '학교폭력 절차', href: '/school-violence/' },
