@@ -1,5 +1,5 @@
 ---
-title: 학고폭력 강제전학 집행정지 인용 결정
+title: 학교폭력 강제전학 집행정지 인용 결정
 slug: school-violence-stay-of-execution
 description: 학교폭력 8호 전학 처분에 대해 행정소송을 제기하면서 동시에 집행정지를 신청하여, 본안 판결 전까지 강제전학 처분의 효력을 정지시킨 성공사례
 publishDate: 2026-11-13
