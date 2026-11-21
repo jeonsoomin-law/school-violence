@@ -1,5 +1,5 @@
 ---
-title: 학교폭력변호사 학교장자체해결, 학폭위로 가기 전 확인해야 할 기준
+title: 학교장자체해결, 학폭위로 가기 전 확인해야 할 기준
 slug: schoolviolencecommittee-response
 description: 학교장자체해결은 모든 학교폭력 사건에 적용되는 것이 아니며, 피해 정도·지속성·보복성·피해 회복·피해학생 동의 등 요건을 충족해야 합니다.
 publishDate: 2026-10-07
